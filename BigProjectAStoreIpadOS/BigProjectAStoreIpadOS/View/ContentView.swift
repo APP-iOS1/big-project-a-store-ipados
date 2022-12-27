@@ -9,6 +9,17 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @StateObject var navigationStateManager = NavigationStateManager()
+    
+    #if os(iOS)
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    var isRegular: Bool {
+        horizontalSizeClass == .regular
+    }
+    #else
+    let isRegular = false
+    #endif
+    
     @State private var showSettings = false
     
     @State private var menuId: MenuItem.ID?
@@ -56,6 +67,18 @@ struct ContentView: View {
             }
         } detail: {
             SubMenuDetails(for: subMenuId)
+                .toolbar {
+                    ToolbarItem(placement: .navigation) {
+                        
+                        if navigationStateManager.columnVisibility != .detailOnly, isRegular {
+                            Button {
+                                navigationStateManager.columnVisibility = .detailOnly
+                            } label: {
+                                Image(systemName: "arrow.up.left.and.arrow.down.right")
+                            }
+                        }
+                    }
+                }
         }
     }
 }
