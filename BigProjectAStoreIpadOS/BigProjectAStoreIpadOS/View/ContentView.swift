@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @State private var showSettings = false
+    
     @State private var menuId: MenuItem.ID?
     @State private var subMenuId: SubMenuItem.ID?
     
@@ -31,6 +33,19 @@ struct ContentView: View {
             List(model.menuItems, selection: $menuId) { menu in
                 Text(menu.name)
             }
+            .toolbar(content: {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        showSettings.toggle()
+                    } label: {
+                        Image(systemName: "gearshape")
+                    }
+                }
+            })
+            .sheet(isPresented: $showSettings, content: {
+              SettingsView()
+            })
+            .navigationTitle("멋사 전자")
         } content: {
             if let menu = model.menuItem(id: menuId) {
                 List(menu.subMenuItem, selection: $subMenuId) { subMenu in
