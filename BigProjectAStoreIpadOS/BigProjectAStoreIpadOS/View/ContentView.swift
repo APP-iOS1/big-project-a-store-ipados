@@ -11,15 +11,6 @@ struct ContentView: View {
     
     @StateObject var navigationStateManager = NavigationStateManager()
     
-    #if os(iOS)
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    var isRegular: Bool {
-        horizontalSizeClass == .regular
-    }
-    #else
-    let isRegular = false
-    #endif
-    
     @State private var showSettings = false
     
     @State private var menuId: MenuItem.ID?
@@ -40,7 +31,8 @@ struct ContentView: View {
     fileprivate var model = MenuModel()
 
     var body: some View {
-        NavigationSplitView() {
+        NavigationSplitView(columnVisibility: $navigationStateManager.columnVisibility,
+        sidebar: {
             List(model.menuItems, selection: $menuId) { menu in
                 Text(menu.name)
             }
@@ -57,7 +49,8 @@ struct ContentView: View {
               SettingsView()
             })
             .navigationTitle("멋사 전자")
-        } content: {
+            
+        }, content: {
             if let menu = model.menuItem(id: menuId) {
                 List(menu.subMenuItem, selection: $subMenuId) { subMenu in
                     Text(subMenu.name)
@@ -65,21 +58,12 @@ struct ContentView: View {
             } else {
                 Text("메뉴를 선택해주세요")
             }
-        } detail: {
+        }, detail: {
             SubMenuDetails(for: subMenuId)
-                .toolbar {
-                    ToolbarItem(placement: .navigation) {
-                        
-                        if navigationStateManager.columnVisibility != .detailOnly, isRegular {
-                            Button {
-                                navigationStateManager.columnVisibility = .detailOnly
-                            } label: {
-                                Image(systemName: "arrow.up.left.and.arrow.down.right")
-                            }
-                        }
-                    }
-                }
-        }
+        })
+        .environmentObject(navigationStateManager)
+        
+        
     }
 }
 
