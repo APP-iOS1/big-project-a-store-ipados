@@ -64,12 +64,15 @@ struct ProductRegisterView: View {
         NavigationStack {
             VStack {
                 Form {
+                    //상품명
                     Section(header: Text("상품명").font(.title)) {
                         TextField("", text: $productName)
                     }
+                    //상품 카테고리
                     Section(header: Text("상품카테고리").font(.title)) {
                         TextField("", text: $productCategory)
                     }
+                    //상품 옵션
                     Section(header: Text("옵션").font(.title)) {
                         ForEach(productOption.sorted(by: >), id:\.key) {key, value  in
                             HStack {
@@ -94,15 +97,12 @@ struct ProductRegisterView: View {
                                         self.textFieldOptionCount = filteredCount
                                     }
                                 }
-                            Button {
+                            Button("추가") {
                                 productOption.updateValue(Int(textFieldOptionCount)!, forKey: textFieldOptionColor)
-                                
-                            } label: {
-                                Text("추가")
                             }
-                            
                         }
                     }
+                    //상품 이미지
                     Section(header: Text("상품이미지").font(.title)) {
                         ScrollView(.horizontal) {
                             HStack{
@@ -117,6 +117,7 @@ struct ProductRegisterView: View {
                         }
                         
                     }
+                    //상품 설명
                     Section(header: Text("상품설명").font(.title)) {
                         TextEditor(text: $productDescription)
                             .frame(height:200)
