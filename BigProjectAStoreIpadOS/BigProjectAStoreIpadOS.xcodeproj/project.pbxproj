@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		36205EDE295ACCD30083F312 /* InquiryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36205EDD295ACCD30083F312 /* InquiryView.swift */; };
+		36205EE1295AD7090083F312 /* InquiryResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36205EE0295AD7090083F312 /* InquiryResponse.swift */; };
 		36E4149C295AC4C20033D634 /* EditStoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E4149B295AC4C20033D634 /* EditStoreView.swift */; };
 		36E4149E295AC4E50033D634 /* OrderHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E4149D295AC4E50033D634 /* OrderHistoryView.swift */; };
 		36E414A0295AC5010033D634 /* ProjectRegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E4149F295AC5000033D634 /* ProjectRegisterView.swift */; };
@@ -20,6 +22,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		36205EDD295ACCD30083F312 /* InquiryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryView.swift; sourceTree = "<group>"; };
+		36205EE0295AD7090083F312 /* InquiryResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryResponse.swift; sourceTree = "<group>"; };
 		36E4149B295AC4C20033D634 /* EditStoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditStoreView.swift; sourceTree = "<group>"; };
 		36E4149D295AC4E50033D634 /* OrderHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderHistoryView.swift; sourceTree = "<group>"; };
 		36E4149F295AC5000033D634 /* ProjectRegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRegisterView.swift; sourceTree = "<group>"; };
@@ -45,10 +49,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		36205EDF295ACD800083F312 /* InquiryReviewView */ = {
+			isa = PBXGroup;
+			children = (
+				36205EDD295ACCD30083F312 /* InquiryView.swift */,
+			);
+			path = InquiryReviewView;
+			sourceTree = "<group>";
+		};
 		36E414A5295AC5670033D634 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				80807C79295A92C20037E781 /* ContentView.swift */,
+				36205EDF295ACD800083F312 /* InquiryReviewView */,
 				36E414A8295AC5F90033D634 /* StoreManageView */,
 				36E414A6295AC5C20033D634 /* ProductManageView */,
 				36E414A7295AC5DA0033D634 /* OrderManageView */,
@@ -104,6 +117,7 @@
 				36E414A5295AC5670033D634 /* View */,
 				80807C86295A92F10037E781 /* MenuItem.swift */,
 				36E414A3295AC53B0033D634 /* Product.swift */,
+				36205EE0295AD7090083F312 /* InquiryResponse.swift */,
 				80807C7B295A92C30037E781 /* Assets.xcassets */,
 				80807C7D295A92C30037E781 /* BigProjectAStoreIpadOS.entitlements */,
 				80807C7E295A92C30037E781 /* Preview Content */,
@@ -189,7 +203,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				36205EE1295AD7090083F312 /* InquiryResponse.swift in Sources */,
 				80807C87295A92F10037E781 /* MenuItem.swift in Sources */,
+				36205EDE295ACCD30083F312 /* InquiryView.swift in Sources */,
 				36E414A4295AC53B0033D634 /* Product.swift in Sources */,
 				36E414A0295AC5010033D634 /* ProjectRegisterView.swift in Sources */,
 				36E4149C295AC4C20033D634 /* EditStoreView.swift in Sources */,
