@@ -12,6 +12,7 @@
 		80807C7C295A92C30037E781 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80807C7B295A92C30037E781 /* Assets.xcassets */; };
 		80807C80295A92C30037E781 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80807C7F295A92C30037E781 /* Preview Assets.xcassets */; };
 		80807C87295A92F10037E781 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80807C86295A92F10037E781 /* MenuItem.swift */; };
+		C5B61215295AAABE0060143C /* EditStoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B61214295AAABE0060143C /* EditStoreView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		80807C7D295A92C30037E781 /* BigProjectAStoreIpadOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BigProjectAStoreIpadOS.entitlements; sourceTree = "<group>"; };
 		80807C7F295A92C30037E781 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		80807C86295A92F10037E781 /* MenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
+		C5B61214295AAABE0060143C /* EditStoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditStoreView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 			children = (
 				80807C77295A92C20037E781 /* BigProjectAStoreIpadOSApp.swift */,
 				80807C79295A92C20037E781 /* ContentView.swift */,
+				C5B61214295AAABE0060143C /* EditStoreView.swift */,
 				80807C86295A92F10037E781 /* MenuItem.swift */,
 				80807C7B295A92C30037E781 /* Assets.xcassets */,
 				80807C7D295A92C30037E781 /* BigProjectAStoreIpadOS.entitlements */,
@@ -142,6 +145,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5B61215295AAABE0060143C /* EditStoreView.swift in Sources */,
 				80807C87295A92F10037E781 /* MenuItem.swift in Sources */,
 				80807C7A295A92C20037E781 /* ContentView.swift in Sources */,
 				80807C78295A92C20037E781 /* BigProjectAStoreIpadOSApp.swift in Sources */,
@@ -281,7 +285,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
@@ -317,7 +321,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
