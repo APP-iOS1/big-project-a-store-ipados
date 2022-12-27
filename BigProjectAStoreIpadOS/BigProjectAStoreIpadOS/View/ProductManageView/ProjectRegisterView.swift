@@ -12,6 +12,7 @@ import PhotosUI
 struct ProductRegisterView: View {
     //상품명
     @State private var productName: String = ""
+    //상품 카테고리
     @State private var productCategory: String = ""
     //옵션(현재는 더미데이터)
     @State private var productOption: [String:Int] = ["화이트":1,"블랙":2,"그레이":1]
@@ -19,15 +20,15 @@ struct ProductRegisterView: View {
     @State private var textFieldOptionColor: String = ""
     //텍스트필드2번 - 수량을 입력받음
     @State private var textFieldOptionCount: String = ""
+    //상품이미지
+    @State private var photoArray: [UIImage] = []
     //상품 설명
     @State private var productDescription: String = ""
     
     //Use PhotosUI
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImageData: Data? = nil
-    //상품이미지
-    @State private var photoArray: [UIImage] = []
-    
+    //
     //Delete Option
     func optionDelete(at offsets: IndexSet){
         if let ndx = offsets.first {
