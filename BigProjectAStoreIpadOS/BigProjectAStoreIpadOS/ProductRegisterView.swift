@@ -7,6 +7,8 @@
 //                .listStyle(.sidebar)
 
 import SwiftUI
+import Combine
+import PhotosUI
 
 struct ProductRegisterView: View {
     @State private var productName: String = ""
@@ -15,9 +17,18 @@ struct ProductRegisterView: View {
     @State private var textFieldOptionCount: String = ""
     @State private var productDescription: String = ""
     
-//    func removeRows(at offsets: IndexSet) {
-//        productOption.remove(at: offsets)
-//    }
+    //Use PhotosUI
+    @State private var selectedItem: PhotosPickerItem? = nil
+    @State private var selectedImageData: Data? = nil
+    @State private var photoArray: [UIImage] = []
+    
+    //Delete Option
+    func optionDelete(at offsets: IndexSet){
+        if let ndx = offsets.first {
+            let item = productOption.sorted(by: >)[ndx]
+            productOption.removeValue(forKey: item.key)
+        }
+    }
     var body: some View {
         NavigationStack {
             VStack {
@@ -36,17 +47,24 @@ struct ProductRegisterView: View {
                             }
                             
                         }
-//                        .onDelete(perform: removeRows)
+                        .onDelete(perform: optionDelete)
                         
                         HStack(spacing: 20) {
                             TextField("색상", text: $textFieldOptionColor)
                                 .padding(.horizontal, 20)
                                 .frame(maxWidth: .infinity)
                             TextField("수량", text: $textFieldOptionCount)
+                                .keyboardType(.numberPad)
                                 .padding(.horizontal, 20)
                                 .frame(maxWidth: .infinity)
+                                .onReceive(Just(textFieldOptionCount)) { value in
+                                    let filteredCount = value.filter {"0123456789".contains($0)}
+                                    if filteredCount != value {
+                                        self.textFieldOptionCount = filteredCount
+                                    }
+                                }
                             Button {
-//                                productOption.append(<#String#>)
+                                productOption.updateValue(Int(textFieldOptionCount)!, forKey: textFieldOptionColor)
 
                             } label: {
                                 Text("추가")
@@ -55,21 +73,46 @@ struct ProductRegisterView: View {
                         }
                     }
                     Section(header: Text("상품이미지").font(.title)) {
-                        HStack{
-                            //오후: 상품이미지 받는 배열하나 만들기
-                            Rectangle().frame(width: 200, height:200)
-                            Rectangle().frame(width: 200, height:200)
-                            Rectangle().frame(width: 200, height:200)
+                        ScrollView(.horizontal) {
+                            HStack{
+                                ForEach(photoArray,id:\.self) { photo in
+                                    Image(uiImage: photo)
+                                        .resizable()
+                                        .frame(width: 200, height: 200)
+                                }
+                                Spacer()
+                                PhotosPicker(
+                                    selection: $selectedItem,
+                                    matching: .images,
+                                    photoLibrary: .shared()) {
+                                        Image(systemName: "plus")
+                                            .fontWeight(.black)
+                                            .frame(width:200, height: 200)
+                                            .background(.gray)
+                                            .opacity(0.2)
 
-                            Spacer()
-                            Button {
+                                    }
+                                    .onChange(of: selectedItem) { newItem in
+                                        Task {
+                                            if let data = try? await newItem?.loadTransferable(type: Data.self) {
+                                                selectedImageData = data
+                                                if let selectedImageData, let uiImage = UIImage(data:selectedImageData){
+                                                    photoArray.append(uiImage)
+                                                }
+                                            }
+                                        }
+                                    }
                                 
-                            } label: {
-                                //아이콘넣기
-                                Text("+").font(.title)
+//                                if let selectedImageData,
+//                                   let uiImage = UIImage(data: selectedImageData) {
+//                                    Image(uiImage: uiImage)
+//                                        .resizable()
+//                                        .scaledToFit()
+//                                        .frame(width: 250, height: 250)
+//                                }
                             }
-
                         }
+
                     }
                     Section(header: Text("상품설명").font(.title)) {
                         TextEditor(text: $productDescription)
