@@ -12,6 +12,8 @@
 		34DC218D295B64E000355BE8 /* MenuModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DC218C295B64E000355BE8 /* MenuModel.swift */; };
 		34DC2194295B6EB600355BE8 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DC2193295B6EB600355BE8 /* SettingsView.swift */; };
 		34DC2196295B727F00355BE8 /* NavigationStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DC2195295B727F00355BE8 /* NavigationStateManager.swift */; };
+		34DC219C295B749900355BE8 /* DeliveryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DC219B295B749900355BE8 /* DeliveryView.swift */; };
+		34DC219E295B74E300355BE8 /* DeliverySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DC219D295B74E300355BE8 /* DeliverySummaryView.swift */; };
 		36205EDE295ACCD30083F312 /* InquiryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36205EDD295ACCD30083F312 /* InquiryView.swift */; };
 		36205EE1295AD7090083F312 /* InquiryResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36205EE0295AD7090083F312 /* InquiryResponse.swift */; };
 		36E4149C295AC4C20033D634 /* EditStoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E4149B295AC4C20033D634 /* EditStoreView.swift */; };
@@ -32,6 +34,8 @@
 		34DC218C295B64E000355BE8 /* MenuModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MenuModel.swift; path = ../../../../../../../Desktop/SplitViewDemo/SplitViewDemo/MenuModel.swift; sourceTree = "<group>"; };
 		34DC2193295B6EB600355BE8 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsView.swift; path = ../../../../../../../Desktop/SplitViewDemo/SplitViewDemo/SettingsView.swift; sourceTree = "<group>"; };
 		34DC2195295B727F00355BE8 /* NavigationStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NavigationStateManager.swift; path = ../../../../../../../Desktop/SplitViewDemo/SplitViewDemo/NavigationStateManager.swift; sourceTree = "<group>"; };
+		34DC219B295B749900355BE8 /* DeliveryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DeliveryView.swift; path = ../../../../../../../../../Desktop/SplitViewDemo/SplitViewDemo/DeliveryView.swift; sourceTree = "<group>"; };
+		34DC219D295B74E300355BE8 /* DeliverySummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DeliverySummaryView.swift; path = ../../../../../../../../../Desktop/SplitViewDemo/SplitViewDemo/DeliverySummaryView.swift; sourceTree = "<group>"; };
 		36205EDD295ACCD30083F312 /* InquiryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryView.swift; sourceTree = "<group>"; };
 		36205EE0295AD7090083F312 /* InquiryResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryResponse.swift; sourceTree = "<group>"; };
 		36E4149B295AC4C20033D634 /* EditStoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditStoreView.swift; sourceTree = "<group>"; };
@@ -76,6 +80,15 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		34DC2199295B744300355BE8 /* DeliveryManageView */ = {
+			isa = PBXGroup;
+			children = (
+				34DC219B295B749900355BE8 /* DeliveryView.swift */,
+				34DC219D295B74E300355BE8 /* DeliverySummaryView.swift */,
+			);
+			path = DeliveryManageView;
+			sourceTree = "<group>";
+		};
 		36205EDF295ACD800083F312 /* InquiryReviewView */ = {
 			isa = PBXGroup;
 			children = (
@@ -111,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				36E4149D295AC4E50033D634 /* OrderHistoryView.swift */,
+				34DC2199295B744300355BE8 /* DeliveryManageView */,
 			);
 			path = OrderManageView;
 			sourceTree = "<group>";
@@ -244,8 +258,10 @@
 				34DC2194295B6EB600355BE8 /* SettingsView.swift in Sources */,
 				34DC2196295B727F00355BE8 /* NavigationStateManager.swift in Sources */,
 				80807C7A295A92C20037E781 /* ContentView.swift in Sources */,
+				34DC219E295B74E300355BE8 /* DeliverySummaryView.swift in Sources */,
 				168E7815295AC8B4001905E9 /* ChartView.swift in Sources */,
 				80807C78295A92C20037E781 /* BigProjectAStoreIpadOSApp.swift in Sources */,
+				34DC219C295B749900355BE8 /* DeliveryView.swift in Sources */,
 				34DC218D295B64E000355BE8 /* MenuModel.swift in Sources */,
 				36E4149E295AC4E50033D634 /* OrderHistoryView.swift in Sources */,
 				36E414A2295AC5280033D634 /* ProductInventoryView.swift in Sources */,
