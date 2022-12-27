@@ -13,29 +13,28 @@ import PhotosUI
 struct ProductRegisterView: View {
     //상품명
     @State private var productName: String = ""
+    //상품 카테고리
     @State private var productCategory: String = ""
     //옵션(현재는 더미데이터)
-    @State private var productOption: [String:Int] = ["화이트":1,"블랙":2,"그레이":1]
+    @State private var productOption: [String:[String]] = ["iphone15":["256_10000","512_20000"]]
     //텍스트필드1번 - 색상을 입력받음
     @State private var textFieldOptionColor: String = ""
-    //텍스트필드2번 - 수량을 입력받음
-    @State private var textFieldOptionCount: String = ""
+    //상품이미지
+    @State private var photoArray: [UIImage] = []
     //상품 설명
     @State private var productDescription: String = ""
     
     //Use PhotosUI
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImageData: Data? = nil
-    //상품이미지
-    @State private var photoArray: [UIImage] = []
-    
+    //
     //Delete Option
-    func optionDelete(at offsets: IndexSet){
-        if let ndx = offsets.first {
-            let item = productOption.sorted(by: >)[ndx]
-            productOption.removeValue(forKey: item.key)
-        }
-    }
+//    func optionDelete(at offsets: IndexSet){
+//        if let ndx = offsets.first {
+//            let item = productOption.sorted(by: >)[ndx]
+//            productOption.removeValue(forKey: item.key)
+//        }
+//    }
     //사진 입력받는 로직
     func photoLogic() -> some View {
         PhotosPicker(
@@ -75,31 +74,22 @@ struct ProductRegisterView: View {
                     }
                     //상품 옵션
                     Section(header: Text("옵션").font(.title)) {
-                        ForEach(productOption.sorted(by: >), id:\.key) {key, value  in
-                            HStack {
-                                Text("색상: \(key)")
-                                Text("수량: \(value)개")
-                            }
+//                        ForEach(productOption,id:\.self) {value  in
+                                HStack {
+//                                    Text("색상: \(value2.value)")
+//                                    Text("수량: \(value)개")
+                                }
                             
-                        }
-                        .onDelete(perform: optionDelete)
+
+                            
+//                        }
+//                        .onDelete(perform: optionDelete)
                         
                         HStack(spacing: 20) {
                             TextField("색상", text: $textFieldOptionColor)
                                 .padding(.horizontal, 20)
                                 .frame(maxWidth: .infinity)
-                            TextField("수량", text: $textFieldOptionCount)
-                                .keyboardType(.numberPad)
-                                .padding(.horizontal, 20)
-                                .frame(maxWidth: .infinity)
-                                .onReceive(Just(textFieldOptionCount)) { value in
-                                    let filteredCount = value.filter {"0123456789".contains($0)}
-                                    if filteredCount != value {
-                                        self.textFieldOptionCount = filteredCount
-                                    }
-                                }
                             Button("추가") {
-                                productOption.updateValue(Int(textFieldOptionCount)!, forKey: textFieldOptionColor)
                             }
                         }
                     }
