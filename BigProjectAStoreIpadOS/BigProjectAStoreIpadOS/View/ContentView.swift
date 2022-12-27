@@ -9,6 +9,10 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @StateObject var navigationStateManager = NavigationStateManager()
+    
+    @State private var showSettings = false
+    
     @State private var menuId: MenuItem.ID?
     @State private var subMenuId: SubMenuItem.ID?
     
@@ -27,11 +31,26 @@ struct ContentView: View {
     fileprivate var model = MenuModel()
 
     var body: some View {
-        NavigationSplitView() {
+        NavigationSplitView(columnVisibility: $navigationStateManager.columnVisibility,
+        sidebar: {
             List(model.menuItems, selection: $menuId) { menu in
                 Text(menu.name)
             }
-        } content: {
+            .toolbar(content: {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        showSettings.toggle()
+                    } label: {
+                        Image(systemName: "gearshape")
+                    }
+                }
+            })
+            .sheet(isPresented: $showSettings, content: {
+              SettingsView()
+            })
+            .navigationTitle("멋사 전자")
+            
+        }, content: {
             if let menu = model.menuItem(id: menuId) {
                 List(menu.subMenuItem, selection: $subMenuId) { subMenu in
                     Text(subMenu.name)
@@ -39,9 +58,12 @@ struct ContentView: View {
             } else {
                 Text("메뉴를 선택해주세요")
             }
-        } detail: {
+        }, detail: {
             SubMenuDetails(for: subMenuId)
-        }
+        })
+        .environmentObject(navigationStateManager)
+        
+        
     }
 }
 
