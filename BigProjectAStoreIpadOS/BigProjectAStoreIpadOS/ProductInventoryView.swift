@@ -10,8 +10,8 @@ import SwiftUI
 struct ProductInventoryView: View {
     
     
-    
-    
+    let data = (1...100).map { "Item \($0)" }
+    let columns = [ GridItem(.adaptive(minimum: 80)) ]
     @State private var productCategories = [
         "상품명",
         "상품코드",
@@ -19,10 +19,15 @@ struct ProductInventoryView: View {
         "재고",
         "조정사유"
     ]
-    
+
     
     var body: some View {
+        
+     
+        
+        
         VStack(){
+
             Text("상품 조회/수정")
                 .font(.largeTitle)
             
@@ -63,17 +68,16 @@ struct ProductInventoryView: View {
                     .padding()
                 Divider()
                 VStack{
-                    Table(sampleData) {
-                        TableColumn("상품명", value:\.productName)
-                        TableColumn("상품코드", value:\.productId)
-                        TableColumn("상세") { Identifiable in
-                            Button {
-                                
-                            } label: {
-                                Text(Identifiable.productName)
+                    ScrollView {
+                        LazyVGrid(columns: columns, spacing: 20) {
+                          
+                            ForEach(data, id: \.self) { item in
+                                Text(item)
                             }
                         }
+                        .padding(.horizontal)
                     }
+                    .frame(maxHeight: 300)
                     .padding()
                 }
             }
@@ -126,45 +130,7 @@ extension ProductInventoryView{
                 }
                 
             }
-            HStack(alignment: .center ,spacing: 50){
-                HStack{
-                    Image(systemName: "shippingbox.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 50,height: 50)
-                    VStack(alignment: .leading){
-                        Text("전체")
-                        Text("0 ")
-                            .font(.title2) + Text("건")
-                    }
-                    .padding()
-                }
-                
-                HStack{
-                    Image(systemName: "cart.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 50,height: 50)
-                    VStack(alignment: .leading){
-                        Text("품절")
-                        Text("0 ").font(.title2) + Text("건")
-                    }
-                    .padding()
-                }
-                
-                HStack{
-                    Image(systemName: "cart.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 50,height: 50)
-                    VStack(alignment: .leading){
-                        Text("판매중")
-                        Text("0 ").font(.title2) + Text("건")
-                    }
-                    .padding()
-                }
-                
-            }
+            
         }
     }
 }
