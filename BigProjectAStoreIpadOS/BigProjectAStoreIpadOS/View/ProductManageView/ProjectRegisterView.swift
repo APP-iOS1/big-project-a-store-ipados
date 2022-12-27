@@ -9,6 +9,7 @@ import SwiftUI
 import Combine
 import PhotosUI
 
+
 struct ProductRegisterView: View {
     //상품명
     @State private var productName: String = ""
