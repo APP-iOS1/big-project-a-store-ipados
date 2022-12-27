@@ -20,7 +20,7 @@ struct ContentView: View {
         } content: {
             DetailTestView()
         } detail: {
-            DetailTestView()
+            OrderHistory()
         }
     
         
