@@ -9,58 +9,27 @@ import SwiftUI
 
 struct ProductInventoryView: View {
     
+    @State private var currentIndex = 0
+    @State private var sampleArr = sampleData
+    @State private var isTapped = false
+    @State private var productCategories = [ "상품명", "상품코드", "옵션", "재고", "수정" ]
     
-    let data = (1...100).map { "Item \($0)" }
-    let columns = [ GridItem(.adaptive(minimum: 250)),
-                    GridItem(.adaptive(minimum: 250)),
-                    GridItem(.adaptive(minimum: 250)),
-                    GridItem(.adaptive(minimum: 250)),
-                    GridItem(.adaptive(minimum: 250))
-    
+    let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible())
     ]
-    @State private var productCategories = [
-        "상품명",
-        "상품코드",
-        "옵션",
-        "재고",
-        "조정사유"
-    ]
-
     
     var body: some View {
         VStack(){
-
             Text("상품 조회/수정")
                 .font(.largeTitle)
-            
             Divider()
             productStatusBar
-            
             Divider()
             
-            // MARK: - 상품 조회 기능
-//            VStack(alignment: .leading){
-//                HStack{
-//                    Text("카테고리")
-//                        .font(.title3)
-//                }
-//                Divider()
-//
-//                HStack{
-//                    Text("상품등록일")
-//                        .font(.title3)
-//                    Spacer()
-//                }
-//                Divider()
-//                HStack{
-//                    Text("부족재고")
-//                        .font(.title3)
-//                    Spacer()
-//                }
-//                Divider()
-//
-//            }
-//            .padding()
             
             
             // MARK: - 상품목록 View
@@ -69,30 +38,43 @@ struct ProductInventoryView: View {
                     .font(.title2)
                     .padding()
                 Divider()
-                VStack{
-                    ScrollView {
-                        LazyVGrid(columns: columns, spacing: 20) {
-                            VStack{
-                                ForEach(sampleData, id:\.self){ product in
-                                    HStack{
-                                        Text(product.productName)
-                                        Text(product.productName)
-                                        Text(product.productName)
-                                    }
-                                }
-                            }
-                            
+                    VStack{
+                    HStack(spacing: 170){
+                        ForEach(productCategories, id: \.self ) { category in
+                            Text("\(category)")
                         }
-                        .padding(.horizontal)
                     }
-                    .frame(maxHeight: 300)
-                    .padding()
+                    LazyVGrid(columns: columns) {
+                        ForEach(sampleArr.indices, id: \.self) { index in
+                            Text(sampleArr[index].productName)
+                            Text(sampleArr[index].productId)
+                            Text(sampleArr[index].productPrice)
+                            Text("\(sampleArr[index].productCount)")
+                            Button {
+                                currentIndex = index
+                                isTapped.toggle()
+                            } label: {
+                                Text("수정")
+                            }
+                        }
+                        .sheet(isPresented: $isTapped){
+                            ProductModifyView(index: $currentIndex)
+                        }
+                        .padding()
+                    }
+                    
+             
                 }
+                
             }
-            
+            Spacer()
+            Button {
+                //파이어스토어로 수정된 데이터 전송
+            } label: {
+                Text("수정 완료")
+            }
             Spacer()
         }
-        
     }
 }
 extension ProductInventoryView{
@@ -107,7 +89,7 @@ extension ProductInventoryView{
                         .frame(width: 50,height: 50)
                     VStack(alignment: .leading){
                         Text("전체")
-                        Text("0 ")                            .font(.title2) + Text("건")
+                        Text("\(sampleData.count)")                            .font(.title2) + Text("건")
                     }
                     .padding()
                 }
