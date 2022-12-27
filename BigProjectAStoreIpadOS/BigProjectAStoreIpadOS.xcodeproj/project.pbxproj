@@ -12,6 +12,7 @@
 		80807C7C295A92C30037E781 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80807C7B295A92C30037E781 /* Assets.xcassets */; };
 		80807C80295A92C30037E781 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80807C7F295A92C30037E781 /* Preview Assets.xcassets */; };
 		80807C87295A92F10037E781 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80807C86295A92F10037E781 /* MenuItem.swift */; };
+		80807C8B295AAA100037E781 /* OrderHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80807C8A295AAA100037E781 /* OrderHistory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		80807C7D295A92C30037E781 /* BigProjectAStoreIpadOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BigProjectAStoreIpadOS.entitlements; sourceTree = "<group>"; };
 		80807C7F295A92C30037E781 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		80807C86295A92F10037E781 /* MenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
+		80807C8A295AAA100037E781 /* OrderHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderHistory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +59,7 @@
 				80807C77295A92C20037E781 /* BigProjectAStoreIpadOSApp.swift */,
 				80807C79295A92C20037E781 /* ContentView.swift */,
 				80807C86295A92F10037E781 /* MenuItem.swift */,
+				80807C8A295AAA100037E781 /* OrderHistory.swift */,
 				80807C7B295A92C30037E781 /* Assets.xcassets */,
 				80807C7D295A92C30037E781 /* BigProjectAStoreIpadOS.entitlements */,
 				80807C7E295A92C30037E781 /* Preview Content */,
@@ -145,6 +148,7 @@
 				80807C87295A92F10037E781 /* MenuItem.swift in Sources */,
 				80807C7A295A92C20037E781 /* ContentView.swift in Sources */,
 				80807C78295A92C20037E781 /* BigProjectAStoreIpadOSApp.swift in Sources */,
+				80807C8B295AAA100037E781 /* OrderHistory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
