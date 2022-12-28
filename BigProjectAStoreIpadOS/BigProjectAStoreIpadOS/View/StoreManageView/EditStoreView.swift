@@ -12,9 +12,9 @@ import PhotosUI
 
 struct EditStoreView: View {
     // TODO: storeName, storeAddress Binding값으로 바꿔주기
-    @State var storeImage = ""
-    @State var storeName = "멋사 전자 스토어"
-    @State var storeAddress = "경기도 네드시 튜나로 12길 27"
+    @State private var storeImage = ""
+    @State private var storeName = "멋사 전자 스토어"
+    @State private var storeAddress = "경기도 네드시 튜나로 12길 27"
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImageData: Data? = nil
     @State private var isNameClicked = true
@@ -96,7 +96,7 @@ struct EditStoreView: View {
                 Text("스토어 정보")
             }
             
-        }
+        }.modifier(CloseUpDetailModifier())
     }
 }
 
@@ -113,6 +113,6 @@ struct EditButtonModifier: ViewModifier {
 struct EditStoreView_Previews: PreviewProvider {
     static var previews: some View {
         EditStoreView().previewInterfaceOrientation(.landscapeRight)
+            .environmentObject(NavigationStateManager())
     }
 }
-

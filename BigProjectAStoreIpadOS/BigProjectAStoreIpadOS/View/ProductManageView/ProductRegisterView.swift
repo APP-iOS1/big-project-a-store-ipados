@@ -19,9 +19,9 @@ struct ProductRegisterView: View {
     //옵션(현재는 더미데이터)
     @State private var productOption: [String:[String]] = ["램추가":["8GB_10000","16GB_20000"],"SSD추가":["256GB_10000","512GB_20000"]]
     //텍스트필드1번 - 옵션을 입력받음
-    @State private var textFieldOption: String = ""
+    @State private var textFieldOptionName: String = ""
+    //텍스트필드 2번 - 옵션의 정보를 입력받음
     @State private var textFieldOptionDetails: String = ""
-    @State private var splitText = ""
     //상품이미지
     @State private var photoArray: [UIImage] = []
     //상품 설명
@@ -38,6 +38,7 @@ struct ProductRegisterView: View {
     //            productOption.removeValue(forKey: item.key)
     //        }
     //    }
+    
     //사진 입력받는 로직
     func photoLogic() -> some View {
         PhotosPicker(
@@ -67,10 +68,10 @@ struct ProductRegisterView: View {
     private func convertTextLogic() {
         let convertTextStep1 = textFieldOptionDetails.replacingOccurrences(of: " ", with: "_")
         let convertTextStep2 = convertTextStep1.components(separatedBy: ",")
-        if productOption.keys.contains(textFieldOption) {
-            productOption.updateValue(productOption[textFieldOption]! + convertTextStep2, forKey: textFieldOption)
+        if productOption.keys.contains(textFieldOptionName) {
+            productOption.updateValue(productOption[textFieldOptionName]! + convertTextStep2, forKey: textFieldOptionName)
         } else {
-            productOption[textFieldOption] = convertTextStep2
+            productOption[textFieldOptionName] = convertTextStep2
         }
         print(productOption)
     }
@@ -81,11 +82,11 @@ struct ProductRegisterView: View {
                 Form {
                     //상품명
                     Section(header: Text("상품명").font(.title)) {
-                        TextField("", text: $productName)
+                        TextField("상품명 입력", text: $productName)
                     }
                     //상품 카테고리
                     Section(header: Text("상품카테고리").font(.title)) {
-                        TextField("", text: $productCategory)
+                        TextField("카테고리 입력", text: $productCategory)
                     }
                     //상품 옵션
                     Section(header: Text("옵션").font(.title)) {
@@ -98,10 +99,10 @@ struct ProductRegisterView: View {
                         }
                         
                         HStack(spacing: 20) {
-                            TextField("[옵션명 작성]", text: $textFieldOption)
+                            TextField("[옵션명 작성]", text: $textFieldOptionName)
                                 .padding(.horizontal, 20)
                                 .frame(maxWidth: 250)
-                            TextField("[세부내용 작성작성] ex)8기가 10000원,16기가 2만원", text: $textFieldOptionDetails)
+                            TextField("예시: 8기가 10000원,16기가 2만원", text: $textFieldOptionDetails)
                                 .padding(.horizontal, 20)
                                 .frame(maxWidth: .infinity)
                             Button("추가") { convertTextLogic() }
@@ -136,13 +137,15 @@ struct ProductRegisterView: View {
                     Text("등록하기")
                 }
             }
-        }
+        }.modifier(CloseUpDetailModifier())
+
     }
 }
 
 struct ProductRegisterView_Previews: PreviewProvider {
     static var previews: some View {
         ProductRegisterView()
+            .environmentObject(NavigationStateManager())
     }
 }
 

@@ -24,14 +24,12 @@ struct Statistics: Identifiable,Hashable {
 
 
 struct ChartDetailView: View {
-    //목록을 1부터 1000까지 만듬
-//    let data = Array(1...12).map { "목록 \($0)"}
     let data: [Statistics] = [
         Statistics(id: "", title: "어제 결제 금액", count: "1.1 천만원",CompareLastWeek: "지난주 (화) 대비", increaseTrendImage: "chart.line.uptrend.xyaxis",increaseTrend: "118.1%"),
         Statistics(id: "", title: "어제 결제건수", count: "59",CompareLastWeek: "지난주 (화) 대비", increaseTrendImage: "chart.line.uptrend.xyaxis",increaseTrend: "90.3%"),
         Statistics(id: "", title: "어제 결제 상품수량", count: "81",CompareLastWeek: "지난주 (화) 대비", increaseTrendImage: "chart.line.uptrend.xyaxis",increaseTrend: "118.1%"),
-        Statistics(id: "", title: "어제 최고 결제 금액 카테고리", titleDetail:"매트리스", count: "3.8백만원", increaseTrend: "35.2%"),
-        Statistics(id: "", title: "어제 최고 결제 수량 카테고리", titleDetail:"매트리스", count: "40", increaseTrend: "49.4%"),
+        Statistics(id: "", title: "어제 최고 결제 금액 카테고리", titleDetail:"키보드", count: "3.8백만원", increaseTrend: "35.2%"),
+        Statistics(id: "", title: "어제 최고 결제 수량 카테고리", titleDetail:"키보드", count: "40", increaseTrend: "49.4%"),
         Statistics(id: "", title: "어제 최고 결제 기여 채널", titleDetail:"네이버쇼핑-검색", count: "3.4백만원", increaseTrend: "50.2%"),
         Statistics(id: "", title: "어제 유입수",count: "2448", CompareLastWeek: "지난주 (화) 대비", increaseTrendImage: "chart.line.uptrend.xyaxis", increaseTrend: "50.2%"),
         Statistics(id: "", title: "어제 최고 유입 채널", titleDetail:"네이버쇼핑-검색", count: "1,007", increaseTrend: "41.1%"),
@@ -43,19 +41,17 @@ struct ChartDetailView: View {
         
         
     ]
-    
-    //화면을 그리드형식으로 꽉채워줌
     let columns = [
-        GridItem(.flexible(maximum:300)),
-        GridItem(.flexible(maximum:300)),
-        GridItem(.flexible(maximum:300))
-//        GridItem(.flexible())
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible())
     ]
     
     var body: some View {
+        
+        ScrollView {
             LazyVGrid(columns: columns,  spacing: 20) {
                 ForEach(data, id: \.self) { statistics in
-                 //VStack으로 도형추가
                     VStack {
                        ZStack {
                            Rectangle()
@@ -68,8 +64,8 @@ struct ChartDetailView: View {
                                    .foregroundColor(.gray)
                                    .opacity(0.8)
                                    .padding(2)
-                               if let a = statistics.titleDetail {
-                                   Text(a)
+                               if let titleDetail = statistics.titleDetail {
+                                   Text(titleDetail)
                                        .font(.title3)
                                        .padding(2)
                                }
@@ -94,12 +90,15 @@ struct ChartDetailView: View {
                         
                 }
             }
-            .padding(.horizontal)
+        }
+        .padding(.horizontal)
+        .modifier(CloseUpDetailModifier())
     }
 }
 
 struct ChartDetailView_Previews: PreviewProvider {
     static var previews: some View {
         ChartDetailView()
+            .environmentObject(NavigationStateManager())
     }
 }

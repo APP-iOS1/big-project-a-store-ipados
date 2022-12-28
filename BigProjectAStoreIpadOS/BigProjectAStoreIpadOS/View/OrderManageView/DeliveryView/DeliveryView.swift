@@ -55,18 +55,7 @@ struct DeliveryView: View {
                 
             }
             .navigationTitle("배송 관리")
-            .toolbar {
-                ToolbarItem(placement: .navigation) {
-                    
-                    if navigationManager.columnVisibility != .detailOnly, isRegular {
-                        Button {
-                            navigationManager.columnVisibility = .detailOnly
-                        } label: {
-                            Image(systemName: "arrow.up.left.and.arrow.down.right")
-                        }
-                    }
-                }
-            }
+            .modifier(CloseUpDetailModifier())
         } // NavigationStack
     } // Body
     

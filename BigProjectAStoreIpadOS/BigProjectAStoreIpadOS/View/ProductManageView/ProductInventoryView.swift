@@ -10,12 +10,15 @@ import SwiftUI
 struct ProductInventoryView: View {
     
     
-    @State private var wideButtonTapped = false
-    @State private var currentIndex = 0
-    @State private var sampleArr = sampleData
-    @State private var isTapped = false
-    @State private var startDate = Date()
-    @State private var endDate = Date()
+    @State private var wideButtonTapped = false // 상품목록 펼치기
+    @State private var currentIndex = 0 // 상품 dataindex
+    @State private var sampleArr = sampleData // 샘플 Data
+    @State private var isTapped = false // 수정 버튼
+    @State private var startDate = Date() // 상품 등록일(1)
+    @State private var endDate = Date() // 상품 등록일
+    @State private var categorySelect = sampleCategory[0] // 상품 카테고리 선택 피커
+    @State private var productName = "" // 상품명
+    @State private var productCode = "" // 상품 코드
     @State private var productCategories = [ "상품명", "상품코드", "카테고리", "재고", "수정" ]
     
     let columns = [
@@ -32,64 +35,102 @@ struct ProductInventoryView: View {
             Divider()
             productStatusBar
             
-        // 상품목록 펼쳐보기
-        if  !wideButtonTapped {
-            // 상품 목록 조회 검색 UI
-            VStack(alignment:.leading){
-                Divider()
-                //[검색 category - 검색어]
-                HStack{
-                    Text("검색어")
-                        .font(.headline)
-                    Spacer()
-                        .frame(width: 150)
-                    
-                    VStack(alignment: .leading){
-                        
-                        HStack{
-                            Text("상품명")
-                                .font(.title3)
-                            TextField("dfsd", text: .constant(""))
-                                .textFieldStyle(.roundedBorder)
-                                .frame(width: 600)
-                        }
-                        HStack{
-                            Text("상품 코드")
-                                .font(.title3)
-                            TextField("dfsd", text: .constant(""))
-                                .textFieldStyle(.roundedBorder)
-                                .frame(width: 600)
-                        }
-                    }
-                }
-                .padding(10)
-                Divider()
-                //[검색 category - 분류]
-                HStack{
-                    Text("카테고리")
-                        .font(.headline)
-                }
-                .padding(10)
-                Divider()
-                //[검색 category - 기간]
-                HStack{
-                    Text("기간")
-                        .font(.headline)
-                    Spacer()
+            // 상품목록 펼쳐보기
+            if  !wideButtonTapped {
+                // 상품 목록 조회 검색 UI
+                VStack(alignment: .leading){
+                    Divider()
+                    //[검색 category - 검색어]
                     HStack{
+                        Text("검색어")
+                            .font(.headline)
+                        Spacer()
+                            .frame(width: 150)
                         
-                        Text("상품 등록일:")
-                            .font(.title3)
-                        DatePicker("", selection: $startDate, displayedComponents: [.date])
-                            .frame(width: 150)
-                        Text("     ~")
-                        DatePicker("", selection: $endDate, displayedComponents: [.date])
-                            .frame(width: 150)
+                        VStack(alignment: .leading){
+                            
+                            HStack{
+                                Text("상품명")
+                                    .font(.title3)
+                                TextField("ex) 애플워치", text: $productName)
+                                    .textFieldStyle(.roundedBorder)
+                                    .frame(width: 600)
+                            }
+                            HStack{
+                                Text("상품 코드")
+                                    .font(.title3)
+                                TextField("ex) 상품 코드", text: $productCode)
+                                    .textFieldStyle(.roundedBorder)
+                                    .frame(width: 600)
+                            }
+                        }
                     }
-                    Spacer()
+                    .padding(10)
+                    Divider()
+                    //[검색 category - 분류]
+                    HStack{
+                        Text("카테고리")
+                            .font(.headline)
+                        Spacer()
+                        
+                        Text("분류:")
+                        Picker("분류를 선택해주세요.", selection: $categorySelect) {
+                            ForEach(sampleCategory,id:\.self) { item in
+                                Text(item)
+                            }
+                        }
+                        .pickerStyle(MenuPickerStyle())
+                        Spacer()
+                    }
+                    .padding(10)
+                    Divider()
+                    //[검색 category - 기간]
+                    HStack{
+                        Text("기간")
+                            .font(.headline)
+                        Spacer()
+                        HStack{
+                            Text("상품 등록일:")
+                                .font(.title3)
+                            DatePicker("", selection: $startDate, displayedComponents: [.date])
+                                .frame(width: 150)
+                            Text("     ~")
+                            DatePicker("", selection: $endDate, displayedComponents: [.date])
+                                .frame(width: 150)
+                        }
+                        Spacer()
+                    }
+                    .padding(10)
+                    Divider()
+                    
+                    HStack(alignment: .center){
+                        Spacer()
+                        HStack(spacing: 50){
+                            Button {
+                               sampleArr = sampleData.filter {
+                                   return $0.productName == productName || $0.productId == productCode || $0.productCategory == categorySelect
+                                }
+                            } label: {
+                                Text("검색")
+                                    .font(.title3)
+                            }
+                            
+                            Button {
+                                sampleArr = sampleData
+                            } label: {
+                                Text("초기화")
+                                    .font(.title3)
+
+                            }
+
+                        }
+                   
+
+                        Spacer()
+                    }
+                    .padding(10)
+                    
                 }
-                .padding(10)
-            }
             }
             
             Divider()
@@ -107,7 +148,7 @@ struct ProductInventoryView: View {
                               "arrow.up.to.line.compact" : "arrow.down.to.line.compact")
                     }
                     .padding(.trailing, 40)
-
+                    
                 }
                 
                 Divider()
@@ -138,13 +179,11 @@ struct ProductInventoryView: View {
                         .padding()
                     }
                 }
-                    
- 
             }
-            Spacer()
             Spacer()
         }
         .navigationTitle("상품 조회/수정")
+        .modifier(CloseUpDetailModifier())
     }
 }
 extension ProductInventoryView{
@@ -202,6 +241,7 @@ struct ProductInventoryView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
             ProductInventoryView()
+                .environmentObject(NavigationStateManager())
         }
     }
 }
