@@ -1,0 +1,162 @@
+//
+//  ProductModifyView.swift
+//  BigProjectAStoreIpadOS
+//
+//  Created by sehooon on 2022/12/27.
+//
+
+import SwiftUI
+import PhotosUI
+import Combine
+
+struct ProductModifyView: View {
+    
+    @Binding var index: Int
+    
+    @Environment(\.editMode) private var editMode
+    
+    @State private var disableEdit = true
+    //상품명
+    @State private var productName: String = ""
+    @State private var productCategory: String = ""
+    //옵션(현재는 더미데이터)
+    @State private var productOption: [String:Int] = ["화이트":1,"블랙":2,"그레이":1]
+    //텍스트필드1번 - 색상을 입력받음
+    @State private var textFieldOptionColor: String = ""
+    //텍스트필드2번 - 수량을 입력받음
+    @State private var textFieldOptionCount: String = ""
+    //상품 설명
+    @State private var productDescription: String = ""
+    
+    //Use PhotosUI
+    @State private var selectedItem: PhotosPickerItem? = nil
+    @State private var selectedImageData: Data? = nil
+    //상품이미지
+    @State private var photoArray: [UIImage] = []
+    
+    //Delete Option
+    func optionDelete(at offsets: IndexSet){
+        if let ndx = offsets.first {
+            let item = productOption.sorted(by: >)[ndx]
+            productOption.removeValue(forKey: item.key)
+        }
+    }
+    //사진 입력받는 로직
+    func photoLogic() -> some View {
+        PhotosPicker(
+            selection: $selectedItem,
+            matching: .images,
+            photoLibrary: .shared()) {
+                Image(systemName: "plus")
+                    .fontWeight(.black)
+                    .frame(width:200, height: 200)
+                    .background(.gray)
+                    .opacity(0.2)
+                
+            }
+            .disabled(disableEdit)
+            .onChange(of: selectedItem) { newItem in
+                Task {
+                    if let data = try? await newItem?.loadTransferable(type: Data.self) {
+                        selectedImageData = data
+                        if let selectedImageData, let uiImage = UIImage(data:selectedImageData){
+                            photoArray.append(uiImage)
+                        }
+                    }
+                }
+            }
+    }
+    
+    var body: some View {
+        NavigationStack {
+            VStack {
+                Form {
+                    //상품명
+                    Section(header: Text("상품명").font(.title)) {
+                        TextField("", text: $productName)
+                            .disabled(disableEdit)
+                    }
+                    //상품 카테고리
+                    Section(header: Text("상품카테고리").font(.title)) {
+                        TextField("", text: $productCategory)
+                            .disabled(disableEdit)
+                    }
+                    //상품 옵션
+                    Section(header: Text("옵션").font(.title)) {
+                        ForEach(productOption.sorted(by: >), id:\.key) {key, value  in
+                            HStack {
+                                Text("색상: \(key)")
+                                Text("수량: \(value)개")
+                            }
+                                
+                        }
+                        .onDelete(perform: optionDelete)
+                        
+                        HStack(spacing: 20) {
+                            TextField("색상", text: $textFieldOptionColor)
+                                .padding(.horizontal, 20)
+                                .frame(maxWidth: .infinity)
+                            TextField("수량", text: $textFieldOptionCount)
+                                .keyboardType(.numberPad)
+                                .padding(.horizontal, 20)
+                                .frame(maxWidth: .infinity)
+                                .onReceive(Just(textFieldOptionCount)) { value in
+                                    let filteredCount = value.filter {"0123456789".contains($0)}
+                                    if filteredCount != value {
+                                        self.textFieldOptionCount = filteredCount
+                                    }
+                                }
+                            Button("추가") {
+                                productOption.updateValue(Int(textFieldOptionCount)!, forKey: textFieldOptionColor)
+                            }
+                        }
+                    }
+                    //상품 이미지
+                    Section(header: Text("상품이미지").font(.title)) {
+                        ScrollView(.horizontal) {
+                            HStack{
+                                ForEach(photoArray,id:\.self) { photo in
+                                    Image(uiImage: photo)
+                                        .resizable()
+                                        .frame(width: 200, height: 200)
+                                }
+//                                .onDelete {}
+                                Spacer()
+                                photoLogic()
+                            }
+                        }
+                        
+                    }
+                    //상품 설명
+                    Section(header: Text("상품설명").font(.title)) {
+                        TextEditor(text: $productDescription)
+                            .frame(height:200)
+                            .disabled(disableEdit)
+                    }
+                }
+                .navigationTitle(Text("상품 수정"))
+
+            }
+            .toolbar{
+                ToolbarItem(id: "trailing") {
+                    Button {
+                        disableEdit.toggle()
+                    } label: {
+                        Text(disableEdit ? "Edit" : "Done")
+                    }
+
+                }
+            }
+            .onAppear{
+                productName = sampleData[index].productName
+                productCategory = sampleData[index].productId
+            }
+        }
+    }
+}
+
+struct ProductModifyView_Previews: PreviewProvider {
+    static var previews: some View {
+        ProductModifyView(index: .constant(0))
+    }
+}

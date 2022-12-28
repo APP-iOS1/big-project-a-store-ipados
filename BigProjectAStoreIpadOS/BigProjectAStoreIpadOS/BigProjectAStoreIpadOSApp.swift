@@ -11,7 +11,7 @@ import SwiftUI
 struct BigProjectAStoreIpadOSApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+                ProductInventoryView()
         }
     }
 }

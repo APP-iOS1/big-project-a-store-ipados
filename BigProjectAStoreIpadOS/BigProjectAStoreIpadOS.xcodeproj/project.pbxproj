@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		36DD0A6C295AD8FE00FB9C77 /* ProductModifyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36DD0A6B295AD8FE00FB9C77 /* ProductModifyView.swift */; };
 		168E7815295AC8B4001905E9 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E7814295AC8B4001905E9 /* ChartView.swift */; };
 		34DC218B295B63E800355BE8 /* SelectedMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DC218A295B63E800355BE8 /* SelectedMenu.swift */; };
 		34DC218D295B64E000355BE8 /* MenuModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DC218C295B64E000355BE8 /* MenuModel.swift */; };
@@ -29,6 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		36DD0A6B295AD8FE00FB9C77 /* ProductModifyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductModifyView.swift; sourceTree = "<group>"; };
 		168E7814295AC8B4001905E9 /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		34DC218A295B63E800355BE8 /* SelectedMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SelectedMenu.swift; path = ../../../../../../../Desktop/SplitViewDemo/SplitViewDemo/SelectedMenu.swift; sourceTree = "<group>"; };
 		34DC218C295B64E000355BE8 /* MenuModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MenuModel.swift; path = ../../../../../../../Desktop/SplitViewDemo/SplitViewDemo/MenuModel.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 			children = (
 				36E4149F295AC5000033D634 /* ProductRegisterView.swift */,
 				36E414A1295AC5280033D634 /* ProductInventoryView.swift */,
+				36DD0A6B295AD8FE00FB9C77 /* ProductModifyView.swift */,
 			);
 			path = ProductManageView;
 			sourceTree = "<group>";
@@ -255,6 +258,7 @@
 				34DC218B295B63E800355BE8 /* SelectedMenu.swift in Sources */,
 				36E414A0295AC5010033D634 /* ProductRegisterView.swift in Sources */,
 				36E4149C295AC4C20033D634 /* EditStoreView.swift in Sources */,
+				36DD0A6C295AD8FE00FB9C77 /* ProductModifyView.swift in Sources */,
 				34DC2194295B6EB600355BE8 /* SettingsView.swift in Sources */,
 				34DC2196295B727F00355BE8 /* NavigationStateManager.swift in Sources */,
 				80807C7A295A92C20037E781 /* ContentView.swift in Sources */,
