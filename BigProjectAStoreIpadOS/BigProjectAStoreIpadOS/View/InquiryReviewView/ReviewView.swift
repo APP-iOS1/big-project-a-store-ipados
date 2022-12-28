@@ -24,14 +24,19 @@ struct ReviewView: View {
     @State private var reviewTypeVideo: Bool = false
     @State private var reviewTypeText: Bool = false
     
+    //채널
+    @State private var reviewChannelTotal: Bool = false
+    @State private var reviewChannelSmartStore: Bool = false
+    
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             //리뷰 작성일
             Group {
                 HStack {
                     Text("리뷰 작성일")
-                        .font(.title2)
-                    VStack {
+                        .font(.title3)
+                    Spacer()
+                    VStack (alignment: .leading) {
                         Picker(selection: $reviewWriteSelection, label: Text("리뷰 작성일")) {
                             Text("오늘").tag(1)
                             Text("1주일").tag(2)
@@ -46,79 +51,117 @@ struct ReviewView: View {
                             DatePicker("", selection: $reviewWriteStartDate, in: ...Date(), displayedComponents: .date)
                             Text("~")
                             DatePicker("", selection: $reviewWriteEndDate, in: ...Date(), displayedComponents: .date)
-                        }.frame(width: 40)
+                        }.frame(width: 280)
                     }//vstack
+                    Spacer()
                 }
+                .padding(.horizontal, 30)
                 Divider()
             }
             // 리뷰 구분
             Group {
                 HStack {
                     Text("리뷰 구분")
-                        .font(.title2)
+                        .font(.title3)
+                    Spacer()
                     Toggle(isOn: $reviewSeperateTotal) {
                         Text("전체")
-                            .font(.title2)
+                            .font(.title3)
                     }
                     .toggleStyle(CheckboxStyle())
+                    .padding(.trailing, 30)
                     
                     Toggle(isOn: $reviewSeperateCommon) {
                         Text("일반 리뷰")
-                            .font(.title2)
+                            .font(.title3)
                     }
                     .toggleStyle(CheckboxStyle())
+                    .padding(.trailing, 30)
                     
                     Toggle(isOn: $reviewSeperateMonth) {
                         Text("한달사용리뷰")
-                            .font(.title2)
+                            .font(.title3)
                     }
                     .toggleStyle(CheckboxStyle())
+
                 }
+                .padding(.horizontal, 30)
+                .padding(.vertical, 16)
                 Divider()
             }
             //리뷰 타입
             Group {
                 HStack {
                     Text("리뷰 타입")
-                        .font(.title2)
-                    
+                        .font(.title3)
+                    Spacer()
                     Toggle(isOn: $reviewTypeTotal) {
                         Text("전체")
-                            .font(.title2)
+                            .font(.title3)
                     }
                     .toggleStyle(CheckboxStyle())
+                    .padding(.trailing, 30)
                     
                     Toggle(isOn: $reviewTypePhoto) {
                         Text("포토리뷰")
-                            .font(.title2)
+                            .font(.title3)
                     }
                     .toggleStyle(CheckboxStyle())
+                    .padding(.trailing, 30)
                     
                     Toggle(isOn: $reviewTypeVideo) {
                         Text("동영상리뷰")
-                            .font(.title2)
+                            .font(.title3)
                     }
                     .toggleStyle(CheckboxStyle())
+                    .padding(.trailing, 30)
                     
                     Toggle(isOn: $reviewTypeText) {
                         Text("텍스트리뷰")
-                            .font(.title2)
+                            .font(.title3)
                     }
                     .toggleStyle(CheckboxStyle())
                     
+                    
                 }
+                .padding(.horizontal, 30)
+                .padding(.vertical, 16)
                 Divider()
             }
             // 카테고리
             Group {
-                Text("카테고리")
-                    .font(.title2)
+                HStack {
+                    Text("카테고리")
+                        .font(.title3)
+                    Spacer()
+                    
+                }
+                .padding(.horizontal, 30)
+                .padding(.vertical, 16)
                 Divider()
             }
             // 채널
             Group {
-                Text("채널")
-                    .font(.title2)
+                HStack {
+                    Text("채널")
+                        .font(.title3)
+                    Spacer()
+                    Toggle(isOn: $reviewChannelTotal) {
+                        Text("전체")
+                            .font(.title3)
+                    }
+                    .toggleStyle(CheckboxStyle())
+                    .padding(.trailing, 30)
+                    
+                    Toggle(isOn: $reviewChannelSmartStore) {
+                        Text("스마트 스토어")
+                            .font(.title3)
+                    }
+                    .toggleStyle(CheckboxStyle())
+                    
+                }
+                .padding(.horizontal, 30)
+                .padding(.vertical, 16)
                 Divider()
             }
             // 리뷰 조건
