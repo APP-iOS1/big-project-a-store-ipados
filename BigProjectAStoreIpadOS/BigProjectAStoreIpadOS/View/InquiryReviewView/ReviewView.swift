@@ -27,8 +27,8 @@ struct ReviewView: View {
     //카테고리
     var highCategory: [String] = ["중분류", "PC", "PC 액세서리", "노트북", "노트북 액세서리", "태블릿 PC", "태블릿 PC 액세서리"]
     var lowCategory: [String] = ["하위 카테고리", "test2", "test3"]
-    @State private var highCategorySelection: Int = 1
-    @State private var lowCategorySelection: Int = 1
+    @State private var highCategorySelection: Int = 0
+    @State private var lowCategorySelection: Int = 0
     
     //채널
     @State private var reviewChannelTotal: Bool = false
@@ -160,12 +160,9 @@ struct ReviewView: View {
                             .padding(.trailing, 70)
                         
                         Picker(selection: $highCategorySelection, label: Text("카테고리 상위")) {
-                            Text("답글여부 (상관없음)")
-                                .tag(1)
-                            Text("답글등록")
-                                .tag(2)
-                            Text("답글미등록")
-                                .tag(3)
+                            ForEach(Array(highCategory.enumerated()), id: \.offset) { idx, item in
+                                Text("\(item)").tag(idx)
+                            }
                         }
                         .foregroundColor(.black)
                         .padding(.top, 10)
@@ -174,12 +171,9 @@ struct ReviewView: View {
                         .pickerStyle(.automatic)
                         
                         Picker(selection: $lowCategorySelection, label: Text("카테고리 하위")) {
-                            Text("답글여부 (상관없음)")
-                                .tag(1)
-                            Text("답글등록")
-                                .tag(2)
-                            Text("답글미등록")
-                                .tag(3)
+                            ForEach(Array(lowCategory.enumerated()), id: \.offset) { idx, item in
+                                Text("\(item)").tag(idx)
+                            }
                         }
                         .foregroundColor(.black)
                         .padding(.top, 10)
