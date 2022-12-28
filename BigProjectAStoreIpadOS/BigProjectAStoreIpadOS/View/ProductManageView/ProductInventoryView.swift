@@ -31,7 +31,6 @@ struct ProductInventoryView: View {
     
     var body: some View {
         ScrollView{
-            VStack(){
                 Divider()
                 // 전체 상품 상태 바
                 productStatusBar
@@ -44,11 +43,11 @@ struct ProductInventoryView: View {
                         HStack{
                             Text("검색어")
                                 .font(.headline)
+                                .padding(.leading)
                             Spacer()
                                 .frame(width: 150)
                             
                             VStack(alignment: .leading){
-                                
                                 HStack{
                                     Text("상품명")
                                         .font(.title3)
@@ -70,6 +69,7 @@ struct ProductInventoryView: View {
                         //[검색 category - 분류]
                         HStack{
                             Text("카테고리")
+                                .padding(.leading)
                                 .font(.headline)
                             Spacer()
                             
@@ -87,6 +87,7 @@ struct ProductInventoryView: View {
                         //[검색 category - 기간]
                         HStack{
                             Text("기간")
+                                .padding(.leading)
                                 .font(.headline)
                             Spacer()
                             HStack{
@@ -114,18 +115,13 @@ struct ProductInventoryView: View {
                                     Text("검색")
                                         .font(.title3)
                                 }
-                                
                                 Button {
                                     sampleArr = sampleData
                                 } label: {
                                     Text("초기화")
                                         .font(.title3)
-                                    
                                 }
-                                
                             }
-                            
-                            
                             Spacer()
                         }
                         .padding(10)
@@ -180,10 +176,10 @@ struct ProductInventoryView: View {
                     
                 }
                 Spacer()
-            }
+            
         }
         .navigationTitle("상품 조회/수정")
-        .modifier(CloseUpDetailModifier())
+//        .modifier(CloseUpDetailModifier())
     }
 }
 extension ProductInventoryView{
