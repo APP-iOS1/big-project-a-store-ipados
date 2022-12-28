@@ -29,14 +29,22 @@ struct LoginView: View {
                     
                 } label: {
                     Text("로그인")
+                        .foregroundColor(.white)
                 }.frame(width: 430, height: 50)
-                    .background(.gray)
+                    .background(.blue)
                     .padding(.bottom, 30)
                 
-                NavigationLink {
-                    SignUpView()
-                } label: {
-                    Text("회원가입")
+                HStack {
+                    NavigationLink {
+                        SignUpView()
+                    } label: {
+                        Text("회원가입")
+                    }.padding(.trailing, 30)
+                    
+                    NavigationLink {
+                    } label: {
+                        Text("ID/PW 찾기")
+                    }
                 }
             }
             .textInputAutocapitalization(.never)
