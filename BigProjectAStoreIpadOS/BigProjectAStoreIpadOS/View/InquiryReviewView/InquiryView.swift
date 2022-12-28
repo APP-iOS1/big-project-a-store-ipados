@@ -91,7 +91,7 @@ struct InquiryView: View {
                     }
                     
                 }
-            }
+            }.modifier(CloseUpDetailModifier())
         }
     }
 }
@@ -99,5 +99,6 @@ struct InquiryView: View {
 struct InquiryView_Previews: PreviewProvider {
     static var previews: some View {
         InquiryView()
+            .environmentObject(NavigationStateManager())
     }
 }

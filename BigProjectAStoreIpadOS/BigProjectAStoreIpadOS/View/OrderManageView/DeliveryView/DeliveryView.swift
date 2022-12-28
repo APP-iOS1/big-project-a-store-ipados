@@ -22,7 +22,7 @@ struct DeliveryView: View {
     
     @Namespace var namespace
     @State var tabSelection: Int = 0
-    var navigationitems: [String] = ["배송준비", "배송중", "배송완료"]
+    var navigationitems: [String] = ["전체", "배송준비", "배송중", "배송완료"]
     
     
     var body: some View {
@@ -39,10 +39,16 @@ struct DeliveryView: View {
                 switch tabSelection {
                 case 0:
                     DeliveryReadyView()
+                        .padding(.top, 10)
                 case 1:
-                    DeliveryShippingView()
+                    DeliveryReadyView()
+                        .padding(.top, 10)
                 case 2:
-                    DeliveryCompleteView()
+                    DeliveryReadyView()
+                        .padding(.top, 10)
+                case 3:
+                    DeliveryReadyView()
+                        .padding(.top, 10)
                 default:
                     EmptyView()
                 }
@@ -58,18 +64,7 @@ struct DeliveryView: View {
                 
             }
             .navigationTitle("배송 관리")
-            .toolbar {
-                ToolbarItem(placement: .navigation) {
-                    
-                    if navigationManager.columnVisibility != .detailOnly, isRegular {
-                        Button {
-                            navigationManager.columnVisibility = .detailOnly
-                        } label: {
-                            Image(systemName: "arrow.up.left.and.arrow.down.right")
-                        }
-                    }
-                }
-            }
+            .modifier(CloseUpDetailModifier())
         } // NavigationStack
     } // Body
     

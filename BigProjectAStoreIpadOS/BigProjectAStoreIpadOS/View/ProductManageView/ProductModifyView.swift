@@ -176,7 +176,7 @@ struct ProductModifyView: View {
                 productName = sampleData[index].productName
                 productCategory = sampleData[index].productId
             }
-        }
+        }.modifier(CloseUpDetailModifier())
     }
     
     //옵션텍스트 변환 함수
@@ -186,5 +186,6 @@ struct ProductModifyView: View {
 struct ProductModifyView_Previews: PreviewProvider {
     static var previews: some View {
         ProductModifyView(index: .constant(0))
+            .environmentObject(NavigationStateManager())
     }
 }

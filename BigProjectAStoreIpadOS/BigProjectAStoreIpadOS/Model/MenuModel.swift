@@ -59,7 +59,7 @@ struct SubMenuItem: Identifiable {
             InquiryView()
             
         case .reviewManagement:
-            InquiryView()
+            ReviewView()
         }
     }
 }

@@ -183,6 +183,7 @@ struct ProductInventoryView: View {
             }
         }
         .navigationTitle("상품 조회/수정")
+        .modifier(CloseUpDetailModifier())
     }
 }
 extension ProductInventoryView{
@@ -240,6 +241,7 @@ struct ProductInventoryView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
             ProductInventoryView()
+                .environmentObject(NavigationStateManager())
         }
     }
 }

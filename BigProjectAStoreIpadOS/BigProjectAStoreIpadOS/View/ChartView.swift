@@ -77,6 +77,7 @@ struct ChartView: View {
             .frame(minWidth:100, maxWidth: .infinity, minHeight: 450, maxHeight: 450)
         }
         .padding(40)
+        .modifier(CloseUpDetailModifier())
         
         
         
@@ -86,5 +87,6 @@ struct ChartView: View {
 struct ChartView_Previews: PreviewProvider {
     static var previews: some View {
         ChartView()
+            .environmentObject(NavigationStateManager())
     }
 }
