@@ -9,6 +9,9 @@ import SwiftUI
 
 struct ReviewView: View {
     @State private var reviewWriteSelection: Int = 1
+    @State private var reviewWriteStartDate = Date()
+    @State private var reviewWriteEndDate = Date()
+    
     var body: some View {
         VStack {
             //리뷰 작성일
@@ -27,8 +30,12 @@ struct ReviewView: View {
                         }
                         .pickerStyle(.segmented)
                         .frame(width: 500)
-                        
-                    }
+                        HStack{
+                            DatePicker("", selection: $reviewWriteStartDate, in: ...Date(), displayedComponents: .date)
+                            Text("~")
+                            DatePicker("", selection: $reviewWriteEndDate, in: ...Date(), displayedComponents: .date)
+                        }.frame(width: 40)
+                    }//vstack
                 }
                 Divider()
             }
@@ -64,6 +71,24 @@ struct ReviewView: View {
             }
         }//vstack
     }//body
+}
+
+//체크박스 스타일
+struct CheckboxStyle: ToggleStyle {
+
+    func makeBody(configuration: Self.Configuration) -> some View {
+
+        return HStack {
+            Image(systemName: configuration.isOn ? "checkmark.square" : "square")
+                .resizable()
+                .frame(width: 24, height: 24)
+                .foregroundColor(configuration.isOn ? .blue : .gray)
+                .font(.system(size: 20, weight: .regular, design: .default))
+                configuration.label
+        }
+        .onTapGesture { configuration.isOn.toggle() }
+
+    }
 }
 
 struct ReviewView_Previews: PreviewProvider {
