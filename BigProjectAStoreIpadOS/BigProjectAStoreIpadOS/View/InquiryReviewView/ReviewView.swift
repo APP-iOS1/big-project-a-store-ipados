@@ -105,7 +105,7 @@ struct ReviewView: View {
                                 .font(.title3)
                         }
                         .toggleStyle(CheckboxStyle())
-                        .padding(.trailing, 110)
+                        .padding (.trailing, 110)
                         Spacer()
                         
                     }
@@ -118,6 +118,7 @@ struct ReviewView: View {
                     HStack {
                         Text("리뷰 타입")
                             .font(.title3)
+                            .padding(.trailing, 99)
                         Spacer()
                         Toggle(isOn: $reviewTypeTotal) {
                             Text("전체")
@@ -146,7 +147,7 @@ struct ReviewView: View {
                         }
                         .toggleStyle(CheckboxStyle())
                         .padding(.trailing, 90)
-                        
+                        Spacer()
                     }
                     .padding(.horizontal, 30)
                     .padding(.vertical, 16)
@@ -157,8 +158,8 @@ struct ReviewView: View {
                     HStack {
                         Text("카테고리")
                             .font(.title3)
-                            .padding(.trailing, 70)
-                        
+//                            .padding(.trailing, 70)
+                        Spacer()
                         Picker(selection: $highCategorySelection, label: Text("카테고리 상위")) {
                             ForEach(Array(highCategory.enumerated()), id: \.offset) { idx, item in
                                 Text("\(item)").tag(idx)
@@ -183,7 +184,7 @@ struct ReviewView: View {
                         Spacer()
                         
                     }
-                    .padding(.horizontal, 30)
+                    .padding(.leading, 30)
                     .padding(.vertical, 16)
                     Divider()
                 }
@@ -205,8 +206,8 @@ struct ReviewView: View {
                                 .font(.title3)
                         }
                         .toggleStyle(CheckboxStyle())
-                        .padding(.trailing, 340)
-                        
+                        .padding(.trailing, 200)
+                        Spacer()
                     }
                     .padding(.horizontal, 30)
                     .padding(.vertical, 16)
@@ -217,9 +218,11 @@ struct ReviewView: View {
                     HStack {
                         Text("리뷰 조건")
                             .font(.title2)
+                            
                         Spacer()
                         VStack (alignment: .leading) {
                             HStack {
+                                Spacer()
                                 Text("구매자 평점")
                                     .font(.title3)
                                     .padding(.leading, 70)
@@ -264,9 +267,10 @@ struct ReviewView: View {
                                         .font(.title3)
                                 }
                                 .toggleStyle(CheckboxStyle())
-            
+                                Spacer()
                             }
                             HStack {
+                                
                                 Text("답글여부")
                                     .font(.title3)
                                     .padding(.trailing, 14)
@@ -278,11 +282,13 @@ struct ReviewView: View {
                                         .tag(2)
                                     Text("답글미등록")
                                         .tag(3)
+                                    
                                 }
                                 .foregroundColor(.black)
                                 .padding(.top, 10)
                                 .font(.title2)
                                 .pickerStyle(.automatic)
+                                
                                 
                             }
                         }
@@ -336,7 +342,7 @@ struct ReviewView: View {
                 }
             }//vstack
         }
-        .modifier(CloseUpDetailModifier())
+        //.modifier(CloseUpDetailModifier())
         //scrollview
     }//body
 }
