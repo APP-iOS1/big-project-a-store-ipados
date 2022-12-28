@@ -16,13 +16,12 @@ struct LoginView: View {
         NavigationView {
             VStack {
                 TextField("아이디", text: $userID)
-                    .frame(width: 400)
-                    .padding()
-                    .border(.gray)
+                    .textCase(.lowercase)
+                    .disableAutocorrection(true)
+                    .modifier(LoginFieldModifier())
+                
                 SecureField("비밀번호", text: $userPassword)
-                    .frame(width: 400)
-                    .padding()
-                    .border(.gray)
+                    .modifier(LoginFieldModifier())
                     .padding(.bottom, 30)
                 
                 Button {
@@ -40,10 +39,20 @@ struct LoginView: View {
                     Text("회원가입")
                 }
             }
+            .textInputAutocapitalization(.never)
+            .autocorrectionDisabled()
         }
     }
 }
 
+struct LoginFieldModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .frame(width: 400)
+            .padding()
+            .border(.gray)
+    }
+}
 
 //struct LoginView_Previews: PreviewProvider {
 //    static var previews: some View {
