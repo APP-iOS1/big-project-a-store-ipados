@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct InquiryView: View {
-    
-    
     @State private var response: String = ""
     @State private var date = Date()
     @State private var isDealt:Bool = false
+    @State private var isShowingEditor: Bool = false
     
     enum inquiryState: String, CaseIterable, Identifiable {
         case inProgress, completed, all
@@ -36,7 +35,7 @@ struct InquiryView: View {
                     
                     Section(header: Text("문의 답변 여부")){
                         List {
-                          Picker("답변 여부", selection: $isDealt) {
+                          Picker("답변 여부", selection: $selectedState) {
                               Text("미답변").tag(inquiryState.inProgress)
                               Text("답변완료").tag(inquiryState.completed)
                               Text("전체").tag(inquiryState.all)
@@ -45,17 +44,52 @@ struct InquiryView: View {
                     }
                     
                     Section(header: Text("문의 내역")){
-                        List{
-                            Text("문의 제목")
-                            Text("문의 제목")
-                            Text("문의 제목")
+                        DisclosureGroup(
+                            content: {
+                                Text("배송이 너무느려 언제와 답변 빨리 안하면 반품한다")
+                                Button {
+                                    isShowingEditor = true
+                                } label: {
+                                    Text("답변 작성")
+                                }
+
+                            },
+                            label: {
+                                Text("배송 언제 와요?")
+                            }
+                        )
+                        DisclosureGroup(
+                            content: {
+                                Text("배송이 너무느려 언제와 답변 빨리 안하면 반품한다")
+                            },
+                            label: {
+                                Text("언제오냐고")
+                            }
+                            
+                        )
+                        DisclosureGroup(
+                            content: {
+                                Text("배송이 너무느려 언제와 답변 빨리 안하면 반품한다")
+                            },
+                            label: {
+                                Text("언제")
+                            }
+                            
+                        )
+                    }
+                    Section(header: Text("답변 작성")) {
+                        if isShowingEditor == true {
+                            TextEditor(text: $response)
+                                .frame(height:200)
+                            
+                            Button {
+                                isShowingEditor = false
+                            } label: {
+                                Text("답변 등록")
+                            }
                         }
                     }
-                    Section(header: Text("답변내용")) {
-                        TextEditor(text: $response)
-                            .frame(height:200)
-                        
-                    }
+                    
                 }
             }
         }
