@@ -82,11 +82,11 @@ struct ProductRegisterView: View {
                 Form {
                     //상품명
                     Section(header: Text("상품명").font(.title)) {
-                        TextField("", text: $productName)
+                        TextField("상품명 입력", text: $productName)
                     }
                     //상품 카테고리
                     Section(header: Text("상품카테고리").font(.title)) {
-                        TextField("", text: $productCategory)
+                        TextField("카테고리 입력", text: $productCategory)
                     }
                     //상품 옵션
                     Section(header: Text("옵션").font(.title)) {
