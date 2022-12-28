@@ -14,6 +14,9 @@
 		3449146A295BC9E300F05A54 /* DeliveryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34491469295BC9E300F05A54 /* DeliveryView.swift */; };
 		3449146C295BCA0200F05A54 /* DeliverySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3449146B295BCA0200F05A54 /* DeliverySummaryView.swift */; };
 		3449146E295BCCBA00F05A54 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3449146D295BCCBA00F05A54 /* SettingsView.swift */; };
+		34491470295BD8FC00F05A54 /* DeliveryReadyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3449146F295BD8FC00F05A54 /* DeliveryReadyView.swift */; };
+		34491476295BDD8000F05A54 /* DeliveryShippingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34491475295BDD8000F05A54 /* DeliveryShippingView.swift */; };
+		34491478295BDD9300F05A54 /* DeliveryCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34491477295BDD9300F05A54 /* DeliveryCompleteView.swift */; };
 		36205EDE295ACCD30083F312 /* InquiryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36205EDD295ACCD30083F312 /* InquiryView.swift */; };
 		36205EE1295AD7090083F312 /* InquiryResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36205EE0295AD7090083F312 /* InquiryResponse.swift */; };
 		36DD0A6C295AD8FE00FB9C77 /* ProductModifyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36DD0A6B295AD8FE00FB9C77 /* ProductModifyView.swift */; };
@@ -37,6 +40,9 @@
 		34491469295BC9E300F05A54 /* DeliveryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryView.swift; sourceTree = "<group>"; };
 		3449146B295BCA0200F05A54 /* DeliverySummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliverySummaryView.swift; sourceTree = "<group>"; };
 		3449146D295BCCBA00F05A54 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		3449146F295BD8FC00F05A54 /* DeliveryReadyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryReadyView.swift; sourceTree = "<group>"; };
+		34491475295BDD8000F05A54 /* DeliveryShippingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryShippingView.swift; sourceTree = "<group>"; };
+		34491477295BDD9300F05A54 /* DeliveryCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryCompleteView.swift; sourceTree = "<group>"; };
 		36205EDD295ACCD30083F312 /* InquiryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryView.swift; sourceTree = "<group>"; };
 		36205EE0295AD7090083F312 /* InquiryResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryResponse.swift; sourceTree = "<group>"; };
 		36DD0A6B295AD8FE00FB9C77 /* ProductModifyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductModifyView.swift; sourceTree = "<group>"; };
@@ -87,6 +93,9 @@
 			children = (
 				34491469295BC9E300F05A54 /* DeliveryView.swift */,
 				3449146B295BCA0200F05A54 /* DeliverySummaryView.swift */,
+				3449146F295BD8FC00F05A54 /* DeliveryReadyView.swift */,
+				34491475295BDD8000F05A54 /* DeliveryShippingView.swift */,
+				34491477295BDD9300F05A54 /* DeliveryCompleteView.swift */,
 			);
 			path = DeliveryView;
 			sourceTree = "<group>";
@@ -254,10 +263,13 @@
 				34491463295BC91200F05A54 /* MenuModel.swift in Sources */,
 				36205EE1295AD7090083F312 /* InquiryResponse.swift in Sources */,
 				36205EDE295ACCD30083F312 /* InquiryView.swift in Sources */,
+				34491478295BDD9300F05A54 /* DeliveryCompleteView.swift in Sources */,
 				3449146E295BCCBA00F05A54 /* SettingsView.swift in Sources */,
 				3449146A295BC9E300F05A54 /* DeliveryView.swift in Sources */,
 				8033634C295ADA45009AF68F /* CustomerOrder.swift in Sources */,
+				34491476295BDD8000F05A54 /* DeliveryShippingView.swift in Sources */,
 				3449146C295BCA0200F05A54 /* DeliverySummaryView.swift in Sources */,
+				34491470295BD8FC00F05A54 /* DeliveryReadyView.swift in Sources */,
 				36E414A4295AC53B0033D634 /* Product.swift in Sources */,
 				36E414A0295AC5010033D634 /* ProductRegisterView.swift in Sources */,
 				34491465295BC94600F05A54 /* SelectedMenu.swift in Sources */,

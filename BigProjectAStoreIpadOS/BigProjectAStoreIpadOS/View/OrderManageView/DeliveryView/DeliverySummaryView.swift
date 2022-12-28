@@ -8,31 +8,44 @@
 import SwiftUI
 
 struct DeliverySummaryView: View {
+    
     var body: some View {
         // MARK: - 요약 바
         HStack {
             
-            // MARK: -배송준비
-            HStack {
-                Image(systemName: "shippingbox")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 50, height: 50)
+            
+            Button {
                 
-                VStack {
-                    Text("배송준비")
+            } label: {
+                HStack {
+                    Image(systemName: "shippingbox")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 50, height: 50)
                     
-                    HStack {
-                        Text("0")
-                            .font(.title)
-                            .bold()
-                        Text("건")
+                    VStack {
+                        Text("배송준비")
+                        
+                        HStack {
+                            Text("0")
+                                .font(.title)
+                                .bold()
+                            Text("건")
+                        }
                     }
+                    .padding(.leading, 20)
                 }
-                .padding(.leading, 20)
+                .font(.title2)
+                
             }
-            .font(.title2)
             .padding(.trailing, 50)
+            .foregroundColor(.black)
+
+            
+            
+            // MARK: -배송준비
+            
+            
             
             // MARK: -배송중
             HStack {
@@ -86,6 +99,6 @@ struct DeliverySummaryView: View {
 
 struct DeliverySummaryView_Previews: PreviewProvider {
     static var previews: some View {
-        DeliveryView()
+        DeliverySummaryView()
     }
 }
