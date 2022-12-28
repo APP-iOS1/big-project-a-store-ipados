@@ -13,7 +13,7 @@
 		34491467295BC97000F05A54 /* NavigationStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34491466295BC97000F05A54 /* NavigationStateManager.swift */; };
 		3449146A295BC9E300F05A54 /* DeliveryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34491469295BC9E300F05A54 /* DeliveryView.swift */; };
 		3449146C295BCA0200F05A54 /* DeliverySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3449146B295BCA0200F05A54 /* DeliverySummaryView.swift */; };
-		34DC2194295B6EB600355BE8 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DC2193295B6EB600355BE8 /* SettingsView.swift */; };
+		3449146E295BCCBA00F05A54 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3449146D295BCCBA00F05A54 /* SettingsView.swift */; };
 		36205EDE295ACCD30083F312 /* InquiryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36205EDD295ACCD30083F312 /* InquiryView.swift */; };
 		36205EE1295AD7090083F312 /* InquiryResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36205EE0295AD7090083F312 /* InquiryResponse.swift */; };
 		36DD0A6C295AD8FE00FB9C77 /* ProductModifyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36DD0A6B295AD8FE00FB9C77 /* ProductModifyView.swift */; };
@@ -36,7 +36,7 @@
 		34491466295BC97000F05A54 /* NavigationStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStateManager.swift; sourceTree = "<group>"; };
 		34491469295BC9E300F05A54 /* DeliveryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryView.swift; sourceTree = "<group>"; };
 		3449146B295BCA0200F05A54 /* DeliverySummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliverySummaryView.swift; sourceTree = "<group>"; };
-		34DC2193295B6EB600355BE8 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsView.swift; path = ../../../../../../../Desktop/SplitViewDemo/SplitViewDemo/SettingsView.swift; sourceTree = "<group>"; };
+		3449146D295BCCBA00F05A54 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		36205EDD295ACCD30083F312 /* InquiryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryView.swift; sourceTree = "<group>"; };
 		36205EE0295AD7090083F312 /* InquiryResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryResponse.swift; sourceTree = "<group>"; };
 		36DD0A6B295AD8FE00FB9C77 /* ProductModifyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductModifyView.swift; sourceTree = "<group>"; };
@@ -103,7 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				80807C79295A92C20037E781 /* ContentView.swift */,
-				34DC2193295B6EB600355BE8 /* SettingsView.swift */,
+				3449146D295BCCBA00F05A54 /* SettingsView.swift */,
 				36205EDF295ACD800083F312 /* InquiryReviewView */,
 				168E7814295AC8B4001905E9 /* ChartView.swift */,
 				36E414A8295AC5F90033D634 /* StoreManageView */,
@@ -254,6 +254,7 @@
 				34491463295BC91200F05A54 /* MenuModel.swift in Sources */,
 				36205EE1295AD7090083F312 /* InquiryResponse.swift in Sources */,
 				36205EDE295ACCD30083F312 /* InquiryView.swift in Sources */,
+				3449146E295BCCBA00F05A54 /* SettingsView.swift in Sources */,
 				3449146A295BC9E300F05A54 /* DeliveryView.swift in Sources */,
 				8033634C295ADA45009AF68F /* CustomerOrder.swift in Sources */,
 				3449146C295BCA0200F05A54 /* DeliverySummaryView.swift in Sources */,
@@ -262,7 +263,6 @@
 				34491465295BC94600F05A54 /* SelectedMenu.swift in Sources */,
 				36E4149C295AC4C20033D634 /* EditStoreView.swift in Sources */,
 				36DD0A6C295AD8FE00FB9C77 /* ProductModifyView.swift in Sources */,
-				34DC2194295B6EB600355BE8 /* SettingsView.swift in Sources */,
 				80807C7A295A92C20037E781 /* ContentView.swift in Sources */,
 				34491467295BC97000F05A54 /* NavigationStateManager.swift in Sources */,
 				168E7815295AC8B4001905E9 /* ChartView.swift in Sources */,
