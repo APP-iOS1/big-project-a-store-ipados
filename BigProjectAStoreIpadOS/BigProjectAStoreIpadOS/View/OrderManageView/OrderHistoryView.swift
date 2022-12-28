@@ -25,7 +25,14 @@ struct OrderHistoryView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                
+                HStack {
+                    Text("목록 (총 2개)")
+                        .font(.title2)
+                        .padding(.leading, 20)
+                    Spacer()
+                }
+                Divider()
+                    .padding(.bottom, 10)
                 LazyVGrid(columns: columns) {
                     
                     ForEach(orderHistoryHeader, id: \.self ) { headerItem in
