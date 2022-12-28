@@ -42,12 +42,14 @@ struct ChartDetailView: View {
         
     ]
     let columns = [
-        GridItem(.flexible(maximum:300)),
-        GridItem(.flexible(maximum:300)),
-        GridItem(.flexible(maximum:300))
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible())
     ]
     
     var body: some View {
+        
+        ScrollView {
             LazyVGrid(columns: columns,  spacing: 20) {
                 ForEach(data, id: \.self) { statistics in
                     VStack {
@@ -88,9 +90,9 @@ struct ChartDetailView: View {
                         
                 }
             }
-            .padding(.horizontal)
-            .modifier(CloseUpDetailModifier())
-        
+        }
+        .padding(.horizontal)
+        .modifier(CloseUpDetailModifier())
     }
 }
 
