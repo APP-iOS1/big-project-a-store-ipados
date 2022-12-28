@@ -37,6 +37,7 @@ struct ContentView: View {
             }
             .toolbar(content: {
                 ToolbarItem(placement: .navigationBarTrailing) {
+                    // .navigationBarTrailing
                     Button {
                         showSettings.toggle()
                     } label: {
