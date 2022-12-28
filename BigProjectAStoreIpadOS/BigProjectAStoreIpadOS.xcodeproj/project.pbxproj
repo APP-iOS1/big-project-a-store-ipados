@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		16354BE0295BE19B003D1EC8 /* ChartDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16354BDF295BE19B003D1EC8 /* ChartDetailView.swift */; };
 		168E7815295AC8B4001905E9 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E7814295AC8B4001905E9 /* ChartView.swift */; };
 		34491463295BC91200F05A54 /* MenuModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34491462295BC91200F05A54 /* MenuModel.swift */; };
 		34491465295BC94600F05A54 /* SelectedMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34491464295BC94600F05A54 /* SelectedMenu.swift */; };
@@ -30,6 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		16354BDF295BE19B003D1EC8 /* ChartDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartDetailView.swift; sourceTree = "<group>"; };
 		168E7814295AC8B4001905E9 /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		34491462295BC91200F05A54 /* MenuModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuModel.swift; sourceTree = "<group>"; };
 		34491464295BC94600F05A54 /* SelectedMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedMenu.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				3449146D295BCCBA00F05A54 /* SettingsView.swift */,
 				36205EDF295ACD800083F312 /* InquiryReviewView */,
 				168E7814295AC8B4001905E9 /* ChartView.swift */,
+				16354BDF295BE19B003D1EC8 /* ChartDetailView.swift */,
 				36E414A8295AC5F90033D634 /* StoreManageView */,
 				36E414A6295AC5C20033D634 /* ProductManageView */,
 				36E414A7295AC5DA0033D634 /* OrderManageView */,
@@ -266,6 +269,7 @@
 				80807C7A295A92C20037E781 /* ContentView.swift in Sources */,
 				34491467295BC97000F05A54 /* NavigationStateManager.swift in Sources */,
 				168E7815295AC8B4001905E9 /* ChartView.swift in Sources */,
+				16354BE0295BE19B003D1EC8 /* ChartDetailView.swift in Sources */,
 				80807C78295A92C20037E781 /* BigProjectAStoreIpadOSApp.swift in Sources */,
 				36E4149E295AC4E50033D634 /* OrderHistoryView.swift in Sources */,
 				36E414A2295AC5280033D634 /* ProductInventoryView.swift in Sources */,
