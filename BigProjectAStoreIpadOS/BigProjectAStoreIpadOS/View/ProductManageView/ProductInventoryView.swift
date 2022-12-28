@@ -179,7 +179,7 @@ struct ProductInventoryView: View {
             
         }
         .navigationTitle("상품 조회/수정")
-//        .modifier(CloseUpDetailModifier())
+        .modifier(CloseUpDetailModifier())
     }
 }
 extension ProductInventoryView{
