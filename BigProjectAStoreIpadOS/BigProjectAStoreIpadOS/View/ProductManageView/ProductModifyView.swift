@@ -13,7 +13,7 @@ struct ProductModifyView: View {
     @Binding var index: Int
     
     @Environment(\.editMode) private var editMode
-    
+    @Environment(\.dismiss) private var dismiss
     @State private var disableEdit = true
     //상품명
     @State private var productName: String = ""
@@ -153,6 +153,16 @@ struct ProductModifyView: View {
 
             }
             .toolbar{
+                
+                ToolbarItem() {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Text("Back")
+                    }
+
+                }
+                
                 ToolbarItem(id: "trailing") {
                     Button {
                         disableEdit.toggle()
