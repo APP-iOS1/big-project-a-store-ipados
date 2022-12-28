@@ -30,9 +30,10 @@ struct LoginView: View {
                 } label: {
                     Text("로그인")
                         .foregroundColor(.white)
-                }.frame(width: 430, height: 50)
-                    .background(.blue)
-                    .padding(.bottom, 30)
+                        .frame(width: 430, height: 50)
+                        .background(.blue)
+                }
+                .padding(.bottom, 30)
                 
                 HStack {
                     NavigationLink {
