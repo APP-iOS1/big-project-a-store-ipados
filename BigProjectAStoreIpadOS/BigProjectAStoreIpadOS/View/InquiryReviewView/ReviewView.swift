@@ -25,6 +25,8 @@ struct ReviewView: View {
     @State private var reviewTypeText: Bool = false
     
     //카테고리
+    var medCategory: [String] = ["중분류", "PC", "PC 액세서리"]
+    var lowCategory: [String] = []
     
     //채널
     @State private var reviewChannelTotal: Bool = false
