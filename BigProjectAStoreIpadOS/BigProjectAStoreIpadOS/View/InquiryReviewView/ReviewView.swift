@@ -8,9 +8,21 @@
 import SwiftUI
 
 struct ReviewView: View {
+    //리뷰 작성일
     @State private var reviewWriteSelection: Int = 1
     @State private var reviewWriteStartDate = Date()
     @State private var reviewWriteEndDate = Date()
+    
+    //리뷰 구분
+    @State private var reviewSeperateTotal: Bool = false
+    @State private var reviewSeperateCommon: Bool = false
+    @State private var reviewSeperateMonth: Bool = false
+    
+    //리뷰 타입
+    @State private var reviewTypeTotal: Bool = false
+    @State private var reviewTypePhoto: Bool = false
+    @State private var reviewTypeVideo: Bool = false
+    @State private var reviewTypeText: Bool = false
     
     var body: some View {
         VStack {
@@ -41,14 +53,60 @@ struct ReviewView: View {
             }
             // 리뷰 구분
             Group {
-                Text("리뷰 구분")
-                    .font(.title2)
+                HStack {
+                    Text("리뷰 구분")
+                        .font(.title2)
+                    Toggle(isOn: $reviewSeperateTotal) {
+                        Text("전체")
+                            .font(.title2)
+                    }
+                    .toggleStyle(CheckboxStyle())
+                    
+                    Toggle(isOn: $reviewSeperateCommon) {
+                        Text("일반 리뷰")
+                            .font(.title2)
+                    }
+                    .toggleStyle(CheckboxStyle())
+                    
+                    Toggle(isOn: $reviewSeperateMonth) {
+                        Text("한달사용리뷰")
+                            .font(.title2)
+                    }
+                    .toggleStyle(CheckboxStyle())
+                }
                 Divider()
             }
             //리뷰 타입
             Group {
-                Text("리뷰 타입")
-                    .font(.title2)
+                HStack {
+                    Text("리뷰 타입")
+                        .font(.title2)
+                    
+                    Toggle(isOn: $reviewTypeTotal) {
+                        Text("전체")
+                            .font(.title2)
+                    }
+                    .toggleStyle(CheckboxStyle())
+                    
+                    Toggle(isOn: $reviewTypePhoto) {
+                        Text("포토리뷰")
+                            .font(.title2)
+                    }
+                    .toggleStyle(CheckboxStyle())
+                    
+                    Toggle(isOn: $reviewTypeVideo) {
+                        Text("동영상리뷰")
+                            .font(.title2)
+                    }
+                    .toggleStyle(CheckboxStyle())
+                    
+                    Toggle(isOn: $reviewTypeText) {
+                        Text("텍스트리뷰")
+                            .font(.title2)
+                    }
+                    .toggleStyle(CheckboxStyle())
+                    
+                }
                 Divider()
             }
             // 카테고리
