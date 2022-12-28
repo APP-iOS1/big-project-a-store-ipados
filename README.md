@@ -1,4 +1,4 @@
-# [Project A] Store용 iPad 앱
+# [Project A] 판매자용 iPadOS 앱
 
 ## 주요기능
 - **상품 관리**
