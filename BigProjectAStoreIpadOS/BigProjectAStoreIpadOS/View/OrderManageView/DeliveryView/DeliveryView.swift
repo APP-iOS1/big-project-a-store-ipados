@@ -38,29 +38,20 @@ struct DeliveryView: View {
                 
                 switch tabSelection {
                 case 0:
-                    DeliveryReadyView()
+                    DeliveryAllView()
                         .padding(.top, 10)
                 case 1:
                     DeliveryReadyView()
                         .padding(.top, 10)
                 case 2:
-                    DeliveryReadyView()
+                    DeliveryShippingView()
                         .padding(.top, 10)
                 case 3:
-                    DeliveryReadyView()
+                    DeliveryCompleteView()
                         .padding(.top, 10)
                 default:
                     EmptyView()
                 }
-                
-                // MARK: -TabView
-//                TabView(selection: $tabSelection){
-//                    DeliveryReadyView().tag(0)
-//                    DeliveryShippingView().tag(1)
-//                    DeliveryCompleteView().tag(2)
-//                }
-//                .tabViewStyle(.page(indexDisplayMode: .never))
-//                .edgesIgnoringSafeArea(.all)
                 
             }
             .navigationTitle("배송 관리")

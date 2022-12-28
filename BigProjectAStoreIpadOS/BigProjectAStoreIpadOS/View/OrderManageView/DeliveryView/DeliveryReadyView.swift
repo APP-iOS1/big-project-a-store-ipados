@@ -9,67 +9,47 @@ import SwiftUI
 
 struct DeliveryReadyView: View {
     
-    
-    
-    @State private var deliveryCategories = [ "주문 상태", "주문 번호", "상품 번호", "상품 이름", "발송 날짜", "택배사", "송장번호"]
+    @State private var deliveryHeader = [ "주문 상태", "주문 번호", "상품 번호", "상품 이름", "발송 날짜", "택배사", "송장번호"]
     
     @State private var sampleArr = sampleDeliveryData
-    
+
     let columns = [
-        GridItem(.flexible(),alignment: .center),
-        GridItem(.flexible(),alignment: .center),
-        GridItem(.flexible(),alignment: .center),
-        GridItem(.flexible(),alignment: .center),
-        GridItem(.flexible(),alignment: .center),
-        GridItem(.flexible(),alignment: .center),
-        GridItem(.flexible(),alignment: .center)
+        GridItem(.flexible(),alignment: .leading),
+        GridItem(.flexible(),alignment: .leading),
+        GridItem(.flexible(),alignment: .leading),
+        GridItem(.flexible(),alignment: .leading),
+        GridItem(.flexible(),alignment: .leading),
+        GridItem(.flexible(),alignment: .leading),
+        GridItem(.flexible(),alignment: .leading)
     ]
     
     
     var body: some View {
-        // 목록 Table
-        ScrollView() {
+        
+        VStack(alignment: .leading) {
             
-            HStack {
-                Text("주문 상태")
-                    .padding(10)
-                Text("주문 번호")
-                    .padding(10)
-                Text("상품 번호")
-                    .padding(10)
-                Text("상품 이름")
-                    .padding(10)
-                Text("발송 날짜")
-                    .padding(10)
-                Text("택배사")
-                    .padding(10)
-                Text("송장 번호")
-                    .padding(10)
+            LazyVGrid(columns: columns) {
                 
+                ForEach(deliveryHeader, id: \.self) { headerItem in
+                    Text("\(headerItem)")
+                }
+                .font(.headline)
+                .padding(.bottom, 6)
+                
+                ForEach(sampleArr.indices, id: \.self) { index in
+                    if sampleArr[index].orderState == "배송준비" {
+                        Text("\(sampleArr[index].orderState)")
+                        Text("\(sampleArr[index].orderNumber)")
+                        Text("\(sampleArr[index].productNumber)")
+                        Text("\(sampleArr[index].productName)")
+                        Text("\(sampleArr[index].shippingDate)")
+                        Text("\(sampleArr[index].shipmentCompany)")
+                        Text("\(sampleArr[index].trackingNumber)")
+                    }
+                }
+                .padding(.bottom, 3)
             }
-            .bold()
-            .font(.title2)
-                
-                //                LazyVGrid(columns: columns) {
-                //                    Group{
-                //                        ForEach(deliveryCategories, id: \.self ) { category in
-                //                            Text("\(category)")
-                //                        }
-                //                    }
-                //                    .font(.headline)
-                //                    ForEach(sampleArr.indices, id: \.self) { index in
-                //                        Text(sampleArr[index].orderState)
-                //                        Text(sampleArr[index].orderNumber)
-                //                        Text(sampleArr[index].productNumber)
-                //                        Text(sampleArr[index].productName)
-                //                        Text(sampleArr[index].shippingDate)
-                //                        Text(sampleArr[index].shipmentCompany)
-                //                        Text(sampleArr[index].trackingNumber)
-                //
-                //                    }
-                //                    .padding()
-                
-            
+            .padding()
         }
     }
 }
