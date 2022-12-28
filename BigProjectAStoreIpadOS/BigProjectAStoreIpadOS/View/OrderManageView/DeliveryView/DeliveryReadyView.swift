@@ -16,39 +16,30 @@ struct DeliveryReadyView: View {
     @State private var sampleArr = sampleDeliveryData
     
     let columns = [
-        GridItem(.flexible(),alignment: .center),
-        GridItem(.flexible(),alignment: .center),
-        GridItem(.flexible(),alignment: .center),
-        GridItem(.flexible(),alignment: .center),
-        GridItem(.flexible(),alignment: .center),
-        GridItem(.flexible(),alignment: .center),
-        GridItem(.flexible(),alignment: .center)
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible())
     ]
     
     
     var body: some View {
         // 목록 Table
-        ScrollView() {
-            
-            HStack {
-                Text("주문 상태")
-                    .padding(10)
-                Text("주문 번호")
-                    .padding(10)
-                Text("상품 번호")
-                    .padding(10)
-                Text("상품 이름")
-                    .padding(10)
-                Text("발송 날짜")
-                    .padding(10)
-                Text("택배사")
-                    .padding(10)
-                Text("송장 번호")
-                    .padding(10)
-                
+        
+        //수정 사항
+        ScrollView {
+            LazyVGrid(columns:columns) {
+                ForEach(deliveryCategories, id: \.self) {name in
+                    Text(name)
+                }
             }
+            .frame(minWidth:100,maxWidth: .infinity,minHeight: 100)
             .bold()
-            .font(.title2)
+            .font(.headline)
+        //
                 
                 //                LazyVGrid(columns: columns) {
                 //                    Group{
