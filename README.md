@@ -22,7 +22,20 @@
 - **문의 및 리뷰 관리**
   - **문의 내역**: 고객이 상품에 대해 남긴 문의들을 확인하고 답변을 남길 수 있습니다.
   - **리뷰 내역**: 고객이 상품에 대해 남긴 리뷰들을 확인할 수 있습니다.
+  
+## 구현 동작
+<img src="https://user-images.githubusercontent.com/48899055/209797668-d8aa0e6a-cad5-4a1f-ac7e-1cc8874c323c.gif" width="400">|<img src="https://user-images.githubusercontent.com/48899055/209797690-5f917825-50f2-451a-8fa7-c234573a444b.gif" width="400">|
+|:---:|:---:|
+|로그인|NavigationSplitView|
 
+## 스크린샷
+<img src="https://user-images.githubusercontent.com/48899055/209798259-fe6d3959-9a25-4d60-b700-59bab6aa68a4.png" width="600">|<img src="https://user-images.githubusercontent.com/48899055/209798264-5b77a4b4-9f41-4b07-99cc-1569554c01b2.png" width="600">|<img src="https://user-images.githubusercontent.com/48899055/209798271-43a59c07-9045-40fc-a415-bcc01549c045.png" width="600">|
+|:---:|:---:|:---:|
+|상품등록|상품수정|주문내역|
+<img src="https://user-images.githubusercontent.com/48899055/209798280-9652f929-3d82-42e1-a99f-125db27e1d2b.png" width="400">|<img src="https://user-images.githubusercontent.com/48899055/209798287-5de23781-b4f6-4d16-83aa-083ffc20bca2.png" width="400">|<img src="https://user-images.githubusercontent.com/48899055/209798863-215f4b10-3ca3-47b3-99f8-7d5c5471a246.png" width="400">|
+|배송관리|스토어 정보수정|매출통계|
+|<img src="https://user-images.githubusercontent.com/48899055/209798873-eaf12f2c-1aa6-40ab-8dda-eb166ff6c77f.png" width="400">|<img src="https://user-images.githubusercontent.com/48899055/209798881-89990f98-4738-458e-9983-012130f8210a.png" width="400">|<img src="https://user-images.githubusercontent.com/48899055/209798887-c1c45fc3-9efe-46d9-a3a8-23784fa94596.png" width="400">|
+|매출그래프|문의내역|리뷰내역|
 ## 팀원 소개
 | 📎추현호 [팀장]<br/>[@Achoo-kr](https://github.com/Achoo-kr)<br/> | 📎김민호<br/> [@stealmh](https://github.com/stealmh)<br/> | 📎김수현<br/>[@suekim999](https://github.com/suekim999)<br/> |
 | :----------------------------------------------------------: | :---------------------------------------------: | :-------------------------------------------------: |
