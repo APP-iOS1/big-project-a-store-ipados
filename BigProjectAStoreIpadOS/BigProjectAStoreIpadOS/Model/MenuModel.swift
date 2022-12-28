@@ -47,7 +47,7 @@ struct SubMenuItem: Identifiable {
             EditStoreView()
             
         case .storeClose:
-            EditStoreView()
+            CloseStoreView()
             
         case .salesStatistic:
             ChartView()
