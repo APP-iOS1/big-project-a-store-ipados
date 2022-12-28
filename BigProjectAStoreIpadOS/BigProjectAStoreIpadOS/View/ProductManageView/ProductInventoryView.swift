@@ -9,10 +9,14 @@ import SwiftUI
 
 struct ProductInventoryView: View {
     
+    
+    @State private var wideButtonTapped = false
     @State private var currentIndex = 0
     @State private var sampleArr = sampleData
     @State private var isTapped = false
-    @State private var productCategories = [ "상품명", "상품코드", "옵션", "재고", "수정" ]
+    @State private var startDate = Date()
+    @State private var endDate = Date()
+    @State private var productCategories = [ "상품명", "상품코드", "카테고리", "재고", "수정" ]
     
     let columns = [
         GridItem(.flexible(),alignment: .center),
@@ -23,18 +27,89 @@ struct ProductInventoryView: View {
     ]
     
     var body: some View {
+        
         VStack(){
-            Text("상품 조회/수정")
-                .font(.largeTitle)
             Divider()
             productStatusBar
+            
+        // 상품목록 펼쳐보기
+        if  !wideButtonTapped {
+            // 상품 목록 조회 검색 UI
+            VStack(alignment:.leading){
+                Divider()
+                //[검색 category - 검색어]
+                HStack{
+                    Text("검색어")
+                        .font(.headline)
+                    Spacer()
+                        .frame(width: 150)
+                    
+                    VStack(alignment: .leading){
+                        
+                        HStack{
+                            Text("상품명")
+                                .font(.title3)
+                            TextField("dfsd", text: .constant(""))
+                                .textFieldStyle(.roundedBorder)
+                                .frame(width: 600)
+                        }
+                        HStack{
+                            Text("상품 코드")
+                                .font(.title3)
+                            TextField("dfsd", text: .constant(""))
+                                .textFieldStyle(.roundedBorder)
+                                .frame(width: 600)
+                        }
+                    }
+                }
+                .padding(10)
+                Divider()
+                //[검색 category - 분류]
+                HStack{
+                    Text("카테고리")
+                        .font(.headline)
+                }
+                .padding(10)
+                Divider()
+                //[검색 category - 기간]
+                HStack{
+                    Text("기간")
+                        .font(.headline)
+                    Spacer()
+                    HStack{
+                        
+                        Text("상품 등록일:")
+                            .font(.title3)
+                        DatePicker("", selection: $startDate, displayedComponents: [.date])
+                            .frame(width: 150)
+                        Text("     ~")
+                        DatePicker("", selection: $endDate, displayedComponents: [.date])
+                            .frame(width: 150)
+                    }
+                    Spacer()
+                }
+                .padding(10)
+            }
+            }
+            
             Divider()
-                
             // MARK: - 상품목록 View
             VStack(alignment: .leading){
-                Text("상품 목록 (총 0개)")
-                    .font(.title2)
-                    .padding()
+                HStack{
+                    Text("상품 목록 (총 0개)")
+                        .font(.title2)
+                        .padding()
+                    Spacer()
+                    Button {
+                        wideButtonTapped.toggle()
+                    } label: {
+                        Image(systemName: !wideButtonTapped ?
+                              "arrow.up.to.line.compact" : "arrow.down.to.line.compact")
+                    }
+                    .padding(.trailing, 40)
+
+                }
+                
                 Divider()
                 // 상품목록 Table
                 ScrollView(.vertical){
@@ -48,7 +123,7 @@ struct ProductInventoryView: View {
                         ForEach(sampleArr.indices, id: \.self) { index in
                             Text(sampleArr[index].productName)
                             Text(sampleArr[index].productId)
-                            Text(sampleArr[index].productPrice)
+                            Text(sampleArr[index].productCategory)
                             Text("\(sampleArr[index].productCount)")
                             Button {
                                 currentIndex = index
@@ -69,6 +144,7 @@ struct ProductInventoryView: View {
             Spacer()
             Spacer()
         }
+        .navigationTitle("상품 조회/수정")
     }
 }
 extension ProductInventoryView{
@@ -118,11 +194,15 @@ extension ProductInventoryView{
             
         }
     }
+    
+    
 }
 
 struct ProductInventoryView_Previews: PreviewProvider {
     static var previews: some View {
-        ProductInventoryView()
+        NavigationStack{
+            ProductInventoryView()
+        }
     }
 }
 

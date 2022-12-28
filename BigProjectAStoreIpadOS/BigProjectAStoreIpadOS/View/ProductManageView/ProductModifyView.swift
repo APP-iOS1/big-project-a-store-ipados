@@ -109,6 +109,8 @@ struct ProductModifyView: View {
                             Button("추가") {
                                 productOption.updateValue(Int(textFieldOptionCount)!, forKey: textFieldOptionColor)
                             }
+                            .disabled(disableEdit)
+                            .buttonStyle(.plain)
                         }
                     }
                     //상품 이미지
@@ -119,6 +121,9 @@ struct ProductModifyView: View {
                                     Image(uiImage: photo)
                                         .resizable()
                                         .frame(width: 200, height: 200)
+                                        .onTapGesture {
+                                            
+                                        }
                                 }
 //                                .onDelete {}
                                 Spacer()
@@ -134,6 +139,7 @@ struct ProductModifyView: View {
                             .disabled(disableEdit)
                     }
                 }
+            
                 .navigationTitle(Text("상품 수정"))
 
             }
