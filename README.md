@@ -22,9 +22,9 @@
 - **문의 및 리뷰 관리**
   - **문의 내역**: 고객이 상품에 대해 남긴 문의들을 확인하고 답변을 남길 수 있습니다.
   - **리뷰 내역**: 고객이 상품에 대해 남긴 리뷰들을 확인할 수 있습니다.
-  
+
 ## 구현 동작
-<img src="https://user-images.githubusercontent.com/48899055/209797668-d8aa0e6a-cad5-4a1f-ac7e-1cc8874c323c.gif" width="400">|<img src="https://user-images.githubusercontent.com/48899055/209797690-5f917825-50f2-451a-8fa7-c234573a444b.gif" width="400">|
+<img src="https://user-images.githubusercontent.com/48899055/209801398-034acdd8-748d-4dc0-8281-3e6b8ca9d8e7.gif" width="400">|<img src="https://user-images.githubusercontent.com/48899055/209801925-0fcd68a3-c8cb-4be7-b15c-ea2248777ed7.gif" width="400">|
 |:---:|:---:|
 |로그인|NavigationSplitView|
 
