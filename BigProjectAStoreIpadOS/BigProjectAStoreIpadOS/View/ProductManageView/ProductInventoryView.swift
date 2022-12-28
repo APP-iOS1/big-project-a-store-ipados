@@ -36,7 +36,7 @@ struct ProductInventoryView: View {
                     .font(.title2)
                     .padding()
                 Divider()
-                
+                // 상품목록 Table
                 ScrollView(.vertical){
                     LazyVGrid(columns: columns) {
                         Group{
@@ -45,7 +45,6 @@ struct ProductInventoryView: View {
                             }
                         }
                         .font(.headline)
-    
                         ForEach(sampleArr.indices, id: \.self) { index in
                             Text(sampleArr[index].productName)
                             Text(sampleArr[index].productId)
@@ -74,6 +73,7 @@ struct ProductInventoryView: View {
 }
 extension ProductInventoryView{
     
+    // 품절, 전체, 판매중 상태
     var productStatusBar: some View{
         VStack{
             HStack(alignment: .center ,spacing: 50){
