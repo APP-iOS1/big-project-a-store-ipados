@@ -27,7 +27,7 @@ struct DeliverySummaryView: View {
                         Text("배송준비")
                         
                         HStack {
-                            Text("0")
+                            Text("3")
                                 .font(.title)
                                 .bold()
                             Text("건")
@@ -58,7 +58,7 @@ struct DeliverySummaryView: View {
                     Text("배송중")
                     
                     HStack {
-                        Text("0")
+                        Text("3")
                             .font(.title)
                             .bold()
                         Text("건")
@@ -80,7 +80,7 @@ struct DeliverySummaryView: View {
                     Text("배송완료")
                     
                     HStack {
-                        Text("0")
+                        Text("2")
                             .font(.title)
                             .bold()
                         Text("건")
