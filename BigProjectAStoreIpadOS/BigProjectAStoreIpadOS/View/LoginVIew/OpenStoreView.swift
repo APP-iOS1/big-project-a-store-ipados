@@ -8,39 +8,12 @@
 import SwiftUI
 
 struct OpenStoreView: View {
-    @State private var userName = ""
-    @State private var userEmail = ""
-    @State private var userPhoneNum = ""
     @State var storeName = ""
     @State var storeAddress = ""
-    @Binding var isShownFullScreenCover: Bool
     
     var body: some View {
         VStack() {
             List {
-                Section {
-                    HStack(alignment: .top) {
-                        Text("판매자명")
-                            .modifier(contentNameModifier())
-                        TextField("성함을 입력해주세요", text: $userName)
-                            .modifier(contentFieldModifier())
-                    }
-                    HStack(alignment: .top) {
-                        Text("이메일")
-                            .modifier(contentNameModifier())
-                        TextField("이메일을 입력해주세요", text: $userEmail)
-                            .modifier(contentFieldModifier())
-                    }
-                    HStack(alignment: .top) {
-                        Text("연락처")
-                            .modifier(contentNameModifier())
-                        TextField("휴대폰 번호를 입력해주세요", text: $userPhoneNum)
-                            .modifier(contentFieldModifier())
-                    }
-                } header: {
-                    Text("판매자 정보")
-                }
-                
                 Section {
                     HStack(alignment: .top) {
                         Text("스토어 이름")
@@ -61,7 +34,7 @@ struct OpenStoreView: View {
                 Section {
                     HStack {
                         Button {
-                            self.isShownFullScreenCover = false
+                            print("")
                         } label: {
                             Text("신청하기")
                         }.buttonStyle(PlainButtonStyle())

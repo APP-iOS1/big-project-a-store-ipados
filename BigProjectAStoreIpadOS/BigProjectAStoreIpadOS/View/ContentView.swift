@@ -26,13 +26,12 @@ struct ContentView: View {
             }
         }
     }
-
     
     fileprivate var model = MenuModel()
-
+    
     var body: some View {
         NavigationSplitView(columnVisibility: $navigationStateManager.columnVisibility,
-        sidebar: {
+                            sidebar: {
             List(model.menuItems, selection: $menuId) { menu in
                 Text(menu.name)
             }
@@ -46,7 +45,7 @@ struct ContentView: View {
                 }
             })
             .sheet(isPresented: $showSettings, content: {
-              SettingsView()
+                SettingsView()
             })
             .navigationTitle("멋사 전자")
             
@@ -62,8 +61,6 @@ struct ContentView: View {
             SubMenuDetails(for: subMenuId)
         })
         .environmentObject(navigationStateManager)
-        
-        
     }
 }
 
