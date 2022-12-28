@@ -96,7 +96,7 @@ struct EditStoreView: View {
                 Text("스토어 정보")
             }
             
-        }
+        }.modifier(CloseUpDetailModifier())
     }
 }
 
@@ -113,6 +113,6 @@ struct EditButtonModifier: ViewModifier {
 struct EditStoreView_Previews: PreviewProvider {
     static var previews: some View {
         EditStoreView().previewInterfaceOrientation(.landscapeRight)
+            .environmentObject(NavigationStateManager())
     }
 }
-

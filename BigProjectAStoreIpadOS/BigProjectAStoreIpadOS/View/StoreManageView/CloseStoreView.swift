@@ -43,12 +43,13 @@ struct CloseStoreView: View {
                 Text("폐점심사가 통과된다면, 등록된 상품과 스토어 통계에 대한 데이터가 사라지며, 이는 돌이킬 수 없습니다")
             }
             
-        }
+        }.modifier(CloseUpDetailModifier())
     }
 }
 
 struct CloseStoreView_Previews: PreviewProvider {
     static var previews: some View {
         CloseStoreView()
+            .environmentObject(NavigationStateManager())
     }
 }

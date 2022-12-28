@@ -89,11 +89,14 @@ struct ChartDetailView: View {
                 }
             }
             .padding(.horizontal)
+            .modifier(CloseUpDetailModifier())
+        
     }
 }
 
 struct ChartDetailView_Previews: PreviewProvider {
     static var previews: some View {
         ChartDetailView()
+            .environmentObject(NavigationStateManager())
     }
 }

@@ -137,13 +137,15 @@ struct ProductRegisterView: View {
                     Text("등록하기")
                 }
             }
-        }
+        }.modifier(CloseUpDetailModifier())
+
     }
 }
 
 struct ProductRegisterView_Previews: PreviewProvider {
     static var previews: some View {
         ProductRegisterView()
+            .environmentObject(NavigationStateManager())
     }
 }
 

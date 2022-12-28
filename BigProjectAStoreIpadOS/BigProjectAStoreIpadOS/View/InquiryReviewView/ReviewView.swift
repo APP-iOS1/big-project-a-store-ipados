@@ -335,7 +335,9 @@ struct ReviewView: View {
                     
                 }
             }//vstack
-        }//scrollview
+        }
+        .modifier(CloseUpDetailModifier())
+        //scrollview
     }//body
 }
 
@@ -360,5 +362,6 @@ struct CheckboxStyle: ToggleStyle {
 struct ReviewView_Previews: PreviewProvider {
     static var previews: some View {
         ReviewView()
+            .environmentObject(NavigationStateManager())
     }
 }

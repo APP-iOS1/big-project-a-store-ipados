@@ -52,7 +52,7 @@ struct OrderHistoryView: View {
             }//vstack
             .padding(.top, 20)
             .navigationTitle(Text("주문 내역"))
-        }
+        }.modifier(CloseUpDetailModifier())
     }//body
 }
 
@@ -61,5 +61,6 @@ struct OrderHistoryView: View {
 struct OrderHistory_Previews: PreviewProvider {
     static var previews: some View {
         OrderHistoryView()
+            .environmentObject(NavigationStateManager())
     }
 }
