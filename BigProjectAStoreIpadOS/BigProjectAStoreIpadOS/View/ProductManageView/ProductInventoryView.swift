@@ -15,11 +15,11 @@ struct ProductInventoryView: View {
     @State private var productCategories = [ "상품명", "상품코드", "옵션", "재고", "수정" ]
     
     let columns = [
-        GridItem(.flexible()),
-        GridItem(.flexible()),
-        GridItem(.flexible()),
-        GridItem(.flexible()),
-        GridItem(.flexible())
+        GridItem(.flexible(),alignment: .center),
+        GridItem(.flexible(),alignment: .center),
+        GridItem(.flexible(),alignment: .center),
+        GridItem(.flexible(),alignment: .center),
+        GridItem(.flexible(),alignment: .center)
     ]
     
     var body: some View {
@@ -29,22 +29,23 @@ struct ProductInventoryView: View {
             Divider()
             productStatusBar
             Divider()
-            
-            
-            
+                
             // MARK: - 상품목록 View
             VStack(alignment: .leading){
                 Text("상품 목록 (총 0개)")
                     .font(.title2)
                     .padding()
                 Divider()
-                    VStack{
-                    HStack(spacing: 170){
-                        ForEach(productCategories, id: \.self ) { category in
-                            Text("\(category)")
-                        }
-                    }
+                
+                ScrollView(.vertical){
                     LazyVGrid(columns: columns) {
+                        Group{
+                            ForEach(productCategories, id: \.self ) { category in
+                                Text("\(category)")
+                            }
+                        }
+                        .font(.headline)
+    
                         ForEach(sampleArr.indices, id: \.self) { index in
                             Text(sampleArr[index].productName)
                             Text(sampleArr[index].productId)
@@ -62,17 +63,11 @@ struct ProductInventoryView: View {
                         }
                         .padding()
                     }
-                    
-             
                 }
-                
+                    
+ 
             }
             Spacer()
-            Button {
-                //파이어스토어로 수정된 데이터 전송
-            } label: {
-                Text("수정 완료")
-            }
             Spacer()
         }
     }
