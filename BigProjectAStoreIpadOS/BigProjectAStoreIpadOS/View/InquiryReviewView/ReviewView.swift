@@ -24,6 +24,8 @@ struct ReviewView: View {
     @State private var reviewTypeVideo: Bool = false
     @State private var reviewTypeText: Bool = false
     
+    //카테고리
+    
     //채널
     @State private var reviewChannelTotal: Bool = false
     @State private var reviewChannelSmartStore: Bool = false
@@ -79,6 +81,7 @@ struct ReviewView: View {
                         Text("리뷰 구분")
                             .font(.title3)
                         Spacer()
+                        
                         Toggle(isOn: $reviewSeperateTotal) {
                             Text("전체")
                                 .font(.title3)
@@ -98,6 +101,8 @@ struct ReviewView: View {
                                 .font(.title3)
                         }
                         .toggleStyle(CheckboxStyle())
+                        .padding(.trailing, 110)
+                        Spacer()
                         
                     }
                     .padding(.horizontal, 30)
@@ -136,7 +141,7 @@ struct ReviewView: View {
                                 .font(.title3)
                         }
                         .toggleStyle(CheckboxStyle())
-                        
+                        .padding(.trailing, 90)
                         
                     }
                     .padding(.horizontal, 30)
@@ -173,6 +178,7 @@ struct ReviewView: View {
                                 .font(.title3)
                         }
                         .toggleStyle(CheckboxStyle())
+                        .padding(.trailing, 340)
                         
                     }
                     .padding(.horizontal, 30)
@@ -188,42 +194,43 @@ struct ReviewView: View {
                         VStack (alignment: .leading) {
                             HStack {
                                 Text("구매자 평점")
-                                    .font(.title2)
+                                    .font(.title3)
+                                    .padding(.leading, 70)
                                     .padding(.trailing, 10)
                                 Toggle(isOn: $customerRateTotal) {
                                     Text("전체")
                                         .font(.title3)
                                 }
                                 .toggleStyle(CheckboxStyle())
-                                .padding(.trailing, 20)
+                                .padding(.trailing, 15)
                                 
                                 Toggle(isOn: $customerRateOne) {
                                     Text("1점")
                                         .font(.title3)
                                 }
                                 .toggleStyle(CheckboxStyle())
-                                .padding(.trailing, 20)
+                                .padding(.trailing, 15)
                                 
                                 Toggle(isOn: $customerRateTwo) {
                                     Text("2점")
                                         .font(.title3)
                                 }
                                 .toggleStyle(CheckboxStyle())
-                                .padding(.trailing, 20)
+                                .padding(.trailing, 15)
                                 
                                 Toggle(isOn: $customerRateThree) {
                                     Text("3점")
                                         .font(.title3)
                                 }
                                 .toggleStyle(CheckboxStyle())
-                                .padding(.trailing, 20)
+                                .padding(.trailing, 15)
                                 
                                 Toggle(isOn: $customerRateFour) {
                                     Text("4점")
                                         .font(.title3)
                                 }
                                 .toggleStyle(CheckboxStyle())
-                                .padding(.trailing, 20)
+                                .padding(.trailing, 15)
                                 
                                 Toggle(isOn: $customerRateFive) {
                                     Text("5점")
@@ -234,8 +241,9 @@ struct ReviewView: View {
                             }
                             HStack {
                                 Text("답글여부")
-                                    .font(.title2)
-                                    .padding(.trailing, 10)
+                                    .font(.title3)
+                                    .padding(.trailing, 14)
+                                    .padding(.leading, 70)
                                 Picker(selection: $replyOrNot, label: Text("답글여부")) {
                                     Text("답글여부 (상관없음)")
                                         .tag(1)
@@ -288,7 +296,7 @@ struct ReviewView: View {
                     }.foregroundColor(.black)
                     
                     HStack {
-                        Text("목록 (총 2개)")
+                        Text("목록 (총 0개)")
                             .font(.title2)
                             .padding(.leading, 20)
                             .padding(.vertical, 10)
