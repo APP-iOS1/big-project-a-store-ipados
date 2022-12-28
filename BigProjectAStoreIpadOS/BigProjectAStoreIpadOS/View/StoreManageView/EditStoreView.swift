@@ -11,6 +11,7 @@ import Combine
 import PhotosUI
 
 struct EditStoreView: View {
+    // TODO: storeName, storeAddress Binding값으로 바꿔주기
     @State var storeImage = ""
     @State var storeName = "멋사 전자 스토어"
     @State var storeAddress = "경기도 네드시 튜나로 12길 27"
