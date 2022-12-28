@@ -34,7 +34,7 @@ struct ProductModifyView: View {
     //상품이미지
     @State private var photoArray: [UIImage] = []
     
-    
+    @State private var editAlert = false
 
     
     
@@ -165,10 +165,18 @@ struct ProductModifyView: View {
                 
                 ToolbarItem(id: "trailing") {
                     Button {
-                        disableEdit.toggle()
+                        if !disableEdit {
+                            editAlert.toggle()
+                            disableEdit.toggle()
+                        }else{
+                            disableEdit.toggle()
+                        }
+                        
+
                     } label: {
                         Text(disableEdit ? "Edit" : "Done")
                     }
+                    
 
                 }
             }
@@ -176,7 +184,15 @@ struct ProductModifyView: View {
                 productName = sampleData[index].productName
                 productCategory = sampleData[index].productId
             }
-        }.modifier(CloseUpDetailModifier())
+        }
+        .alert("저장하시겠습니까?", isPresented: $editAlert){
+            Button("아니요"){}
+            Button ("네"){}
+        } message:{
+            Text("기존에 있던 내용들이 수정됩니다.")
+        }
+        .modifier(CloseUpDetailModifier())
+            
     }
     
     //옵션텍스트 변환 함수
