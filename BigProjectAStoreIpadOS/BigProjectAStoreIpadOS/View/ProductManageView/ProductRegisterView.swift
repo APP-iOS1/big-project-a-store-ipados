@@ -6,8 +6,9 @@
 //
 
 import SwiftUI
-import Combine
 import PhotosUI
+
+//사용자가 옵션 작성시 언더바까지 입력했을 때
 
 
 struct ProductRegisterView: View {
@@ -16,9 +17,11 @@ struct ProductRegisterView: View {
     //상품 카테고리
     @State private var productCategory: String = ""
     //옵션(현재는 더미데이터)
-    @State private var productOption: [String:[String]] = ["iphone15":["256_10000","512_20000"]]
-    //텍스트필드1번 - 색상을 입력받음
-    @State private var textFieldOptionColor: String = ""
+    @State private var productOption: [String:[String]] = ["램추가":["8GB_10000","16GB_20000"],"SSD추가":["256GB_10000","512GB_20000"]]
+    //텍스트필드1번 - 옵션을 입력받음
+    @State private var textFieldOption: String = ""
+    @State private var textFieldOptionDetails: String = ""
+    @State private var splitText = ""
     //상품이미지
     @State private var photoArray: [UIImage] = []
     //상품 설명
@@ -29,12 +32,12 @@ struct ProductRegisterView: View {
     @State private var selectedImageData: Data? = nil
     //
     //Delete Option
-//    func optionDelete(at offsets: IndexSet){
-//        if let ndx = offsets.first {
-//            let item = productOption.sorted(by: >)[ndx]
-//            productOption.removeValue(forKey: item.key)
-//        }
-//    }
+    //    func optionDelete(at offsets: IndexSet){
+    //        if let ndx = offsets.first {
+    //            let item = productOption.sorted(by: >)[ndx]
+    //            productOption.removeValue(forKey: item.key)
+    //        }
+    //    }
     //사진 입력받는 로직
     func photoLogic() -> some View {
         PhotosPicker(
@@ -60,6 +63,18 @@ struct ProductRegisterView: View {
             }
     }
     
+    //옵션텍스트 변환 함수
+    private func convertTextLogic() {
+        let convertTextStep1 = textFieldOptionDetails.replacingOccurrences(of: " ", with: "_")
+        let convertTextStep2 = convertTextStep1.components(separatedBy: ",")
+        if productOption.keys.contains(textFieldOption) {
+            productOption.updateValue(productOption[textFieldOption]! + convertTextStep2, forKey: textFieldOption)
+        } else {
+            productOption[textFieldOption] = convertTextStep2
+        }
+        print(productOption)
+    }
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -74,23 +89,22 @@ struct ProductRegisterView: View {
                     }
                     //상품 옵션
                     Section(header: Text("옵션").font(.title)) {
-//                        ForEach(productOption,id:\.self) {value  in
-                                HStack {
-//                                    Text("색상: \(value2.value)")
-//                                    Text("수량: \(value)개")
+                        ForEach(Array(productOption.keys.enumerated()), id: \.element) { _, key in
+                            if let productOptionKey = productOption[key] {
+                                ForEach(productOptionKey.indices, id: \.self) { i in
+                                    Text("[\(key)] \(productOptionKey[i])")
                                 }
-                            
-
-                            
-//                        }
-//                        .onDelete(perform: optionDelete)
+                            }
+                        }
                         
                         HStack(spacing: 20) {
-                            TextField("색상", text: $textFieldOptionColor)
+                            TextField("[옵션명 작성]", text: $textFieldOption)
+                                .padding(.horizontal, 20)
+                                .frame(maxWidth: 250)
+                            TextField("[세부내용 작성작성] ex)8기가 10000원,16기가 2만원", text: $textFieldOptionDetails)
                                 .padding(.horizontal, 20)
                                 .frame(maxWidth: .infinity)
-                            Button("추가") {
-                            }
+                            Button("추가") { convertTextLogic() }
                         }
                     }
                     //상품 이미지
