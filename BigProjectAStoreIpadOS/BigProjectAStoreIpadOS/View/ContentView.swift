@@ -62,6 +62,7 @@ struct ContentView: View {
             SubMenuDetails(for: subMenuId)
         })
         .environmentObject(navigationStateManager)
+        .navigationSplitViewStyle(.balanced)
     }
 }
 

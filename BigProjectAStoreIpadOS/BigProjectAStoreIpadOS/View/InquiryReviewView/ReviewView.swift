@@ -342,7 +342,7 @@ struct ReviewView: View {
                 }
             }//vstack
         }
-        //.modifier(CloseUpDetailModifier())
+        .modifier(CloseUpDetailModifier())
         //scrollview
     }//body
 }

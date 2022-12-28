@@ -24,11 +24,11 @@ struct CloseUpDetailModifier : ViewModifier {
             .toolbar {
                 ToolbarItem(placement: .navigation) {
                     
-                    if navigationManager.columnVisibility != .detailOnly, isRegular {
+                    if navigationManager.columnVisibility == .doubleColumn, isRegular {
                         Button {
                             navigationManager.columnVisibility = .detailOnly
                         } label: {
-                            Image(systemName: "arrow.up.left.and.arrow.down.right")
+                            Image(systemName: "arrow.left.to.line")
                         }
                     }
                 }
