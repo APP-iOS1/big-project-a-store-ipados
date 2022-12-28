@@ -6,35 +6,39 @@
 //
 
 import SwiftUI
-import Combine
 import PhotosUI
+
+//사용자가 옵션 작성시 언더바까지 입력했을 때
+
 
 struct ProductRegisterView: View {
     //상품명
     @State private var productName: String = ""
+    //상품 카테고리
     @State private var productCategory: String = ""
     //옵션(현재는 더미데이터)
-    @State private var productOption: [String:Int] = ["화이트":1,"블랙":2,"그레이":1]
-    //텍스트필드1번 - 색상을 입력받음
-    @State private var textFieldOptionColor: String = ""
-    //텍스트필드2번 - 수량을 입력받음
-    @State private var textFieldOptionCount: String = ""
+    @State private var productOption: [String:[String]] = ["램추가":["8GB_10000","16GB_20000"],"SSD추가":["256GB_10000","512GB_20000"]]
+    //텍스트필드1번 - 옵션을 입력받음
+    @State private var textFieldOptionName: String = ""
+    //텍스트필드 2번 - 옵션의 정보를 입력받음
+    @State private var textFieldOptionDetails: String = ""
+    //상품이미지
+    @State private var photoArray: [UIImage] = []
     //상품 설명
     @State private var productDescription: String = ""
     
     //Use PhotosUI
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImageData: Data? = nil
-    //상품이미지
-    @State private var photoArray: [UIImage] = []
-    
+    //
     //Delete Option
-    func optionDelete(at offsets: IndexSet){
-        if let ndx = offsets.first {
-            let item = productOption.sorted(by: >)[ndx]
-            productOption.removeValue(forKey: item.key)
-        }
-    }
+    //    func optionDelete(at offsets: IndexSet){
+    //        if let ndx = offsets.first {
+    //            let item = productOption.sorted(by: >)[ndx]
+    //            productOption.removeValue(forKey: item.key)
+    //        }
+    //    }
+    
     //사진 입력받는 로직
     func photoLogic() -> some View {
         PhotosPicker(
@@ -60,46 +64,48 @@ struct ProductRegisterView: View {
             }
     }
     
+    //옵션텍스트 변환 함수
+    private func convertTextLogic() {
+        let convertTextStep1 = textFieldOptionDetails.replacingOccurrences(of: " ", with: "_")
+        let convertTextStep2 = convertTextStep1.components(separatedBy: ",")
+        if productOption.keys.contains(textFieldOptionName) {
+            productOption.updateValue(productOption[textFieldOptionName]! + convertTextStep2, forKey: textFieldOptionName)
+        } else {
+            productOption[textFieldOptionName] = convertTextStep2
+        }
+        print(productOption)
+    }
+    
     var body: some View {
         NavigationStack {
             VStack {
                 Form {
                     //상품명
                     Section(header: Text("상품명").font(.title)) {
-                        TextField("", text: $productName)
+                        TextField("상품명 입력", text: $productName)
                     }
                     //상품 카테고리
                     Section(header: Text("상품카테고리").font(.title)) {
-                        TextField("", text: $productCategory)
+                        TextField("카테고리 입력", text: $productCategory)
                     }
                     //상품 옵션
                     Section(header: Text("옵션").font(.title)) {
-                        ForEach(productOption.sorted(by: >), id:\.key) {key, value  in
-                            HStack {
-                                Text("색상: \(key)")
-                                Text("수량: \(value)개")
+                        ForEach(Array(productOption.keys.enumerated()), id: \.element) { _, key in
+                            if let productOptionKey = productOption[key] {
+                                ForEach(productOptionKey.indices, id: \.self) { i in
+                                    Text("[\(key)] \(productOptionKey[i])")
+                                }
                             }
-                            
                         }
-                        .onDelete(perform: optionDelete)
                         
                         HStack(spacing: 20) {
-                            TextField("색상", text: $textFieldOptionColor)
+                            TextField("[옵션명 작성]", text: $textFieldOptionName)
+                                .padding(.horizontal, 20)
+                                .frame(maxWidth: 250)
+                            TextField("예시: 8기가 10000원,16기가 2만원", text: $textFieldOptionDetails)
                                 .padding(.horizontal, 20)
                                 .frame(maxWidth: .infinity)
-                            TextField("수량", text: $textFieldOptionCount)
-                                .keyboardType(.numberPad)
-                                .padding(.horizontal, 20)
-                                .frame(maxWidth: .infinity)
-                                .onReceive(Just(textFieldOptionCount)) { value in
-                                    let filteredCount = value.filter {"0123456789".contains($0)}
-                                    if filteredCount != value {
-                                        self.textFieldOptionCount = filteredCount
-                                    }
-                                }
-                            Button("추가") {
-                                productOption.updateValue(Int(textFieldOptionCount)!, forKey: textFieldOptionColor)
-                            }
+                            Button("추가") { convertTextLogic() }
                         }
                     }
                     //상품 이미지
@@ -131,13 +137,15 @@ struct ProductRegisterView: View {
                     Text("등록하기")
                 }
             }
-        }
+        }.modifier(CloseUpDetailModifier())
+
     }
 }
 
 struct ProductRegisterView_Previews: PreviewProvider {
     static var previews: some View {
         ProductRegisterView()
+            .environmentObject(NavigationStateManager())
     }
 }
 

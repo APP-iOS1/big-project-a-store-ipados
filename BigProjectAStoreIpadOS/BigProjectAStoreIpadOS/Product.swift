@@ -11,18 +11,26 @@ struct ProductData: Identifiable, Hashable{
     var id = UUID()
     var productName: String
     var productId: String
-    var productPrice: String
-    var productCount: String
+    var productCategory: String
+    var productCount: Int
 }
 
 var sampleData:[ProductData] = [
-    ProductData(productName: "키보드", productId: "p1", productPrice: "fnn", productCount: "pc1"),
-    ProductData(productName: "마우스", productId: "p2", productPrice: "bv", productCount: "pc2"),
-    ProductData(productName: "컴퓨터", productId: "p3", productPrice: "y45", productCount: "pc3"),
-    ProductData(productName: "노트북", productId: "p8", productPrice: "656", productCount: "pc4"),
-    ProductData(productName: "맥북", productId: "p9", productPrice: "234", productCount: "pc5"),
-    ProductData(productName: "애플워치", productId: "p11", productPrice: "767", productCount: "pc6"),
-    ProductData(productName: "아이패드", productId: "p12", productPrice: "545", productCount: "pc7"),
-    ProductData(productName: "갤탭", productId: "p13", productPrice: "332", productCount: "pc8")
+    ProductData(productName: "키보드", productId: "aaaaa", productCategory: "키보드", productCount: 21),
+    ProductData(productName: "마우스", productId: "bbbbb", productCategory: "마우스", productCount: 34),
+    ProductData(productName: "컴퓨터", productId: "ccccc", productCategory: "데스크탑", productCount: 56),
+    ProductData(productName: "노트북", productId: "ddddd", productCategory: "랩탑", productCount: 86),
+    ProductData(productName: "맥북", productId: "eeeee", productCategory: "랩탑", productCount: 92),
+    ProductData(productName: "애플워치", productId: "fffff", productCategory: "전자시계", productCount: 143),
+    ProductData(productName: "아이패드", productId: "ggggg", productCategory: "테블릿", productCount: 95),
+    ProductData(productName: "갤탭", productId: "hhhhh", productCategory: "테블릿", productCount: 23)
     
+]
+
+var sampleCategory = [
+    "키보드",
+    "컴퓨터",
+    "노트북",
+    "마우스",
+    "PC주요부품"
 ]
