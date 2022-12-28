@@ -1,52 +1,69 @@
 //
 //  ContentView.swift
-//  BigProjectAStoreIpadOS
+//  SplitViewDemo
 //
-//  Created by Sue on 2022/12/27.
+//  Created by 추현호 on 2022/12/27.
 //
 
 import SwiftUI
 
 struct ContentView: View {
-    //전체메뉴(totalMenu)의 id
-    @State private var selectedCategoryId: MenuItem.ID?
-    //선택된 메뉴 아이템
-    @State private var selectedItem: MenuItem?
     
+    @StateObject var navigationStateManager = NavigationStateManager()
     
-    private var menuModel = MenuModel()
+    @State private var showSettings = false
     
+    @State private var menuId: MenuItem.ID?
+    @State private var subMenuId: SubMenuItem.ID?
     
-    
-    var body: some View {
-        
-        // 전체 메뉴 -> content: 서브 메뉴 -> detail: 뷰
-        NavigationSplitView {
-            List(menuModel.totalMenuItems, selection: $selectedCategoryId) { item in
-                Text(item.name)
-            }
-            .navigationTitle("스토어 관리")
-            
-        } content: {
-            if let selectedCategoryId,
-               let subMenuItems = menuModel.subMenuItems(for: selectedCategoryId) {
-                
-                List(subMenuItems) { item in
-                    Text(item.name)
-                }
-                .listStyle(.plain)
-                .navigationBarTitleDisplayMode(.inline)
-                
+    @ViewBuilder
+    fileprivate func SubMenuDetails(for subMenuId: SubMenuItem.ID?) -> some View {
+        VStack {
+            if let subMenu = model.selectedSubMenuItem(selectedSubMenuId: subMenuId) {
+                subMenu.body
             } else {
-                Text("Please select a category")
-            }
-        } detail: {
-            if let selectedItem {
-                //
-            } else {
-                Text("Please select an item")
+                Text("세부 메뉴를 선택해주세요")
             }
         }
+    }
+
+    
+    fileprivate var model = MenuModel()
+
+    var body: some View {
+        NavigationSplitView(columnVisibility: $navigationStateManager.columnVisibility,
+        sidebar: {
+            List(model.menuItems, selection: $menuId) { menu in
+                Text(menu.name)
+            }
+            .toolbar(content: {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        showSettings.toggle()
+                    } label: {
+                        Image(systemName: "gearshape")
+                    }
+                }
+            })
+            .sheet(isPresented: $showSettings, content: {
+              SettingsView()
+            })
+            .navigationTitle("멋사 전자")
+            
+        }, content: {
+            if let menu = model.menuItem(id: menuId) {
+                List(menu.subMenuItem, selection: $subMenuId) { subMenu in
+                    Text(subMenu.name)
+                }
+            } else {
+                Text("메뉴를 선택해주세요")
+            }
+        }, detail: {
+            SubMenuDetails(for: subMenuId)
+        })
+        .environmentObject(navigationStateManager)
+        
+        
     }
 }
 
