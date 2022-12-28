@@ -30,157 +30,157 @@ struct ProductInventoryView: View {
     ]
     
     var body: some View {
-        
-        VStack(){
-            Divider()
-            productStatusBar
-            
-            // 상품목록 펼쳐보기
-            if  !wideButtonTapped {
-                // 상품 목록 조회 검색 UI
-                VStack(alignment: .leading){
-                    Divider()
-                    //[검색 category - 검색어]
-                    HStack{
-                        Text("검색어")
-                            .font(.headline)
-                        Spacer()
-                            .frame(width: 150)
-                        
-                        VStack(alignment: .leading){
-                            
-                            HStack{
-                                Text("상품명")
-                                    .font(.title3)
-                                TextField("ex) 애플워치", text: $productName)
-                                    .textFieldStyle(.roundedBorder)
-                                    .frame(width: 600)
-                            }
-                            HStack{
-                                Text("상품 코드")
-                                    .font(.title3)
-                                TextField("ex) 상품 코드", text: $productCode)
-                                    .textFieldStyle(.roundedBorder)
-                                    .frame(width: 600)
-                            }
-                        }
-                    }
-                    .padding(10)
-                    Divider()
-                    //[검색 category - 분류]
-                    HStack{
-                        Text("카테고리")
-                            .font(.headline)
-                        Spacer()
-                        
-                        Text("분류:")
-                        Picker("분류를 선택해주세요.", selection: $categorySelect) {
-                            ForEach(sampleCategory,id:\.self) { item in
-                                Text(item)
-                            }
-                        }
-                        .pickerStyle(MenuPickerStyle())
-                        Spacer()
-                    }
-                    .padding(10)
-                    Divider()
-                    //[검색 category - 기간]
-                    HStack{
-                        Text("기간")
-                            .font(.headline)
-                        Spacer()
+        ScrollView{
+            VStack(){
+                Divider()
+                // 전체 상품 상태 바
+                productStatusBar
+                // 상품목록 펼쳐보기
+                if  !wideButtonTapped {
+                    // 상품 목록 조회 검색 UI
+                    VStack(alignment: .leading){
+                        Divider()
+                        //[검색 category - 검색어]
                         HStack{
-                            Text("상품 등록일:")
-                                .font(.title3)
-                            DatePicker("", selection: $startDate, displayedComponents: [.date])
+                            Text("검색어")
+                                .font(.headline)
+                            Spacer()
                                 .frame(width: 150)
-                            Text("     ~")
-                            DatePicker("", selection: $endDate, displayedComponents: [.date])
-                                .frame(width: 150)
-                        }
-                        Spacer()
-                    }
-                    .padding(10)
-                    Divider()
-                    
-                    HStack(alignment: .center){
-                        Spacer()
-                        HStack(spacing: 50){
-                            Button {
-                               sampleArr = sampleData.filter {
-                                   return $0.productName == productName || $0.productId == productCode || $0.productCategory == categorySelect
+                            
+                            VStack(alignment: .leading){
+                                
+                                HStack{
+                                    Text("상품명")
+                                        .font(.title3)
+                                    TextField("ex) 애플워치", text: $productName)
+                                        .textFieldStyle(.roundedBorder)
+                                        .frame(width: 500)
                                 }
-                            } label: {
-                                Text("검색")
+                                HStack{
+                                    Text("상품 코드")
+                                        .font(.title3)
+                                    TextField("ex) 상품 코드", text: $productCode)
+                                        .textFieldStyle(.roundedBorder)
+                                        .frame(width: 500)
+                                }
+                            }
+                        }
+                        .padding(10)
+                        Divider()
+                        //[검색 category - 분류]
+                        HStack{
+                            Text("카테고리")
+                                .font(.headline)
+                            Spacer()
+                            
+                            Text("분류:")
+                            Picker("분류를 선택해주세요.", selection: $categorySelect) {
+                                ForEach(sampleCategory,id:\.self) { item in
+                                    Text(item)
+                                }
+                            }
+                            .pickerStyle(MenuPickerStyle())
+                            Spacer()
+                        }
+                        .padding(10)
+                        Divider()
+                        //[검색 category - 기간]
+                        HStack{
+                            Text("기간")
+                                .font(.headline)
+                            Spacer()
+                            HStack{
+                                Text("상품 등록일:")
                                     .font(.title3)
+                                DatePicker("", selection: $startDate, displayedComponents: [.date])
+                                    .frame(width: 150)
+                                Text("     ~")
+                                DatePicker("", selection: $endDate, displayedComponents: [.date])
+                                    .frame(width: 150)
+                            }
+                            Spacer()
+                        }
+                        .padding(10)
+                        Divider()
+                        
+                        HStack(alignment: .center){
+                            Spacer()
+                            HStack(spacing: 50){
+                                Button {
+                                    sampleArr = sampleData.filter {
+                                        return $0.productName == productName || $0.productId == productCode || $0.productCategory == categorySelect
+                                    }
+                                } label: {
+                                    Text("검색")
+                                        .font(.title3)
+                                }
+                                
+                                Button {
+                                    sampleArr = sampleData
+                                } label: {
+                                    Text("초기화")
+                                        .font(.title3)
+                                    
+                                }
+                                
                             }
                             
-                            Button {
-                                sampleArr = sampleData
-                            } label: {
-                                Text("초기화")
-                                    .font(.title3)
-
-                            }
-
+                            
+                            Spacer()
                         }
-                   
-
-                        Spacer()
+                        .padding(10)
+                        
                     }
-                    .padding(10)
-                    
-                }
-            }
-            
-            Divider()
-            // MARK: - 상품목록 View
-            VStack(alignment: .leading){
-                HStack{
-                    Text("상품 목록 (총 0개)")
-                        .font(.title2)
-                        .padding()
-                    Spacer()
-                    Button {
-                        wideButtonTapped.toggle()
-                    } label: {
-                        Image(systemName: !wideButtonTapped ?
-                              "arrow.up.to.line.compact" : "arrow.down.to.line.compact")
-                    }
-                    .padding(.trailing, 40)
-                    
                 }
                 
                 Divider()
-                // 상품목록 Table
-                ScrollView(.vertical){
-                    LazyVGrid(columns: columns) {
-                        Group{
-                            ForEach(productCategories, id: \.self ) { category in
-                                Text("\(category)")
-                            }
+                // MARK: - 상품목록 View
+                VStack(alignment: .leading){
+                    HStack{
+                        Text("상품 목록 (총 \(sampleArr.count)개)")
+                            .font(.title2)
+                            .padding()
+                        Spacer()
+                        Button {
+                            wideButtonTapped.toggle()
+                        } label: {
+                            Image(systemName: !wideButtonTapped ?
+                                  "arrow.up.to.line.compact" : "arrow.down.to.line.compact")
                         }
-                        .font(.headline)
-                        ForEach(sampleArr.indices, id: \.self) { index in
-                            Text(sampleArr[index].productName)
-                            Text(sampleArr[index].productId)
-                            Text(sampleArr[index].productCategory)
-                            Text("\(sampleArr[index].productCount)")
-                            Button {
-                                currentIndex = index
-                                isTapped.toggle()
-                            } label: {
-                                Text("수정")
-                            }
-                        }
-                        .sheet(isPresented: $isTapped){
-                            ProductModifyView(index: $currentIndex)
-                        }
-                        .padding()
+                        .padding(.trailing, 40)
+                        
                     }
+                    
+                    Divider()
+                    // 상품목록 Table
+                        LazyVGrid(columns: columns) {
+                            Group{
+                                ForEach(productCategories, id: \.self ) { category in
+                                    Text("\(category)")
+                                }
+                            }
+                            .font(.headline)
+                            ForEach(sampleArr.indices, id: \.self) { index in
+                                Text(sampleArr[index].productName)
+                                Text(sampleArr[index].productId)
+                                Text(sampleArr[index].productCategory)
+                                Text("\(sampleArr[index].productCount)")
+                                Button {
+                                    currentIndex = index
+                                    isTapped.toggle()
+                                } label: {
+                                    Text("수정")
+                                }
+                            }
+                            .sheet(isPresented: $isTapped){
+                                ProductModifyView(index: $currentIndex)
+                            }
+                            .padding()
+                        }
+                    
                 }
+                Spacer()
             }
-            Spacer()
         }
         .navigationTitle("상품 조회/수정")
     }
@@ -204,7 +204,7 @@ extension ProductInventoryView{
                 }
                 
                 HStack{
-                    Image(systemName: "cart.fill")
+                    Image(systemName: "cart.fill.badge.minus")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 50,height: 50)
@@ -222,7 +222,7 @@ extension ProductInventoryView{
                         .frame(width: 50,height: 50)
                     VStack(alignment: .leading){
                         Text("판매중")
-                        Text("0 ")
+                        Text("\(sampleData.count)")
                             .font(.title2) + Text("건")
                     }
                     .padding()
