@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct Inquiry: Identifiable {
-    let id = UUID()
+struct Inquiry: Identifiable, Hashable {
+    let id = UUID().uuidString
     let orderNumber: String
     let productId: String
     let productName: String
@@ -17,8 +17,9 @@ struct Inquiry: Identifiable {
     let dateOfReception: String
     let isAnswered: Bool
     
+    //연산 프로퍼티
     var isAnsweredInt : Int {
-        isAnswered ? 1 : 0
+        isAnswered ? 0 : 1
     }
 }
 
@@ -26,8 +27,8 @@ struct InquiryView: View {
     @State private var pickerSelection : Int = 0
     @State private var sortOrder = [KeyPathComparator(\Inquiry.dateOfReception)]
     @State var searchUserText : String = ""
-    @State private var selectedInquiry = Set<Inquiry.ID>()
-    
+    @State private var selectedInquiry: Inquiry.ID?
+    @State private var path: [Inquiry] = []
     @State private var response: String = ""
     @State private var startDate = Date()
     @State private var endDate = Date()
@@ -61,7 +62,7 @@ struct InquiryView: View {
     
     var body: some View {
         
-        NavigationStack {
+        NavigationStack(path: $path) {
             VStack {
                 Section{
                     HStack{
@@ -83,9 +84,9 @@ struct InquiryView: View {
                         Text("답변여부")
                         Spacer()
                         Picker("답변 여부", selection: $selectedState) {
-                                Text("미답변").tag(inquiryState.inProgress)
-                                Text("답변완료").tag(inquiryState.completed)
-                                Text("전체").tag(inquiryState.all)
+                            Text("미답변").tag(inquiryState.inProgress)
+                            Text("답변완료").tag(inquiryState.completed)
+                            Text("전체").tag(inquiryState.all)
                         }
                         Spacer()
                     }
@@ -101,13 +102,18 @@ struct InquiryView: View {
                         TableColumn("질문자 ID", value: \.questionerId)
                         TableColumn("질문자 이름", value: \.questionerName)
                         TableColumn("문의 접수 일", value: \.dateOfReception)
-//                        TableColumn("답변 완료 여부", value: \.isAnsweredInt) { store in Image(systemName: store.isAnswered ? "checkmark" : "xmark").foregroundColor(store.isAnswered ? Color.green : Color.red)
-//                        }
+                        TableColumn("답변 완료 여부") { inquiry in Image(systemName: inquiry.isAnswered ? "checkmark" : "xmark").foregroundColor(inquiry.isAnswered ? Color.green : Color.red)
+                        }
+                    }.onChange(of: selectedInquiry) { newElement in
+                        if let newElement,
+                           let inquiry = inquiries.first(where: { $0.id == newElement }) {
+                            path.append(inquiry)
+                        }
                     }
                 }.searchable(text: $searchUserText, prompt: "검색")
-
-                
-            }.modifier(CloseUpDetailModifier())
+            }
+        }.navigationDestination(for: Inquiry.self) {inquiry in
+            InquiryDetailView(inquiry: inquiry)
         }
     }
 }
