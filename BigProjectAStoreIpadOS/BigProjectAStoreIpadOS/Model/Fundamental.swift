@@ -49,3 +49,4 @@ struct StoreInfo: Codable {
 enum StoreApproveState {
 	case needSubmit, submitted, approved, banned
 }
+ㄷ
