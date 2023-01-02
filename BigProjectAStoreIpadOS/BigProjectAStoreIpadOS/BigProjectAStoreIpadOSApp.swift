@@ -6,9 +6,21 @@
 //
 
 import SwiftUI
+import FirebaseCore
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+	func application(_ application: UIApplication,
+					 didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+		FirebaseApp.configure()
+		
+		return true
+	}
+}
 
 @main
 struct BigProjectAStoreIpadOSApp: App {
+	@UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+	
     @State var isShownFullScreenCover = true
     
     var body: some Scene {
@@ -17,6 +29,7 @@ struct BigProjectAStoreIpadOSApp: App {
                 .fullScreenCover(isPresented: $isShownFullScreenCover) {
                     LoginView(isShownFullScreenCover: $isShownFullScreenCover)
                 }
+				.environmentObject(StoreNetworkManager(withCategory: .store))
         }
     }
 }
