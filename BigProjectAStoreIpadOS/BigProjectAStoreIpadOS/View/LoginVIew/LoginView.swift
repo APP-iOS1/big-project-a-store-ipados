@@ -27,6 +27,7 @@ struct LoginView: View {
                 
                 Button {
                     // FIXME: Auth에서 로그인 상태 가져오기
+//                    let loginResult = 
                     isLoggedin = false
                 } label: {
                     Text("로그인")

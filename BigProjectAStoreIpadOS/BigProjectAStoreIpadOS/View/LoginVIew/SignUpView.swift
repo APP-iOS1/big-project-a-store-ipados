@@ -11,13 +11,16 @@ struct SignUpView: View {
     @State private var userID = ""
     @State private var userPassword = ""
     @State private var userPasswordCorrect = ""
-    @State private var userName = ""
-    @State private var userEmail = ""
-    @State private var userPhoneNum = ""
+    @State private var storeName = ""
+    @State private var storeLocation = ""
+    @State private var phoneNumber = ""
     @State private var showingAlert = false
     @State private var isIDChecked = false
     @State private var isPasswordChecked = false
+    @State private var isSignUpChecked = false
     @Environment(\.dismiss) private var dismiss
+    
+    @StateObject var signUpViewModel: SignUpViewModel = SignUpViewModel()
     
     var body: some View {
         VStack() {
@@ -28,11 +31,16 @@ struct SignUpView: View {
                         Text("아이디")
                             .modifier(contentNameModifier())
                         VStack(alignment: .leading) {
-                            TextField("4자 이상 / 영문, 숫자 외 문자 금지", text: $userID)
+                            TextField("이메일을 입력해주세요", text: $userID)
+                                .keyboardType(.emailAddress)
                                 .modifier(contentFieldModifier())
                             HStack() {
                                 Button {
-                                    isIDChecked = true
+                                    Task {
+                                        // FIXME: 서버랑 연결 다시 확인
+//                                        isIDChecked = await signUpViewModel.isEmailDuplicated(currentUserEmail: userID)
+                                        isIDChecked = true
+                                    }
                                 } label: {
                                     Text("중복검사")
                                         .padding(3)
@@ -43,19 +51,23 @@ struct SignUpView: View {
                                 .padding(.horizontal, 10)
                                 
                                 // FIXME: 아이디 다시 입력할 때 텍스트 떠있는 현상 고치기
-                                if isIDChecked {
-                                    if userID.count >= 4 {
-                                        Text("사용 가능한 아이디입니다")
+                                if isValidEmail(testStr: userID) {
+                                    if isIDChecked {
+                                        Text("사용 가능한 이메일입니다")
                                             .foregroundColor(.green)
                                     } else {
-                                        Text("아이디를 다시 확인해주세요")
+                                        Text("중복 체크를 해주세요")
                                             .foregroundColor(.red)
                                     }
+                                } else {
+                                    Text("이메일을 다시 입력해주세요")
+                                        .foregroundColor(.red)
                                 }
                             }
                         }
                     }
                     // MARK: 비밀번호 입력
+                    // FIXME: 비밀번호 정규식 적용
                     HStack(alignment: .top) {
                         Text("비밀번호")
                             .modifier(contentNameModifier())
@@ -100,23 +112,23 @@ struct SignUpView: View {
                 // MARK: 판매자 정보 입력
                 Section {
                     HStack(alignment: .top) {
-                        Text("판매자명")
+                        Text("스토어명")
                             .modifier(contentNameModifier())
-                        TextField("성함을 입력해주세요", text: $userName)
+                        TextField("스토어 이름을 입력해주세요", text: $storeName)
                             .modifier(contentFieldModifier())
                     }
-                    // TODO: 이메일 형식 확인
+                    
                     HStack(alignment: .top) {
-                        Text("이메일")
+                        Text("사업장소재지")
                             .modifier(contentNameModifier())
-                        TextField("이메일을 입력해주세요", text: $userEmail)
-                            .keyboardType(.emailAddress)
+                        TextField("스토어 주소를 입력해주세요", text: $storeLocation)
                             .modifier(contentFieldModifier())
                     }
+
                     HStack(alignment: .top) {
                         Text("연락처")
                             .modifier(contentNameModifier())
-                        TextField("휴대폰 번호를 - 빼고 입력해주세요", text: $userPhoneNum)
+                        TextField("휴대폰 번호를 - 빼고 입력해주세요", text: $phoneNumber)
                             .keyboardType(.numberPad)
                             .modifier(contentFieldModifier())
                     }
@@ -124,20 +136,23 @@ struct SignUpView: View {
                     Text("판매자 정보")
                 }
                 
-                // FIXME: 정보가 완벽하지 않은데 가입으로 넘어가는 현상 고치기
                 Section {
                     HStack {
+                        // TODO: 서버랑 연결해서 회원가입 정보 넘겨주기
                         Button {
+                            if (isIDChecked == true) && (isValidEmail(testStr: userID) == true) && (userPassword.count >= 6) && (userPassword != "" && userPassword == userPasswordCorrect) {
+                                isSignUpChecked = true
+                            }
                             showingAlert = true
                         } label: {
                             Text("가입하기")
                         }.buttonStyle(PlainButtonStyle())
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                             .foregroundColor(.accentColor)
-                            .alert("회원가입 완료", isPresented: $showingAlert) {
-                                Button("Ok") { dismiss() }
+                            .alert(isSignUpChecked ? "회원가입 완료" : "주의", isPresented: $showingAlert) {
+                                Button("Ok") { if isSignUpChecked {dismiss()} }
                             } message: {
-                                Text("가입을 환영합니다")
+                                isSignUpChecked ? Text("가입을 환영합니다") : Text("정보를 다시 확인해주세요")
                             }
                         
                     }
@@ -148,6 +163,13 @@ struct SignUpView: View {
         .textInputAutocapitalization(.never)
         .autocorrectionDisabled()
     }
+    
+    func isValidEmail(testStr: String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailTest.evaluate(with: testStr)
+    }
+    
 }
 
 struct SignUpFieldModifier: ViewModifier {
