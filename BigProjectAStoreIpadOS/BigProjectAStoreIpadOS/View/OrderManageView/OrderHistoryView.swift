@@ -13,29 +13,42 @@ struct OrderHistoryView: View {
     @State private var selectedOrder = Set<CustomerOrder.ID>()
     
     @State private var customerOrders = [
-        CustomerOrder(orderNumber: "1dfsf", orderTime: "2022-12-27 13:36", orderProduct: "맥북 프로", orderOption: "스페이스 그레이_0", orderQuantity: "2", purchaseConfirmation: "N"),
-        CustomerOrder(orderNumber: "2sdef", orderTime: "2022-12-31 09:12", orderProduct: "아이패드", orderOption: "스페이스 그레이_0", orderQuantity: "3", purchaseConfirmation: "Y"),
-        CustomerOrder(orderNumber: "3dfge", orderTime: "2023-01-03 12:00", orderProduct: "에어팟", orderOption: "흰색_0", orderQuantity: "1", purchaseConfirmation: "Y")
+        CustomerOrder(orderNumber: "1dfsf", orderTime: "2022-12-27 13:36", orderProduct: "맥북 프로", orderOption: "스페이스 그레이_0", orderQuantity: 2, purchaseConfirmation: false),
+        CustomerOrder(orderNumber: "2sdef", orderTime: "2022-2-1 09:12", orderProduct: "아이패드", orderOption: "스페이스 그레이_0", orderQuantity: 3, purchaseConfirmation: true),
+        CustomerOrder(orderNumber: "3dfge", orderTime: "2023-01-03 12:00", orderProduct: "에어팟", orderOption: "흰색_0", orderQuantity: 1, purchaseConfirmation: false),
+        CustomerOrder(orderNumber: "4ddge", orderTime: "2020-01-01 22:00", orderProduct: "에어팟", orderOption: "흰색_0", orderQuantity: 6, purchaseConfirmation: true)
     ]
     
-    // 정렬 지원 -
-    @State private var sortOrder = [KeyPathComparator(\CustomerOrder.orderNumber)]
+    // 정렬 지원 - 일단은 주문 시간 순서대로 정렬
+    @State private var sortOrder = [KeyPathComparator(\CustomerOrder.orderTime)]
     
     var body: some View {
-        VStack {
-            Table (customerOrders, selection: $selectedOrder) {
-                TableColumn("주문 번호", value: \.orderNumber)
-                TableColumn("주문 시간", value: \.orderTime)
-                TableColumn("주문 상품", value: \.orderProduct)
-                TableColumn("주문 옵션", value: \.orderOption)
-                TableColumn("주문 수량", value: \.orderQuantity)
-                TableColumn("구매확인", value: \.purchaseConfirmation)
-  
-            }
-            .onChange(of: sortOrder) {
-                customerOrders.sort(using: $0)
-            }
-        }//.modifier(CloseUpDetailModifier())
+        NavigationStack {
+            VStack {
+                Table (customerOrders, selection: $selectedOrder, sortOrder: $sortOrder) {
+                    TableColumn("주문 번호", value: \.orderNumber)
+                    TableColumn("주문 시간", value: \.orderTime)
+                    TableColumn("주문 상품", value: \.orderProduct)
+                    TableColumn("주문 옵션") { order in
+                        Text("\(order.orderOption)")
+                    }
+                    TableColumn("주문 수량") { order in
+                        Text("\(order.orderQuantity)")
+                        
+                    }
+                    TableColumn("구매확인", value: \.purchaseConfirmationInt) { order in
+                        Text(order.purchaseConfirmation ? "Y": "N")
+                    }
+                }
+                .padding(.vertical, 20)
+                .onChange(of: sortOrder) {
+                    customerOrders.sort(using: $0)
+                }
+            }//v
+            .navigationTitle("주문 내역")
+        }//navigationstack
+        //.modifier(CloseUpDetailModifier())
+        
     }//body
 }
 

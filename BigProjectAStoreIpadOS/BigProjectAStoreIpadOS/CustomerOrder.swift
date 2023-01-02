@@ -13,8 +13,11 @@ struct CustomerOrder: Identifiable {
     var orderTime: String
     var orderProduct: String
     var orderOption: String
-    var orderQuantity: String
-    var purchaseConfirmation: String
+    var orderQuantity: Int
+    var purchaseConfirmation: Bool
+    var purchaseConfirmationInt: Int {
+        purchaseConfirmation ? 0 : 1
+    }
     
 }
 
