@@ -7,24 +7,24 @@
 
 import SwiftUI
 import PhotosUI
-import Combine
 
 struct ProductModifyView: View {
     
-    @Binding var index: Int
+    @Binding var productId: String
     
     @Environment(\.editMode) private var editMode
-    
+    @Environment(\.dismiss) private var dismiss
     @State private var disableEdit = true
     //상품명
     @State private var productName: String = ""
     @State private var productCategory: String = ""
     //옵션(현재는 더미데이터)
-    @State private var productOption: [String:Int] = ["화이트":1,"블랙":2,"그레이":1]
-    //텍스트필드1번 - 색상을 입력받음
-    @State private var textFieldOptionColor: String = ""
-    //텍스트필드2번 - 수량을 입력받음
-    @State private var textFieldOptionCount: String = ""
+    @State private var productOption: [String:[String]] = ["램추가":["8GB_10000","16GB_20000"],"SSD추가":["256GB_10000","512GB_20000"]]
+    
+    //텍스트필드1번 - 옵션을 입력받음
+    @State private var textFieldOption: String = ""
+    @State private var textFieldOptionDetails: String = ""
+    @State private var splitText = ""
     //상품 설명
     @State private var productDescription: String = ""
     
@@ -34,13 +34,19 @@ struct ProductModifyView: View {
     //상품이미지
     @State private var photoArray: [UIImage] = []
     
-    //Delete Option
-    func optionDelete(at offsets: IndexSet){
-        if let ndx = offsets.first {
-            let item = productOption.sorted(by: >)[ndx]
-            productOption.removeValue(forKey: item.key)
-        }
-    }
+    @State private var editAlert = false
+    @State private var product = ProductData(productName: "", productId: "", productCategory: "", productCount: 0)
+    
+    
+    
+//    //Delete Option
+//    func optionDelete(at offsets: IndexSet){
+//        if let ndx = offsets.first {
+//            let item = productOption.sorted(by: >)[ndx]
+//            productOption.removeValue(forKey: item.key)
+//        }
+//    }
+    
     //사진 입력받는 로직
     func photoLogic() -> some View {
         PhotosPicker(
@@ -66,64 +72,71 @@ struct ProductModifyView: View {
                 }
             }
     }
-    
+    private func convertTextLogic() {
+        let convertTextStep1 = textFieldOptionDetails.replacingOccurrences(of: " ", with: "_")
+        let convertTextStep2 = convertTextStep1.components(separatedBy: ",")
+        if productOption.keys.contains(textFieldOption) {
+            productOption.updateValue(productOption[textFieldOption]! + convertTextStep2, forKey: textFieldOption)
+        } else {
+            productOption[textFieldOption] = convertTextStep2
+        }
+        print(productOption)
+    }
     var body: some View {
         NavigationStack {
             VStack {
                 Form {
                     //상품명
                     Section(header: Text("상품명").font(.title)) {
-                        TextField("", text: $productName)
-                            .disabled(disableEdit)
+                        TextField("", text: $product.productName)
                     }
                     //상품 카테고리
                     Section(header: Text("상품카테고리").font(.title)) {
-                        TextField("", text: $productCategory)
-                            .disabled(disableEdit)
+                        TextField("", text: $product.productCategory)
                     }
                     //상품 옵션
                     Section(header: Text("옵션").font(.title)) {
-                        ForEach(productOption.sorted(by: >), id:\.key) {key, value  in
-                            HStack {
-                                Text("색상: \(key)")
-                                Text("수량: \(value)개")
+                        ForEach(Array(productOption.keys.enumerated()), id: \.element) { _, key in
+                            if let productOptionKey = productOption[key] {
+                                ForEach(productOptionKey.indices, id: \.self) { i in
+                                    Text("[\(key)] \(productOptionKey[i])")
+                                }
                             }
-                                
                         }
-                        .onDelete(perform: optionDelete)
                         
                         HStack(spacing: 20) {
-                            TextField("색상", text: $textFieldOptionColor)
+                            TextField("[옵션명 작성]", text: $textFieldOption)
+                                .padding(.horizontal, 20)
+                                .frame(maxWidth: 250)
+                            TextField("[세부내용 작성작성] ex)8기가 10000원,16기가 2만원", text: $textFieldOptionDetails)
                                 .padding(.horizontal, 20)
                                 .frame(maxWidth: .infinity)
-                            TextField("수량", text: $textFieldOptionCount)
-                                .keyboardType(.numberPad)
-                                .padding(.horizontal, 20)
-                                .frame(maxWidth: .infinity)
-                                .onReceive(Just(textFieldOptionCount)) { value in
-                                    let filteredCount = value.filter {"0123456789".contains($0)}
-                                    if filteredCount != value {
-                                        self.textFieldOptionCount = filteredCount
-                                    }
-                                }
                             Button("추가") {
-                                productOption.updateValue(Int(textFieldOptionCount)!, forKey: textFieldOptionColor)
+                                if !textFieldOption.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+                                   !textFieldOptionDetails.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty{
+                                    convertTextLogic()
+                                }
                             }
-                            .disabled(disableEdit)
-                            .buttonStyle(.plain)
                         }
                     }
                     //상품 이미지
                     Section(header: Text("상품이미지").font(.title)) {
                         ScrollView(.horizontal) {
                             HStack{
-                                ForEach(photoArray,id:\.self) { photo in
-                                    Image(uiImage: photo)
-                                        .resizable()
-                                        .frame(width: 200, height: 200)
-                                        .onTapGesture {
-                                            
+                                ForEach(photoArray.indices,id:\.self) { index in
+                                    ZStack{
+                                        Image(uiImage: photoArray[index])
+                                            .resizable()
+                                            .frame(width: 200, height: 200)
+                                        Button {
+                                            photoArray.remove(at:index)
+                                        } label: {
+                                            Image(systemName: "minus.circle.fill")
+                                                .foregroundColor(.red)
                                         }
+                                        .offset(x: 80 ,y:-80)
+                                    }
+                                    
                                 }
 //                                .onDelete {}
                                 Spacer()
@@ -136,7 +149,6 @@ struct ProductModifyView: View {
                     Section(header: Text("상품설명").font(.title)) {
                         TextEditor(text: $productDescription)
                             .frame(height:200)
-                            .disabled(disableEdit)
                     }
                 }
             
@@ -144,25 +156,54 @@ struct ProductModifyView: View {
 
             }
             .toolbar{
+                
                 ToolbarItem(id: "trailing") {
                     Button {
-                        disableEdit.toggle()
+                        if !disableEdit {
+                            
+                            disableEdit.toggle()
+                        }else{
+                            editAlert.toggle()
+                            disableEdit.toggle()
+                        }
+                        
+
                     } label: {
-                        Text(disableEdit ? "Edit" : "Done")
+                        Text("Done")
                     }
+                    
 
                 }
             }
             .onAppear{
-                productName = sampleData[index].productName
-                productCategory = sampleData[index].productId
+                sampleData.forEach {
+                    if $0.productId == productId{
+                        product = $0
+                    }
+                }
             }
         }
+        .alert("저장하시겠습니까?", isPresented: $editAlert){
+            Button("아니요"){
+                dismiss()
+            }
+            Button ("네"){
+                dismiss()
+            }
+        } message:{
+            Text("기존에 있던 내용들이 수정됩니다.")
+        }
+        .modifier(CloseUpDetailModifier())
+            
     }
+    
+    //옵션텍스트 변환 함수
+    
 }
 
 struct ProductModifyView_Previews: PreviewProvider {
     static var previews: some View {
-        ProductModifyView(index: .constant(0))
+        ProductModifyView(productId: .constant(""))
+            .environmentObject(NavigationStateManager())
     }
 }

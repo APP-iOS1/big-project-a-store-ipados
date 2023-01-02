@@ -19,16 +19,14 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 @main
 struct BigProjectAStoreIpadOSApp: App {
-	@UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-	
-    @State var isShownFullScreenCover = true
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     var body: some Scene {
         WindowGroup {
                 ContentView()
                 .fullScreenCover(isPresented: $isShownFullScreenCover) {
                     OpenStoreView(storeName: "", storeAddress: "", isShownFullScreenCover: $isShownFullScreenCover)
                 }
-				.environmentObject(StoreNetworkManager())
+        				.environmentObject(StoreNetworkManager())
         }
     }
 }

@@ -7,11 +7,38 @@
 
 import SwiftUI
 
+struct Inquiry: Identifiable {
+    let id = UUID()
+    let orderNumber: String
+    let productId: String
+    let productName: String
+    let questionerId: String
+    let questionerName: String
+    let dateOfReception: String
+    let isAnswered: Bool
+    
+    var isAnsweredInt : Int {
+        isAnswered ? 1 : 0
+    }
+}
+
 struct InquiryView: View {
+    @State private var pickerSelection : Int = 0
+    @State private var sortOrder = [KeyPathComparator(\Inquiry.dateOfReception)]
+    @State var searchUserText : String = ""
+    @State private var selectedInquiry = Set<Inquiry.ID>()
+    
     @State private var response: String = ""
-    @State private var date = Date()
+    @State private var startDate = Date()
+    @State private var endDate = Date()
     @State private var isDealt:Bool = false
-    @State private var isShowingEditor: Bool = false
+    @State private var inquiries = [
+        Inquiry(orderNumber: "1111", productId: "10101", productName: "iPad", questionerId: "hh333", questionerName: "추현호", dateOfReception: "1월 1일", isAnswered: false),
+        Inquiry(orderNumber: "2222", productId: "10101", productName: "iPhon14 Pro", questionerId: "jh333", questionerName: "이주희", dateOfReception: "1월 2일", isAnswered: true),
+        Inquiry(orderNumber: "3333", productId: "20202", productName: "iPhon12", questionerId: "hh555", questionerName: "최한호", dateOfReception: "1월 3일", isAnswered: false),
+        Inquiry(orderNumber: "4444", productId: "30303", productName: "iPad", questionerId: "sh454", questionerName: "김수현", dateOfReception: "1월 4일", isAnswered: true),
+        Inquiry(orderNumber: "5555", productId: "40404", productName: "iPad mini", questionerId: "sh121", questionerName: "정세훈", dateOfReception: "1월 5일", isAnswered: false)
+    ]
     
     enum inquiryState: String, CaseIterable, Identifiable {
         case inProgress, completed, all
@@ -19,79 +46,68 @@ struct InquiryView: View {
     }
     
     @State private var selectedState: inquiryState = .inProgress
-
+    
+    var results: [Inquiry] {
+        //filter를 날짜로 한번하고 그 이후 필터 진행
+        let dateFilteredData = inquiries
+        
+        if !searchUserText.isEmpty && pickerSelection == 0 {
+            return dateFilteredData.filter {
+                $0.productName .contains(searchUserText)
+            }
+        }
+        return dateFilteredData
+    }
     
     var body: some View {
         
         NavigationStack {
             VStack {
-                Form {
-                    Section(header: Text("문의 접수일")){
-                        VStack{
-                            DatePicker("부터", selection: $date, displayedComponents: [.date])
-                            DatePicker("까지", selection: $date, displayedComponents: [.date])
+                Section{
+                    HStack{
+                        Text("문의 기간")
+                        Spacer()
+                        HStack{
+                            DatePicker  ("", selection: $startDate, displayedComponents: [.date])
+                                .frame(width: 150)
+                            Text("     ~")
+                            DatePicker("", selection: $endDate, displayedComponents: [.date])
+                                .frame(width: 150)
                         }
+                        Spacer()
                     }
-                    
-                    Section(header: Text("문의 답변 여부")){
-                        List {
-                          Picker("답변 여부", selection: $selectedState) {
-                              Text("미답변").tag(inquiryState.inProgress)
-                              Text("답변완료").tag(inquiryState.completed)
-                              Text("전체").tag(inquiryState.all)
-                          }
+                }.padding()
+                
+                Section{
+                    HStack {
+                        Text("답변여부")
+                        Spacer()
+                        Picker("답변 여부", selection: $selectedState) {
+                                Text("미답변").tag(inquiryState.inProgress)
+                                Text("답변완료").tag(inquiryState.completed)
+                                Text("전체").tag(inquiryState.all)
                         }
+                        Spacer()
                     }
-                    
-                    Section(header: Text("문의 내역")){
-                        DisclosureGroup(
-                            content: {
-                                Text("배송이 너무느려 언제와 답변 빨리 안하면 반품한다")
-                                Button {
-                                    isShowingEditor = true
-                                } label: {
-                                    Text("답변 작성")
-                                }
-
-                            },
-                            label: {
-                                Text("배송 언제 와요?")
-                            }
-                        )
-                        DisclosureGroup(
-                            content: {
-                                Text("배송이 너무느려 언제와 답변 빨리 안하면 반품한다")
-                            },
-                            label: {
-                                Text("언제오냐고")
-                            }
-                            
-                        )
-                        DisclosureGroup(
-                            content: {
-                                Text("배송이 너무느려 언제와 답변 빨리 안하면 반품한다")
-                            },
-                            label: {
-                                Text("언제")
-                            }
-                            
-                        )
-                    }
-                    Section(header: Text("답변 작성")) {
-                        if isShowingEditor == true {
-                            TextEditor(text: $response)
-                                .frame(height:200)
-                            
-                            Button {
-                                isShowingEditor = false
-                            } label: {
-                                Text("답변 등록")
-                            }
-                        }
-                    }
-                    
                 }
-            }
+                .padding()
+                
+                Text("문의내역")
+                Section{
+                    Table(inquiries, selection: $selectedInquiry) {
+                        TableColumn("주문 번호", value: \.orderNumber)
+                        TableColumn("제품 코드", value: \.productId)
+                        TableColumn("제품 명", value: \.productName)
+                        TableColumn("질문자 ID", value: \.questionerId)
+                        TableColumn("질문자 이름", value: \.questionerName)
+                        TableColumn("문의 접수 일", value: \.dateOfReception)
+//                        TableColumn("답변 완료 여부", value: \.isAnsweredInt) { store in Image(systemName: store.isAnswered ? "checkmark" : "xmark").foregroundColor(store.isAnswered ? Color.green : Color.red)
+//                        }
+                    }
+                }.searchable(text: $searchUserText, prompt: "검색")
+
+                
+            }.modifier(CloseUpDetailModifier())
         }
     }
 }
@@ -99,5 +115,6 @@ struct InquiryView: View {
 struct InquiryView_Previews: PreviewProvider {
     static var previews: some View {
         InquiryView()
+            .environmentObject(NavigationStateManager())
     }
 }
