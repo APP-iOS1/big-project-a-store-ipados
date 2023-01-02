@@ -76,8 +76,17 @@ struct ProductRegisterView: View {
         print(productOption)
     }
     
+    private func checkProductRegistraion() {
+        if !((productName.isEmpty) && (productCategory.isEmpty)) {
+            print("성공적으로 등록 될 예정")
+            //뷰 벗어나는 코드 작성하기
+        }
+        else {
+            print("무언가 작성하지 않았음")
+        }
+    }
+    
     var body: some View {
-        NavigationStack {
             VStack {
                 Form {
                     //상품명
@@ -105,7 +114,12 @@ struct ProductRegisterView: View {
                             TextField("예시: 8기가 10000원,16기가 2만원", text: $textFieldOptionDetails)
                                 .padding(.horizontal, 20)
                                 .frame(maxWidth: .infinity)
-                            Button("추가") { convertTextLogic() }
+                            Button("추가") {
+                                if !textFieldOptionDetails.isEmpty {
+                                    convertTextLogic()
+                                }
+                                
+                            }
                         }
                     }
                     //상품 이미지
@@ -132,13 +146,13 @@ struct ProductRegisterView: View {
                 }
                 .navigationTitle(Text("상품 등록"))
                 Button {
-                    //
+                    checkProductRegistraion()
                 } label: {
-                    Text("등록하기")
+                    Text("상품 등록하기")
                 }
             }
-        }.modifier(CloseUpDetailModifier())
-
+            .modifier(CloseUpDetailModifier())
+        
     }
 }
 
