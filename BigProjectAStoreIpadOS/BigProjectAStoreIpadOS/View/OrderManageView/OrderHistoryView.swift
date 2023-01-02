@@ -7,29 +7,34 @@
 
 import SwiftUI
 
+
 struct OrderHistoryView: View {
-    // 나중에 customerOrderVM 필요할 것 같아서 일단 만들어보고 있었음
-    @StateObject private var customerOrderVM: CustomerOrderViewModel = CustomerOrderViewModel()
-    @State private var orderConfirmSelection: Int = 1
+    // 표에서 선택 지원
+    @State private var selectedOrder = Set<CustomerOrder.ID>()
     
-    // 그리드 6개씩 보여주기 위해
-    var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 6)
+    @State private var customerOrders = [
+        CustomerOrder(orderNumber: "1dfsf", orderTime: "2022-12-27 13:36", orderProduct: "맥북 프로", orderOption: "스페이스 그레이_0", orderQuantity: "2", purchaseConfirmation: "N"),
+        CustomerOrder(orderNumber: "2sdef", orderTime: "2022-12-31 09:12", orderProduct: "아이패드", orderOption: "스페이스 그레이_0", orderQuantity: "3", purchaseConfirmation: "Y"),
+        CustomerOrder(orderNumber: "3dfge", orderTime: "2023-01-03 12:00", orderProduct: "에어팟", orderOption: "흰색_0", orderQuantity: "1", purchaseConfirmation: "Y")
+    ]
     
-    
-    // 주문 내역 부분
-    let orderHistoryHeader: [String] = ["주문 번호", "주문 시간", "주문 상품", "주문 옵션", "수량", "구매확정 여부"]
-    
-    // 임의 주문 데이터
-    let dummyDataTotal: [String] = ["1dfsf", "2022-12-27 13:36",  "맥북 프로", "스페이스 그레이", "2", "N", "2adsfg", "2022-12-28 19:36",  "아이패드", "- ", "1", "Y" ]
-    let dummyDataYes: [String] = ["2adsfg", "2022-12-28 19:36",  "아이패드", "- ", "1", "Y"]
-    let dummyDataNo: [String] = ["1dfsf", "2022-12-27 13:36",  "맥북 프로", "스페이스 그레이", "2", "N"]
-    @State var showData: [String] = []
+    // 정렬 지원 -
+    @State private var sortOrder = [KeyPathComparator(\CustomerOrder.orderNumber)]
     
     var body: some View {
-        NavigationStack {
-            VStack {
-                
-            }//vstack
+        VStack {
+            Table (customerOrders, selection: $selectedOrder) {
+                TableColumn("주문 번호", value: \.orderNumber)
+                TableColumn("주문 시간", value: \.orderTime)
+                TableColumn("주문 상품", value: \.orderProduct)
+                TableColumn("주문 옵션", value: \.orderOption)
+                TableColumn("주문 수량", value: \.orderQuantity)
+                TableColumn("구매확인", value: \.purchaseConfirmation)
+  
+            }
+            .onChange(of: sortOrder) {
+                customerOrders.sort(using: $0)
+            }
         }//.modifier(CloseUpDetailModifier())
     }//body
 }
@@ -39,7 +44,7 @@ struct OrderHistoryView: View {
 struct OrderHistory_Previews: PreviewProvider {
     static var previews: some View {
         OrderHistoryView()
-            .environmentObject(NavigationStateManager())
+            //.environmentObject(NavigationStateManager())
     }
 }
 
@@ -94,3 +99,5 @@ struct OrderHistory_Previews: PreviewProvider {
  }.modifier(CloseUpDetailModifier())
 
  */
+
+

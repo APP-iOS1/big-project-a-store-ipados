@@ -5,7 +5,7 @@
 //  Created by Sue on 2022/12/27.
 //
 
-import Foundation
+import SwiftUI
 
 struct CustomerOrder: Identifiable {
     let id = UUID()
@@ -13,10 +13,12 @@ struct CustomerOrder: Identifiable {
     var orderTime: String
     var orderProduct: String
     var orderOption: String
-    var orderQuantity: Int
+    var orderQuantity: String
     var purchaseConfirmation: String
     
 }
+
+
 
 //struct CustomerOrder: Identifiable, Hashable{
 //    var id = UUID()

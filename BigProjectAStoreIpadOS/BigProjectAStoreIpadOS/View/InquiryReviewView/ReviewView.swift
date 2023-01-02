@@ -72,7 +72,7 @@ struct ReviewView: View {
                                 DatePicker("", selection: $reviewWriteStartDate, in: ...Date(), displayedComponents: .date)
                                 Text("~")
                                 DatePicker("", selection: $reviewWriteEndDate, in: ...Date(), displayedComponents: .date)
-                            }.frame(width: 280)
+                            }.frame(width: 260)
                         }//vstack
                         Spacer()
                     }
@@ -101,7 +101,7 @@ struct ReviewView: View {
                         .padding(.trailing, 20)
                         
                         Toggle(isOn: $reviewSeperateMonth) {
-                            Text("한달사용리뷰")
+                            Text("한달사용 리뷰")
                                 .font(.title3)
                         }
                         .toggleStyle(CheckboxStyle())
@@ -118,7 +118,7 @@ struct ReviewView: View {
                     HStack {
                         Text("리뷰 타입")
                             .font(.title3)
-                            .padding(.trailing, 99)
+                            .padding(.trailing, 109)
                         Spacer()
                         Toggle(isOn: $reviewTypeTotal) {
                             Text("전체")
@@ -128,7 +128,7 @@ struct ReviewView: View {
                         .padding(.trailing, 20)
                         
                         Toggle(isOn: $reviewTypePhoto) {
-                            Text("포토리뷰")
+                            Text("포토 리뷰")
                                 .font(.title3)
                         }
                         .toggleStyle(CheckboxStyle())
@@ -142,7 +142,7 @@ struct ReviewView: View {
                         .padding(.trailing, 20)
                         
                         Toggle(isOn: $reviewTypeText) {
-                            Text("텍스트리뷰")
+                            Text("텍스트 리뷰")
                                 .font(.title3)
                         }
                         .toggleStyle(CheckboxStyle())
@@ -158,8 +158,8 @@ struct ReviewView: View {
                     HStack {
                         Text("카테고리")
                             .font(.title3)
-//                            .padding(.trailing, 70)
-                        Spacer()
+                            .padding(.trailing, 100)
+                        //Spacer()
                         Picker(selection: $highCategorySelection, label: Text("카테고리 상위")) {
                             ForEach(Array(highCategory.enumerated()), id: \.offset) { idx, item in
                                 Text("\(item)").tag(idx)
@@ -167,7 +167,7 @@ struct ReviewView: View {
                         }
                         .foregroundColor(.black)
                         .padding(.top, 10)
-                        .padding(.leading, 10)
+                        .padding(.leading, 80)
                         .font(.title2)
                         .pickerStyle(.automatic)
                         
@@ -178,7 +178,7 @@ struct ReviewView: View {
                         }
                         .foregroundColor(.black)
                         .padding(.top, 10)
-                        .padding(.leading, 10)
+//                        .padding(.trailing, )
                         .font(.title2)
                         .pickerStyle(.automatic)
                         Spacer()
