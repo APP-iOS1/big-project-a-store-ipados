@@ -16,6 +16,10 @@ struct ContentView: View {
     @State private var menuId: MenuItem.ID?
     @State private var subMenuId: SubMenuItem.ID?
     
+    @State private var haveStore = true
+    @State private var isLoggedin = true
+    @State private var isStoreApproved = true
+    
     @ViewBuilder
     fileprivate func SubMenuDetails(for subMenuId: SubMenuItem.ID?) -> some View {
         VStack {
@@ -63,6 +67,15 @@ struct ContentView: View {
         })
         .environmentObject(navigationStateManager)
         .navigationSplitViewStyle(.balanced)
+        .fullScreenCover(isPresented: $isLoggedin) {
+            LoginView(isLoggedin: $isLoggedin)
+        }
+        .fullScreenCover(isPresented: $haveStore) {
+            OpenStoreView(haveStore: $haveStore)
+        }
+        .fullScreenCover(isPresented: $isStoreApproved) {
+            WaitingView(isStoreApproved: $isStoreApproved)
+        }
     }
 }
 

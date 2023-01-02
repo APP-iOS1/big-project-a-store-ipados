@@ -9,14 +9,9 @@ import SwiftUI
 
 @main
 struct BigProjectAStoreIpadOSApp: App {
-    @State var isShownFullScreenCover = true
-    
     var body: some Scene {
         WindowGroup {
-                ContentView()
-                .fullScreenCover(isPresented: $isShownFullScreenCover) {
-                    LoginView(isShownFullScreenCover: $isShownFullScreenCover)
-                }
+            ContentView()
         }
     }
 }
