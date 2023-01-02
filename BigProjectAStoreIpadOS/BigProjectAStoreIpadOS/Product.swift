@@ -24,7 +24,6 @@ var sampleData:[ProductData] = [
     ProductData(productName: "애플워치", productId: "fffff", productCategory: "전자시계", productCount: 143),
     ProductData(productName: "아이패드", productId: "ggggg", productCategory: "테블릿", productCount: 95),
     ProductData(productName: "갤탭", productId: "hhhhh", productCategory: "테블릿", productCount: 23)
-    
 ]
 
 var sampleCategory = [

@@ -77,7 +77,7 @@ struct ProductRegisterView: View {
     }
     
     var body: some View {
-        NavigationStack {
+
             VStack {
                 Form {
                     //상품명
@@ -130,15 +130,17 @@ struct ProductRegisterView: View {
                         
                     }
                 }
-                .navigationTitle(Text("상품 등록"))
+       
                 Button {
                     //
                 } label: {
                     Text("등록하기")
                 }
             }
-        }.modifier(CloseUpDetailModifier())
-
+            .navigationTitle(Text("상품 등록"))
+//            .navigationBarBackButtonHidden(true)
+//            .navigationBarItems(leading: <#T##L#>, trailing: <#T##T#>)
+   
     }
 }
 
