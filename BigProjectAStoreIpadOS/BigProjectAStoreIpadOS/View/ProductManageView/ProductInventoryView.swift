@@ -9,23 +9,25 @@ import SwiftUI
 
 struct ProductInventoryView: View {
     
-    
     @State private var wideButtonTapped = false // 상품목록 펼치기
-    @State private var currentIndex = 0 // 상품 dataindex
     @State private var sampleArr =  sampleData
     @State private var isTapped = false // 수정 버튼
+    
+    // [Data Picker]
     @State private var startDate = Date() // 상품 등록일(1)
-    @State private var endDate = Date() // 상품 등록일
-    @State private var categorySelect = sampleCategory[0] // 상품 카테고리 선택 피커
+    @State private var endDate = Date() // 상품 등록일 (2)
+    
+    // [Product, 상품 변수]
     @State private var productName = "" // 상품명
     @State private var productCode = "" // 상품 코드
     
+    //[Table Option]
     @State private var deleteTapped = false  // 상품 삭제 alert
     @State private var deleteItemIndex = 0   // 선택 상품 index
     @State private var sortOrder = [KeyPathComparator(\ProductData.productCount)]
     @State private var selection: ProductData.ID?
     
-
+    
     let columns = [
         GridItem(.flexible(),alignment: .center),
         GridItem(.flexible(),alignment: .center),
@@ -36,8 +38,7 @@ struct ProductInventoryView: View {
     
     var body: some View {
         NavigationStack{
-            
-            Group{
+            VStack{
                 Divider()
                 // 전체 상품 상태 바
                 productStatusBar
@@ -67,7 +68,7 @@ struct ProductInventoryView: View {
                         }
                         .padding(10)
                         Divider()
-
+                        
                         //[검색 category - 기간]
                         HStack{
                             Text("기간")
@@ -80,7 +81,7 @@ struct ProductInventoryView: View {
                                 
                                 DatePicker("", selection: $startDate, displayedComponents: [.date])
                                     .frame(width: 100)
-                                    
+                                
                                 Text("     ~")
                                 DatePicker("", selection: $endDate, displayedComponents: [.date])
                                     .frame(width: 100)
@@ -169,15 +170,6 @@ struct ProductInventoryView: View {
                             Text("\(product.productCount)")
                         }
                         
-//                        TableColumn("상세 설명") {product in
-//                            Button {
-//
-//                            } label: {
-//                                Text("상세설명")
-//                            }
-//
-//                        }
-//
                         TableColumn("수정"){ product in
                             Button {
                                 isTapped.toggle()
@@ -189,7 +181,6 @@ struct ProductInventoryView: View {
                                     .overlay(Rectangle()
                                         .stroke(Color.black, lineWidth:0.5))
                             }
-                            
                         }
                         
                         TableColumn("삭제"){ product in
@@ -214,10 +205,7 @@ struct ProductInventoryView: View {
                         Button("아니요"){
                         }
                         Button ("네"){
-                            
                             sampleArr.remove(at: deleteItemIndex)
-                            
-                            
                         }
                     } message:{
                         Text("해당 상품이 목록에서 제거됩니다.")
@@ -228,14 +216,13 @@ struct ProductInventoryView: View {
                     .onChange(of: sortOrder) { newOrder in
                         sampleArr.sort(using: newOrder)
                     }
-                    
-                    
                 }
                 Spacer()
             }
+            .navigationTitle("상품 리스트")
+            
         }
-        .navigationTitle("상품 리스트")
-        //        .modifier(CloseUpDetailModifier())
+        
     }
 }
 extension ProductInventoryView{
@@ -286,8 +273,6 @@ extension ProductInventoryView{
             
         }
     }
-    
-    
 }
 
 struct ProductInventoryView_Previews: PreviewProvider {
