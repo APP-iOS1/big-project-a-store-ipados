@@ -65,15 +65,15 @@ struct ContentView: View {
         }
         .environmentObject(navigationStateManager)
         .navigationSplitViewStyle(.balanced)
-//        .fullScreenCover(isPresented: $isLoggedin) {
-//            LoginView(isLoggedin: $isLoggedin)
-//        }
-//        .fullScreenCover(isPresented: $haveStore) {
-//            OpenStoreView(haveStore: $haveStore)
-//        }
-//        .fullScreenCover(isPresented: $isStoreApproved) {
-//            WaitingView(isStoreApproved: $isStoreApproved)
-//        }
+        .fullScreenCover(isPresented: $isLoggedin) {
+            LoginView(isLoggedin: $isLoggedin)
+        }
+        .fullScreenCover(isPresented: $haveStore) {
+            OpenStoreView(haveStore: $haveStore)
+        }
+        .fullScreenCover(isPresented: $isStoreApproved) {
+            WaitingView(isStoreApproved: $isStoreApproved)
+        }
     }
 }
 
