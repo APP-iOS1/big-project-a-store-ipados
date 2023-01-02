@@ -10,7 +10,7 @@ import PhotosUI
 
 struct ProductModifyView: View {
     
-    @Binding var index: Int
+    @Binding var productId: String
     
     @Environment(\.editMode) private var editMode
     @Environment(\.dismiss) private var dismiss
@@ -35,7 +35,8 @@ struct ProductModifyView: View {
     @State private var photoArray: [UIImage] = []
     
     @State private var editAlert = false
-
+    @State private var product = ProductData(productName: "", productId: "", productCategory: "", productCount: 0)
+    
     
     
 //    //Delete Option
@@ -87,13 +88,11 @@ struct ProductModifyView: View {
                 Form {
                     //상품명
                     Section(header: Text("상품명").font(.title)) {
-                        TextField("", text: $productName)
-                            .disabled(disableEdit)
+                        TextField("", text: $product.productName)
                     }
                     //상품 카테고리
                     Section(header: Text("상품카테고리").font(.title)) {
-                        TextField("", text: $productCategory)
-                            .disabled(disableEdit)
+                        TextField("", text: $product.productCategory)
                     }
                     //상품 옵션
                     Section(header: Text("옵션").font(.title)) {
@@ -112,7 +111,12 @@ struct ProductModifyView: View {
                             TextField("[세부내용 작성작성] ex)8기가 10000원,16기가 2만원", text: $textFieldOptionDetails)
                                 .padding(.horizontal, 20)
                                 .frame(maxWidth: .infinity)
-                            Button("추가") { convertTextLogic() }
+                            Button("추가") {
+                                if !textFieldOption.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+                                   !textFieldOptionDetails.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty{
+                                    convertTextLogic()
+                                }
+                            }
                         }
                     }
                     //상품 이미지
@@ -145,7 +149,6 @@ struct ProductModifyView: View {
                     Section(header: Text("상품설명").font(.title)) {
                         TextEditor(text: $productDescription)
                             .frame(height:200)
-                            .disabled(disableEdit)
                     }
                 }
             
@@ -154,40 +157,39 @@ struct ProductModifyView: View {
             }
             .toolbar{
                 
-                ToolbarItem() {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Text("Back")
-                    }
-
-                }
-                
                 ToolbarItem(id: "trailing") {
                     Button {
                         if !disableEdit {
-                            editAlert.toggle()
+                            
                             disableEdit.toggle()
                         }else{
+                            editAlert.toggle()
                             disableEdit.toggle()
                         }
                         
 
                     } label: {
-                        Text(disableEdit ? "Edit" : "Done")
+                        Text("Done")
                     }
                     
 
                 }
             }
             .onAppear{
-                productName = sampleData[index].productName
-                productCategory = sampleData[index].productId
+                sampleData.forEach {
+                    if $0.productId == productId{
+                        product = $0
+                    }
+                }
             }
         }
         .alert("저장하시겠습니까?", isPresented: $editAlert){
-            Button("아니요"){}
-            Button ("네"){}
+            Button("아니요"){
+                dismiss()
+            }
+            Button ("네"){
+                dismiss()
+            }
         } message:{
             Text("기존에 있던 내용들이 수정됩니다.")
         }
@@ -201,7 +203,7 @@ struct ProductModifyView: View {
 
 struct ProductModifyView_Previews: PreviewProvider {
     static var previews: some View {
-        ProductModifyView(index: .constant(0))
+        ProductModifyView(productId: .constant(""))
             .environmentObject(NavigationStateManager())
     }
 }
