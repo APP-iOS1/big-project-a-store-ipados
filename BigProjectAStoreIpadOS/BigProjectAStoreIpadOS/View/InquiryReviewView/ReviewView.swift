@@ -1,13 +1,14 @@
 //
-//  ReviewView.swift
-//  BigProjectAStoreIpadOS
+//  ContentView.swift
+//  Test3
 //
-//  Created by Sue on 2022/12/28.
+//  Created by Sue on 2023/01/02.
 //
 
 import SwiftUI
 
 struct ReviewView: View {
+    
     //리뷰 작성일
     @State private var reviewWriteSelection: Int = 1
     @State private var reviewWriteStartDate = Date()
@@ -34,30 +35,39 @@ struct ReviewView: View {
     @State private var reviewChannelTotal: Bool = false
     @State private var reviewChannelSmartStore: Bool = false
     
-    //리뷰조건
+    //리뷰조건- 구매자 평점
     @State private var customerRateTotal: Bool = false
     @State private var customerRateOne: Bool = false
     @State private var customerRateTwo: Bool = false
     @State private var customerRateThree: Bool = false
     @State private var customerRateFour: Bool = false
     @State private var customerRateFive: Bool = false
-    
+    //리뷰조건 - 답글여부
     @State private var replyOrNot: Int = 1
     
+    //목록 충 개수
+    @State private var searchResultCnt: Int = 0
+    
+    // 검색 눌렀을 때 임시로 목록 나타날 수 있도록
+    @State private var showTable: Bool = false
+    
+
+    
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading) {
+        //ScrollView {
+            VStack (alignment: .leading) {
+
                 Text("리뷰 관리")
                     .font(.title)
                     .bold()
-                    .padding(30)
-                //리뷰 작성일
+                    .padding(.bottom, 30)
+                //리뷰 작성
                 Group {
                     HStack {
                         Text("리뷰 작성일")
                             .font(.title3)
                         Spacer()
-                        VStack (alignment: .leading) {
+                        VStack (alignment: .leading){
                             Picker(selection: $reviewWriteSelection, label: Text("리뷰 작성일")) {
                                 Text("오늘").tag(1)
                                 Text("1주일").tag(2)
@@ -67,200 +77,198 @@ struct ReviewView: View {
                                 Text("1년").tag(6)
                             }
                             .pickerStyle(.segmented)
-                            .frame(width: 500)
+                            
+                            
                             HStack{
                                 DatePicker("", selection: $reviewWriteStartDate, in: ...Date(), displayedComponents: .date)
                                 Text("~")
                                 DatePicker("", selection: $reviewWriteEndDate, in: ...Date(), displayedComponents: .date)
-                            }.frame(width: 280)
+                            }
+                            .frame(width: 260)
                         }//vstack
+                        .frame(width: 700)
                         Spacer()
                     }
-                    .padding(.horizontal, 30)
-                    Divider()
-                }
-                // 리뷰 구분
+                Divider()
+                }.padding(.vertical, 5)
+                
+                //리뷰 구분
                 Group {
                     HStack {
                         Text("리뷰 구분")
                             .font(.title3)
                         Spacer()
-                        
-                        Toggle(isOn: $reviewSeperateTotal) {
-                            Text("전체")
-                                .font(.title3)
+                        HStack {
+                            Toggle(isOn: $reviewSeperateTotal) {
+                                Text("전체")
+                                    .font(.title3)
+                            }
+                            .toggleStyle(CheckboxStyle())
+                            .padding(.trailing, 20)
+                            
+                            Toggle(isOn: $reviewSeperateCommon) {
+                                Text("일반 리뷰")
+                                    .font(.title3)
+                            }
+                            .toggleStyle(CheckboxStyle())
+                            .padding(.trailing, 20)
+                            
+                            Toggle(isOn: $reviewSeperateMonth) {
+                                Text("한달사용 리뷰")
+                                    .font(.title3)
+                            }
+                            .toggleStyle(CheckboxStyle())
+                            Spacer()
                         }
-                        .toggleStyle(CheckboxStyle())
-                        .padding(.trailing, 20)
-                        
-                        Toggle(isOn: $reviewSeperateCommon) {
-                            Text("일반 리뷰")
-                                .font(.title3)
-                        }
-                        .toggleStyle(CheckboxStyle())
-                        .padding(.trailing, 20)
-                        
-                        Toggle(isOn: $reviewSeperateMonth) {
-                            Text("한달사용리뷰")
-                                .font(.title3)
-                        }
-                        .toggleStyle(CheckboxStyle())
-                        .padding (.trailing, 110)
+                        .frame(width: 678)
                         Spacer()
-                        
                     }
-                    .padding(.horizontal, 30)
-                    .padding(.vertical, 16)
-                    Divider()
-                }
+                Divider()
+                }.padding(.vertical, 5)
+                
+                
                 //리뷰 타입
                 Group {
                     HStack {
                         Text("리뷰 타입")
                             .font(.title3)
-                            .padding(.trailing, 99)
                         Spacer()
-                        Toggle(isOn: $reviewTypeTotal) {
-                            Text("전체")
-                                .font(.title3)
+                        HStack {
+                            Toggle(isOn: $reviewTypeTotal) {
+                                Text("전체")
+                                    .font(.title3)
+                            }
+                            .toggleStyle(CheckboxStyle())
+                            .padding(.trailing, 20)
+                            
+                            Toggle(isOn: $reviewTypePhoto) {
+                                Text("포토 리뷰")
+                                    .font(.title3)
+                            }
+                            .toggleStyle(CheckboxStyle())
+                            .padding(.trailing, 20)
+                            
+                            Toggle(isOn: $reviewTypeVideo) {
+                                Text("동영상리뷰")
+                                    .font(.title3)
+                            }
+                            .toggleStyle(CheckboxStyle())
+                            .padding(.trailing, 20)
+                            
+                            Toggle(isOn: $reviewTypeText) {
+                                Text("텍스트 리뷰")
+                                    .font(.title3)
+                            }
+                            .toggleStyle(CheckboxStyle())
+                            Spacer()
                         }
-                        .toggleStyle(CheckboxStyle())
-                        .padding(.trailing, 20)
-                        
-                        Toggle(isOn: $reviewTypePhoto) {
-                            Text("포토리뷰")
-                                .font(.title3)
-                        }
-                        .toggleStyle(CheckboxStyle())
-                        .padding(.trailing, 20)
-                        
-                        Toggle(isOn: $reviewTypeVideo) {
-                            Text("동영상리뷰")
-                                .font(.title3)
-                        }
-                        .toggleStyle(CheckboxStyle())
-                        .padding(.trailing, 20)
-                        
-                        Toggle(isOn: $reviewTypeText) {
-                            Text("텍스트리뷰")
-                                .font(.title3)
-                        }
-                        .toggleStyle(CheckboxStyle())
-                        .padding(.trailing, 90)
+                        .frame(width: 678)
                         Spacer()
                     }
-                    .padding(.horizontal, 30)
-                    .padding(.vertical, 16)
-                    Divider()
-                }
-                // 카테고리
+                Divider()
+                }.padding(.vertical, 5)
+                
+                
+                //카테고리
                 Group {
                     HStack {
                         Text("카테고리")
                             .font(.title3)
-//                            .padding(.trailing, 70)
                         Spacer()
-                        Picker(selection: $highCategorySelection, label: Text("카테고리 상위")) {
-                            ForEach(Array(highCategory.enumerated()), id: \.offset) { idx, item in
-                                Text("\(item)").tag(idx)
+                        HStack {
+                            Picker(selection: $highCategorySelection, label: Text("카테고리 상위")) {
+                                ForEach(Array(highCategory.enumerated()), id: \.offset) { idx, item in
+                                    Text("\(item)").tag(idx)
+                                }
                             }
-                        }
-                        .foregroundColor(.black)
-                        .padding(.top, 10)
-                        .padding(.leading, 10)
-                        .font(.title2)
-                        .pickerStyle(.automatic)
-                        
-                        Picker(selection: $lowCategorySelection, label: Text("카테고리 하위")) {
-                            ForEach(Array(lowCategory.enumerated()), id: \.offset) { idx, item in
-                                Text("\(item)").tag(idx)
+                            Picker(selection: $lowCategorySelection, label: Text("카테고리 하위")) {
+                                ForEach(Array(lowCategory.enumerated()), id: \.offset) { idx, item in
+                                    Text("\(item)").tag(idx)
+                                }
                             }
+                            Spacer()
                         }
-                        .foregroundColor(.black)
-                        .padding(.top, 10)
-                        .padding(.leading, 10)
-                        .font(.title2)
-                        .pickerStyle(.automatic)
+                        .frame(width: 700)
                         Spacer()
-                        
                     }
-                    .padding(.leading, 30)
-                    .padding(.vertical, 16)
-                    Divider()
-                }
-                // 채널
+                Divider()
+                }.padding(.vertical, 5)
+                
+                //채널
                 Group {
                     HStack {
                         Text("채널")
                             .font(.title3)
                         Spacer()
-                        Toggle(isOn: $reviewChannelTotal) {
-                            Text("전체")
-                                .font(.title3)
-                        }
-                        .toggleStyle(CheckboxStyle())
-                        .padding(.trailing, 20)
                         
-                        Toggle(isOn: $reviewChannelSmartStore) {
-                            Text("스마트 스토어")
-                                .font(.title3)
+                        HStack {
+                            Toggle(isOn: $reviewChannelTotal) {
+                                Text("전체")
+                                    .font(.title3)
+                            }
+                            .toggleStyle(CheckboxStyle())
+                            .padding(.trailing, 20)
+                            
+                            Toggle(isOn: $reviewChannelSmartStore) {
+                                Text("스마트 스토어")
+                                    .font(.title3)
+                            }
+                            .toggleStyle(CheckboxStyle())
+                            Spacer()
                         }
-                        .toggleStyle(CheckboxStyle())
-                        .padding(.trailing, 200)
+                        .frame(width: 640)
                         Spacer()
                     }
-                    .padding(.horizontal, 30)
-                    .padding(.vertical, 16)
-                    Divider()
-                }
-                // 리뷰 조건
+                Divider()
+                }.padding(.vertical, 5)
+                
+                //리뷰조건
                 Group {
                     HStack {
                         Text("리뷰 조건")
-                            .font(.title2)
-                            
+                            .font(.title3)
                         Spacer()
-                        VStack (alignment: .leading) {
+                        VStack {
                             HStack {
-                                Spacer()
-                                Text("구매자 평점")
+                                Text("구매자 평점  |")
                                     .font(.title3)
-                                    .padding(.leading, 70)
-                                    .padding(.trailing, 10)
+                                    .padding(.trailing, 14)
+                                
                                 Toggle(isOn: $customerRateTotal) {
                                     Text("전체")
                                         .font(.title3)
                                 }
                                 .toggleStyle(CheckboxStyle())
-                                .padding(.trailing, 15)
+                                .padding(.trailing, 20)
+                                
                                 
                                 Toggle(isOn: $customerRateOne) {
                                     Text("1점")
                                         .font(.title3)
                                 }
                                 .toggleStyle(CheckboxStyle())
-                                .padding(.trailing, 15)
+                                .padding(.trailing, 20)
                                 
                                 Toggle(isOn: $customerRateTwo) {
                                     Text("2점")
                                         .font(.title3)
                                 }
                                 .toggleStyle(CheckboxStyle())
-                                .padding(.trailing, 15)
+                                .padding(.trailing, 20)
                                 
                                 Toggle(isOn: $customerRateThree) {
                                     Text("3점")
                                         .font(.title3)
                                 }
                                 .toggleStyle(CheckboxStyle())
-                                .padding(.trailing, 15)
+                                .padding(.trailing, 20)
                                 
                                 Toggle(isOn: $customerRateFour) {
                                     Text("4점")
                                         .font(.title3)
                                 }
                                 .toggleStyle(CheckboxStyle())
-                                .padding(.trailing, 15)
+                                .padding(.trailing, 20)
                                 
                                 Toggle(isOn: $customerRateFive) {
                                     Text("5점")
@@ -268,13 +276,13 @@ struct ReviewView: View {
                                 }
                                 .toggleStyle(CheckboxStyle())
                                 Spacer()
-                            }
+                            }//h
+                            
                             HStack {
-                                
-                                Text("답글여부")
+                                Text("답글여부      |")
                                     .font(.title3)
                                     .padding(.trailing, 14)
-                                    .padding(.leading, 70)
+                                
                                 Picker(selection: $replyOrNot, label: Text("답글여부")) {
                                     Text("답글여부 (상관없음)")
                                         .tag(1)
@@ -284,67 +292,76 @@ struct ReviewView: View {
                                         .tag(3)
                                     
                                 }
-                                .foregroundColor(.black)
-                                .padding(.top, 10)
-                                .font(.title2)
-                                .pickerStyle(.automatic)
-                                
-                                
+                                Spacer()
                             }
                         }
-                    }
-                    .padding(.horizontal, 30)
-                    .padding(.vertical, 16)
-                    Divider()
-                    HStack {
+                        .frame(width: 690)
+                        .padding(.top, 10)
                         Spacer()
-                        Button {
-                            
-                        } label: {
-                            Text("검색")
-                                .font(.title3)
-                                .bold()
-                                .foregroundColor(.white)
-                                .frame(width: 170, height: 63)
-                                .background(.black)
-                                .cornerRadius(10)
-                        }
-                        .padding(.trailing, 50)
+                    }
+                Divider()
+                }.padding(.vertical, 5)
+                HStack {
+                    Spacer()
+                    Button {
+                        searchResultCnt = 3
+                        showTable.toggle()
+                    } label: {
+                        Text("검색")
+                            .font(.title3)
+                            .bold()
+                            .foregroundColor(.white)
+                            .frame(width: 170, height: 63)
+                            .background(.black)
+                            .cornerRadius(10)
+                    }
+                    .padding(.trailing, 50)
+                    
+                    Button {
                         
-                        Button {
-                            
-                        } label: {
-                            Text("초기화")
-                                .font(.title3)
-                                .bold()
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(.black, lineWidth: 1)
-                                        .frame(width: 170, height: 63)
-                                )
-                        }
-                        .padding(.leading, 40)
-                        Spacer()
-
-                    }.foregroundColor(.black)
-                    
-                    HStack {
-                        Text("목록 (총 0개)")
-                            .font(.title2)
-                            .padding(.leading, 20)
-                            .padding(.vertical, 10)
-                        Spacer()
+                    } label: {
+                        Text("초기화")
+                            .font(.title3)
+                            .bold()
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(.black, lineWidth: 1)
+                                    .frame(width: 170, height: 63)
+                            )
                     }
-                    .background(Color(hue: 1.0, saturation: 0.006, brightness: 0.912))
-                    Divider()
-                        .padding(.bottom, 10)
                     
+                    .padding(.leading, 40)
+                    Spacer()
+
                 }
-            }//vstack
-        }
-        //.modifier(CloseUpDetailModifier())
-        //scrollview
-    }//body
+                .padding(.top, 10)
+                .foregroundColor(.black)
+                
+//                HStack {
+//                    Text("목록 (총 \(searchResultCnt)개)")
+//                        .font(.title2)
+//                        .padding(.leading, 20)
+//                        .padding(.vertical, 10)
+//                    Spacer()
+//                }
+//                .background(Color(hue: 1.0, saturation: 0.006, brightness: 0.912))
+                //목록
+                
+                // 주문번호
+                //상품명
+                //구매자 평점
+                //리뷰내용
+                //등록자
+                //리뷰 등록일
+                
+                if showTable {
+                    ReviewResultTableView(searchResultCnt: $searchResultCnt)
+                }
+                Spacer()
+            }
+            .padding(30)
+        //}
+    }
 }
 
 //체크박스 스타일
@@ -371,3 +388,4 @@ struct ReviewView_Previews: PreviewProvider {
             .environmentObject(NavigationStateManager())
     }
 }
+
