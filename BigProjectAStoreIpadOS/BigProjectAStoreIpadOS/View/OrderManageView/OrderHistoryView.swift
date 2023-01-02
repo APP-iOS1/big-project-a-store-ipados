@@ -28,51 +28,9 @@ struct OrderHistoryView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                HStack {
-                    Text("목록 (총 2개)")
-                        .font(.title2)
-                        .padding(.leading, 20)
-                    Spacer()
-                }
-                Divider()
-                    .padding(.bottom, 10)
-                LazyVGrid(columns: columns) {
-                    
-                    ForEach(Array(orderHistoryHeader.enumerated()), id: \.offset ) { idx, headerItem in
-                        if idx == 5 {
-                            Picker(selection: $orderConfirmSelection, label: Text("구매확인")) {
-                                Text("구매확인 (전체)").tag(1)
-                                Text("구매확인 Y").tag(2)
-                                Text("구매확인 N").tag(3)
-                            }
-                        } else {
-                            Text("\(headerItem)")
-                        }
-                    }
-                    .font(.headline)
-                    .padding(.bottom, 6)
-                    
-                    if orderConfirmSelection == 1 {
-                        ForEach(dummyDataTotal, id: \.self) { data in
-                            Text("\(data)")
-                        }
-                    } else if orderConfirmSelection == 2 {
-                        ForEach(dummyDataYes, id: \.self) { data in
-                            Text("\(data)")
-                        }
-                    } else {
-                        ForEach(dummyDataNo, id: \.self) { data in
-                            Text("\(data)")
-                        }
-                    }
-                    
-                }
-                Spacer()
                 
             }//vstack
-            .padding(.top, 20)
-            .navigationTitle(Text("주문 내역"))
-        }.modifier(CloseUpDetailModifier())
+        }//.modifier(CloseUpDetailModifier())
     }//body
 }
 
@@ -84,3 +42,55 @@ struct OrderHistory_Previews: PreviewProvider {
             .environmentObject(NavigationStateManager())
     }
 }
+
+
+/*
+ NavigationStack {
+     VStack {
+         HStack {
+             Text("목록 (총 2개)")
+                 .font(.title2)
+                 .padding(.leading, 20)
+             Spacer()
+         }
+         Divider()
+             .padding(.bottom, 10)
+         LazyVGrid(columns: columns) {
+             
+             ForEach(Array(orderHistoryHeader.enumerated()), id: \.offset ) { idx, headerItem in
+                 if idx == 5 {
+                     Picker(selection: $orderConfirmSelection, label: Text("구매확인")) {
+                         Text("구매확인 (전체)").tag(1)
+                         Text("구매확인 Y").tag(2)
+                         Text("구매확인 N").tag(3)
+                     }
+                 } else {
+                     Text("\(headerItem)")
+                 }
+             }
+             .font(.headline)
+             .padding(.bottom, 6)
+             
+             if orderConfirmSelection == 1 {
+                 ForEach(dummyDataTotal, id: \.self) { data in
+                     Text("\(data)")
+                 }
+             } else if orderConfirmSelection == 2 {
+                 ForEach(dummyDataYes, id: \.self) { data in
+                     Text("\(data)")
+                 }
+             } else {
+                 ForEach(dummyDataNo, id: \.self) { data in
+                     Text("\(data)")
+                 }
+             }
+             
+         }
+         Spacer()
+         
+     }//vstack
+     .padding(.top, 20)
+     .navigationTitle(Text("주문 내역"))
+ }.modifier(CloseUpDetailModifier())
+
+ */
