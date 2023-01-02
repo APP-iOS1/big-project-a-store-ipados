@@ -28,14 +28,18 @@ struct ContentView: View {
         NavigationView {
             Form {
                 OutlineGroup(self.model.menuItems, children: \.subMenuItem) { item in
-                    NavigationLink {
-                        SubMenuDetails(for: item.id)
-                    } label: {
-                        Text(item.name)
-                    }
-
+//                    NavigationLink {
+//                        SubMenuDetails(for: item.id)
+//                    } label: {
+//                        Text(item.name)
+//                    }
+                    Text(item.name)
+                        .overlay(NavigationLink(destination: SubMenuDetails(for: item.id), label: {
+                            Text("")
+                        }))
                 }
             }
+            .navigationTitle("멋사 전자")
         }
         .environmentObject(navigationStateManager)
     }

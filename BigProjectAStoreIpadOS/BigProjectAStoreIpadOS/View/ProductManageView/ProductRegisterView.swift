@@ -87,7 +87,6 @@ struct ProductRegisterView: View {
     }
     
     var body: some View {
-        NavigationStack {
             VStack {
                 Form {
                     //상품명
@@ -149,12 +148,11 @@ struct ProductRegisterView: View {
                 Button {
                     checkProductRegistraion()
                 } label: {
-                    Text("등록하기")
+                    Text("상품 등록하기")
                 }
             }
-        }.modifier(CloseUpDetailModifier())
+            .modifier(CloseUpDetailModifier())
         
-
     }
 }
 
