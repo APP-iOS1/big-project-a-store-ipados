@@ -8,15 +8,17 @@
 import Foundation
 
 
-// MARK: - ItemOptions 타입
+// MARK: - ItemOptions 커스텀 타입
 /// 판매자가 아이템의 옵션을 직접 추가할 수 있도록 준비된 커스텀 타입입니다.
 /// 사용자가 좌측에 입력한 키(key)가 Firebase 문서에 없다면, 자동으로 해당 데이터를 업데이트 합니다.
 /// 모든 키의 밸류(value)는 배열로 업데이트 됩니다.
-typealias ItemOptions = [String: [String]]
+struct ItemOptions: Codable {
+	var itemOptions: [String: [String]]
+}
+
 typealias SnapshotDataType = [String: Any]
 
-
-let storeAppCategory: AppCategoryEnum = .store
+let appCategory: AppCategoryEnum = .store
 
 // MARK: - 앱의 성격을 구별하는 카테고리 열거형
 /// 사용자가 현재 사용 중인 프로젝트의 앱을 구별하는 열거형입니다.
@@ -40,5 +42,10 @@ struct StoreInfo: Codable {
 	var storeImage: String?
 	var phoneNumber: String
 	var isVerified: Bool = false // 입점 허가 여부
+	var isSubmitted: Bool = false
 	var isBanned: Bool = false // 신고 누적으로 인한 퇴출 여부
+}
+
+enum StoreApproveState {
+	case needSubmit, submitted, approved, banned
 }
