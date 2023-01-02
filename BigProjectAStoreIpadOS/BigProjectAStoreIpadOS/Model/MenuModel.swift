@@ -62,6 +62,7 @@ struct MenuModel {
             MenuItem(name: "상품 관리", subMenuItem: [
                 MenuItem(name: "상품 등록", selected: .productRegister),
                 MenuItem(name: "상품 수정", selected: .productEdit),
+
             ]),
             MenuItem(name: "주문 관리", subMenuItem: [
                 MenuItem(name: "주문 내역", selected: .orderHistory),

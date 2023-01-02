@@ -87,6 +87,7 @@ struct ProductRegisterView: View {
     }
     
     var body: some View {
+
             VStack {
                 Form {
                     //상품명
@@ -115,8 +116,7 @@ struct ProductRegisterView: View {
                                 .padding(.horizontal, 20)
                                 .frame(maxWidth: .infinity)
                             Button("추가") {
-                                if !textFieldOptionName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
-                                   !textFieldOptionDetails.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty{
+                                if !textFieldOptionDetails.isEmpty {
                                     convertTextLogic()
                                 }
                                 
@@ -152,8 +152,8 @@ struct ProductRegisterView: View {
                     Text("상품 등록하기")
                 }
             }
-            .navigationTitle("상품 등록")
 
+            .navigationTitle(Text("상품 등록"))
 //            .navigationBarBackButtonHidden(true)
 //            .navigationBarItems(leading: <#T##L#>, trailing: <#T##T#>)
     }
