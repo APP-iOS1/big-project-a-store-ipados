@@ -35,15 +35,20 @@ struct ReviewView: View {
     @State private var reviewChannelTotal: Bool = false
     @State private var reviewChannelSmartStore: Bool = false
     
-    //리뷰조건
+    //리뷰조건- 구매자 평점
     @State private var customerRateTotal: Bool = false
     @State private var customerRateOne: Bool = false
     @State private var customerRateTwo: Bool = false
     @State private var customerRateThree: Bool = false
     @State private var customerRateFour: Bool = false
     @State private var customerRateFive: Bool = false
-    
+    //리뷰조건 - 답글여부
     @State private var replyOrNot: Int = 1
+    
+    //목록 충 개수
+    @State private var searchResultCnt: Int = 0
+    
+    
     
     var body: some View {
         ScrollView {
@@ -296,7 +301,7 @@ struct ReviewView: View {
                 HStack {
                     Spacer()
                     Button {
-                        
+                        searchResultCnt = 3
                     } label: {
                         Text("검색")
                             .font(.title3)
@@ -329,14 +334,25 @@ struct ReviewView: View {
                 .foregroundColor(.black)
                 
                 HStack {
-                    Text("목록 (총 0개)")
+                    Text("목록 (총 \(searchResultCnt)개)")
                         .font(.title2)
                         .padding(.leading, 20)
                         .padding(.vertical, 10)
                     Spacer()
                 }
                 .background(Color(hue: 1.0, saturation: 0.006, brightness: 0.912))
-                    
+                //목록
+                
+                // 주문번호
+                //상품명
+                //구매자 평점
+                //리뷰내용
+                //등록자
+                //리뷰 등록일
+                Group {
+                    ReviewResultTableView()
+                    Spacer()
+                }
             }
             .padding(30)
         }

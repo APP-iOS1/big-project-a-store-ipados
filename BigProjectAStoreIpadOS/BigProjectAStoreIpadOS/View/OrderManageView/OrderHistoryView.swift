@@ -9,8 +9,6 @@ import SwiftUI
 
 
 struct OrderHistoryView: View {
-    // 표에서 선택 지원
-    @State private var selectedOrder = Set<CustomerOrder.ID>()
     
     @State private var customerOrders = [
         CustomerOrder(orderNumber: "1dfsf", orderTime: "2022-12-27 13:36", orderProduct: "맥북 프로", orderOption: "스페이스 그레이_0", orderQuantity: 2, purchaseConfirmation: false),
@@ -19,12 +17,15 @@ struct OrderHistoryView: View {
         CustomerOrder(orderNumber: "4ddge", orderTime: "2020-01-01 22:00", orderProduct: "에어팟", orderOption: "흰색_0", orderQuantity: 6, purchaseConfirmation: true)
     ]
     
+    // 표에서 선택 지원
+    @State private var selectedOrder = Set<CustomerOrder.ID>()
+    
     // 정렬 지원 - 일단은 주문 시간 순서대로 정렬
     @State private var sortOrder = [KeyPathComparator(\CustomerOrder.orderTime)]
     
     var body: some View {
         NavigationStack {
-            VStack {
+            VStack(alignment: .leading) {
                 Table (customerOrders, selection: $selectedOrder, sortOrder: $sortOrder) {
                     TableColumn("주문 번호", value: \.orderNumber)
                     TableColumn("주문 시간", value: \.orderTime)

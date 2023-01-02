@@ -32,11 +32,12 @@
 		36E414A4295AC53B0033D634 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E414A3295AC53B0033D634 /* Product.swift */; };
 		8033634C295ADA45009AF68F /* CustomerOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8033634B295ADA45009AF68F /* CustomerOrder.swift */; };
 		8033638D295BE7B0009AF68F /* ReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8033638C295BE7B0009AF68F /* ReviewView.swift */; };
-		8033638F295C0816009AF68F /* ReviewListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8033638E295C0816009AF68F /* ReviewListView.swift */; };
 		80807C78295A92C20037E781 /* BigProjectAStoreIpadOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80807C77295A92C20037E781 /* BigProjectAStoreIpadOSApp.swift */; };
 		80807C7A295A92C20037E781 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80807C79295A92C20037E781 /* ContentView.swift */; };
 		80807C7C295A92C30037E781 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80807C7B295A92C30037E781 /* Assets.xcassets */; };
 		80807C80295A92C30037E781 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80807C7F295A92C30037E781 /* Preview Assets.xcassets */; };
+		80B23FE22962998900F1C5A0 /* CustomerReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B23FE12962998900F1C5A0 /* CustomerReview.swift */; };
+		80B23FE429629F8800F1C5A0 /* ReviewResultTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B23FE329629F8800F1C5A0 /* ReviewResultTableView.swift */; };
 		C55441ED295BD15F006CF16C /* OpenStoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55441EC295BD15F006CF16C /* OpenStoreView.swift */; };
 		C55441EF295C0BD1006CF16C /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55441EE295C0BD1006CF16C /* LoginView.swift */; };
 		C55441F2295C0C29006CF16C /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55441F1295C0C29006CF16C /* SignUpView.swift */; };
@@ -68,13 +69,14 @@
 		36E414A3295AC53B0033D634 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		8033634B295ADA45009AF68F /* CustomerOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerOrder.swift; sourceTree = "<group>"; };
 		8033638C295BE7B0009AF68F /* ReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewView.swift; sourceTree = "<group>"; };
-		8033638E295C0816009AF68F /* ReviewListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewListView.swift; sourceTree = "<group>"; };
 		80807C74295A92C20037E781 /* BigProjectAStoreIpadOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BigProjectAStoreIpadOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		80807C77295A92C20037E781 /* BigProjectAStoreIpadOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigProjectAStoreIpadOSApp.swift; sourceTree = "<group>"; };
 		80807C79295A92C20037E781 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		80807C7B295A92C30037E781 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		80807C7D295A92C30037E781 /* BigProjectAStoreIpadOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BigProjectAStoreIpadOS.entitlements; sourceTree = "<group>"; };
 		80807C7F295A92C30037E781 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		80B23FE12962998900F1C5A0 /* CustomerReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerReview.swift; sourceTree = "<group>"; };
+		80B23FE329629F8800F1C5A0 /* ReviewResultTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewResultTableView.swift; sourceTree = "<group>"; };
 		C55441EC295BD15F006CF16C /* OpenStoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenStoreView.swift; sourceTree = "<group>"; };
 		C55441EE295C0BD1006CF16C /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		C55441F1295C0C29006CF16C /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
@@ -127,7 +129,7 @@
 			children = (
 				36205EDD295ACCD30083F312 /* InquiryView.swift */,
 				8033638C295BE7B0009AF68F /* ReviewView.swift */,
-				8033638E295C0816009AF68F /* ReviewListView.swift */,
+				80B23FE329629F8800F1C5A0 /* ReviewResultTableView.swift */,
 			);
 			path = InquiryReviewView;
 			sourceTree = "<group>";
@@ -200,6 +202,7 @@
 				36E414A3295AC53B0033D634 /* Product.swift */,
 				36205EE0295AD7090083F312 /* InquiryResponse.swift */,
 				8033634B295ADA45009AF68F /* CustomerOrder.swift */,
+				80B23FE12962998900F1C5A0 /* CustomerReview.swift */,
 				34491460295BC8B300F05A54 /* Model */,
 				34491461295BC8BA00F05A54 /* ViewModel */,
 				80807C7B295A92C30037E781 /* Assets.xcassets */,
@@ -308,6 +311,7 @@
 				3449146E295BCCBA00F05A54 /* SettingsView.swift in Sources */,
 				C55441ED295BD15F006CF16C /* OpenStoreView.swift in Sources */,
 				3449146A295BC9E300F05A54 /* DeliveryView.swift in Sources */,
+				80B23FE429629F8800F1C5A0 /* ReviewResultTableView.swift in Sources */,
 				8033634C295ADA45009AF68F /* CustomerOrder.swift in Sources */,
 				3449147C295C390500F05A54 /* DeliveryAllView.swift in Sources */,
 				C55441EF295C0BD1006CF16C /* LoginView.swift in Sources */,
@@ -316,7 +320,7 @@
 				3449146C295BCA0200F05A54 /* DeliverySummaryView.swift in Sources */,
 				34491470295BD8FC00F05A54 /* DeliveryReadyView.swift in Sources */,
 				36E414A4295AC53B0033D634 /* Product.swift in Sources */,
-				8033638F295C0816009AF68F /* ReviewListView.swift in Sources */,
+				80B23FE22962998900F1C5A0 /* CustomerReview.swift in Sources */,
 				36E414A0295AC5010033D634 /* ProductRegisterView.swift in Sources */,
 				C55441F2295C0C29006CF16C /* SignUpView.swift in Sources */,
 				34491465295BC94600F05A54 /* SelectedMenu.swift in Sources */,

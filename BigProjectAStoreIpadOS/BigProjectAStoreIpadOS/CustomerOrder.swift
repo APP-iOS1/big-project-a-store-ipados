@@ -7,14 +7,15 @@
 
 import SwiftUI
 
-struct CustomerOrder: Identifiable {
+struct CustomerOrder: Identifiable, Hashable {
     let id = UUID()
     var orderNumber: String
     var orderTime: String
-    var orderProduct: String
+    var orderProduct: String //상품명
     var orderOption: String
     var orderQuantity: Int
     var purchaseConfirmation: Bool
+    // 구매확인으로도 정렬할 수 있도록 value: \.에 넣어주기 위해 만들었음
     var purchaseConfirmationInt: Int {
         purchaseConfirmation ? 0 : 1
     }
