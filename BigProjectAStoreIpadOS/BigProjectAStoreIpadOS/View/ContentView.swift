@@ -11,7 +11,7 @@ struct ContentView: View {
     @StateObject var navigationStateManager = NavigationStateManager()
     @State private var showSettings = false
     @State private var menuId: MenuItem.ID?
-    //@State private var subMenuId: SubMenuItem.ID?
+    @State private var subMenuId: SubMenuItem.ID?
     
     @State private var haveStore = true
     @State private var isLoggedin = true
