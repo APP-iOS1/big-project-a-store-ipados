@@ -206,7 +206,7 @@ struct ReviewView: View {
                                 .font(.title3)
                         }
                         .toggleStyle(CheckboxStyle())
-                        .padding(.trailing, 200)
+                        .padding(.trailing, 204)
                         Spacer()
                     }
                     .padding(.horizontal, 30)
@@ -225,7 +225,7 @@ struct ReviewView: View {
                                 Spacer()
                                 Text("구매자 평점")
                                     .font(.title3)
-                                    .padding(.leading, 70)
+                                    .padding(.leading, 92)
                                     .padding(.trailing, 10)
                                 Toggle(isOn: $customerRateTotal) {
                                     Text("전체")
@@ -274,7 +274,7 @@ struct ReviewView: View {
                                 Text("답글여부")
                                     .font(.title3)
                                     .padding(.trailing, 14)
-                                    .padding(.leading, 70)
+                                    .padding(.leading, 183)
                                 Picker(selection: $replyOrNot, label: Text("답글여부")) {
                                     Text("답글여부 (상관없음)")
                                         .tag(1)
