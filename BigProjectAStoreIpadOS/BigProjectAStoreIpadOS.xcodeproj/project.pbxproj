@@ -57,6 +57,7 @@
 		C55441ED295BD15F006CF16C /* OpenStoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55441EC295BD15F006CF16C /* OpenStoreView.swift */; };
 		C55441EF295C0BD1006CF16C /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55441EE295C0BD1006CF16C /* LoginView.swift */; };
 		C55441F2295C0C29006CF16C /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55441F1295C0C29006CF16C /* SignUpView.swift */; };
+		C56A46392962A4E10065996D /* WaitingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56A46382962A4E10065996D /* WaitingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -103,6 +104,7 @@
 		C55441EC295BD15F006CF16C /* OpenStoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenStoreView.swift; sourceTree = "<group>"; };
 		C55441EE295C0BD1006CF16C /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		C55441F1295C0C29006CF16C /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		C56A46382962A4E10065996D /* WaitingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -306,6 +308,7 @@
 				C55441EC295BD15F006CF16C /* OpenStoreView.swift */,
 				C55441F1295C0C29006CF16C /* SignUpView.swift */,
 				369AF1DB295C232200109F16 /* ViewModifier.swift */,
+				C56A46382962A4E10065996D /* WaitingView.swift */,
 			);
 			path = LoginVIew;
 			sourceTree = "<group>";
@@ -426,6 +429,7 @@
 				80807C7A295A92C20037E781 /* ContentView.swift in Sources */,
 				706C4725295C29C3003A5417 /* NotificationInfo.swift in Sources */,
 				34491467295BC97000F05A54 /* NavigationStateManager.swift in Sources */,
+				C56A46392962A4E10065996D /* WaitingView.swift in Sources */,
 				168E7815295AC8B4001905E9 /* ChartView.swift in Sources */,
 				706C471F295C1EFC003A5417 /* ItemInfo.swift in Sources */,
 				16354BE0295BE19B003D1EC8 /* ChartDetailView.swift in Sources */,
