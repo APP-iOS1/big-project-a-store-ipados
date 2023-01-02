@@ -28,7 +28,7 @@ struct BigProjectAStoreIpadOSApp: App {
                 .fullScreenCover(isPresented: $isShownFullScreenCover) {
                     OpenStoreView(storeName: "", storeAddress: "", isShownFullScreenCover: $isShownFullScreenCover)
                 }
-				.environmentObject(StoreNetworkManager(withCategory: .store))
+				.environmentObject(StoreNetworkManager())
         }
     }
 }
