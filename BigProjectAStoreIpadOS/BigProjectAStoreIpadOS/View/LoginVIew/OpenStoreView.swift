@@ -10,9 +10,10 @@ import SwiftUI
 struct OpenStoreView: View {
     @State var storeName = ""
     @State var storeAddress = ""
+    @Binding var haveStore: Bool
     
     var body: some View {
-        VStack() {
+        VStack {
             List {
                 Section {
                     HStack(alignment: .top) {
@@ -34,7 +35,8 @@ struct OpenStoreView: View {
                 Section {
                     HStack {
                         Button {
-                            print("")
+                            // FIXME: FireStore에서 입점신청 여부 가져오기
+                            haveStore = false
                         } label: {
                             Text("신청하기")
                         }.buttonStyle(PlainButtonStyle())
@@ -46,6 +48,8 @@ struct OpenStoreView: View {
             }
             
         }
+        .textInputAutocapitalization(.never)
+        .autocorrectionDisabled()
     }
 }
 

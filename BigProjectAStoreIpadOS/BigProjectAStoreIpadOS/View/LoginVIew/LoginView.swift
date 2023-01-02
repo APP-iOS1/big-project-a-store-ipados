@@ -10,7 +10,8 @@ import SwiftUI
 struct LoginView: View {
     @State var userID = ""
     @State var userPassword = ""
-    @Binding var isShownFullScreenCover: Bool
+    @State var haveStore = true
+    @Binding var isLoggedin: Bool
     
     var body: some View {
         NavigationView {
@@ -25,15 +26,15 @@ struct LoginView: View {
                     .padding(.bottom, 30)
                 
                 Button {
-                    isShownFullScreenCover = false
-                    
+                    // FIXME: Auth에서 로그인 상태 가져오기
+                    isLoggedin = false
                 } label: {
                     Text("로그인")
                         .foregroundColor(.white)
                         .frame(width: 430, height: 50)
                         .background(.blue)
+                        .padding(.bottom, 30)
                 }
-                .padding(.bottom, 30)
                 
                 HStack {
                     NavigationLink {
@@ -52,7 +53,9 @@ struct LoginView: View {
             .autocorrectionDisabled()
         }
     }
+    
 }
+
 
 struct LoginFieldModifier: ViewModifier {
     func body(content: Content) -> some View {

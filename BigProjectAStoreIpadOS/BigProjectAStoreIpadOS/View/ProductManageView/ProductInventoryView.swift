@@ -235,7 +235,6 @@ struct ProductInventoryView: View {
             }
         }
         .navigationTitle("상품 리스트")
-        
         //        .modifier(CloseUpDetailModifier())
     }
 }

@@ -10,7 +10,7 @@ import Combine
 
 class NavigationStateManager: ObservableObject {
     
-    @Published var columnVisibility: NavigationSplitViewVisibility = .all
+    @Published var columnVisibility: NavigationSplitViewVisibility = .doubleColumn
     
     
     func goToSettings() {
