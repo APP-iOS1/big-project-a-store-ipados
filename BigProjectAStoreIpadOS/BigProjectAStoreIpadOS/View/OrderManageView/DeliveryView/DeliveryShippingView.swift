@@ -11,6 +11,9 @@ struct DeliveryShippingView: View {
     
     @State private var deliveryHeader = [ "주문 상태", "주문 번호", "상품 번호", "상품 이름", "발송 날짜", "택배사", "송장번호"]
     
+    @State private var sortOrder = [KeyPathComparator(\DeliveryModel.orderState)]
+
+    
     @State private var sampleArr = sampleDeliveryData
 
     let columns = [
