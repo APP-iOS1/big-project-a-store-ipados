@@ -27,9 +27,20 @@ struct ReviewResultTableView: View {
     // 정렬 지원 - 일단은 리뷰 등록 순서대로 정렬
     @State private var sortOrder = [KeyPathComparator(\CustomerReview.reviewCreatedDate)]
     
+    @Binding var searchResultCnt: Int
     
     var body: some View {
         VStack {
+            HStack {
+                Text("목록 (총 \(searchResultCnt)개)")
+                    .font(.title2)
+                    .padding(.leading, 20)
+                    .padding(.vertical, 10)
+                Spacer()
+            }
+            .background(Color(hue: 1.0, saturation: 0.006, brightness: 0.912))
+            .padding(.bottom, 20)
+            
             Table (searchResultsDummy, selection: $selectedOrder, sortOrder: $sortOrder) {
                 TableColumn("주문 번호", value: \.orderNumber)
                 TableColumn("상품명", value: \.orderProduct)
@@ -46,6 +57,6 @@ struct ReviewResultTableView: View {
 
 struct ReviewResultTableView_Previews: PreviewProvider {
     static var previews: some View {
-        ReviewResultTableView()
+        ReviewResultTableView(searchResultCnt: .constant(4))
     }
 }

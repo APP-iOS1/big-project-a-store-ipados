@@ -48,12 +48,15 @@ struct ReviewView: View {
     //목록 충 개수
     @State private var searchResultCnt: Int = 0
     
+    // 검색 눌렀을 때 임시로 목록 나타날 수 있도록
+    @State private var showTable: Bool = false
     
+
     
     var body: some View {
-        ScrollView {
+        //ScrollView {
             VStack (alignment: .leading) {
-                
+
                 Text("리뷰 관리")
                     .font(.title)
                     .bold()
@@ -302,6 +305,7 @@ struct ReviewView: View {
                     Spacer()
                     Button {
                         searchResultCnt = 3
+                        showTable.toggle()
                     } label: {
                         Text("검색")
                             .font(.title3)
@@ -333,14 +337,14 @@ struct ReviewView: View {
                 .padding(.top, 10)
                 .foregroundColor(.black)
                 
-                HStack {
-                    Text("목록 (총 \(searchResultCnt)개)")
-                        .font(.title2)
-                        .padding(.leading, 20)
-                        .padding(.vertical, 10)
-                    Spacer()
-                }
-                .background(Color(hue: 1.0, saturation: 0.006, brightness: 0.912))
+//                HStack {
+//                    Text("목록 (총 \(searchResultCnt)개)")
+//                        .font(.title2)
+//                        .padding(.leading, 20)
+//                        .padding(.vertical, 10)
+//                    Spacer()
+//                }
+//                .background(Color(hue: 1.0, saturation: 0.006, brightness: 0.912))
                 //목록
                 
                 // 주문번호
@@ -349,13 +353,14 @@ struct ReviewView: View {
                 //리뷰내용
                 //등록자
                 //리뷰 등록일
-                Group {
-                    ReviewResultTableView()
-                    Spacer()
+                
+                if showTable {
+                    ReviewResultTableView(searchResultCnt: $searchResultCnt)
                 }
+                Spacer()
             }
             .padding(30)
-        }
+        //}
     }
 }
 
