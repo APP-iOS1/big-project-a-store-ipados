@@ -8,16 +8,11 @@
 import SwiftUI
 
 struct ContentView: View {
-    
     @StateObject var navigationStateManager = NavigationStateManager()
-    
     @State private var showSettings = false
-    
     @State private var menuId: MenuItem.ID?
-    @State private var subMenuId: SubMenuItem.ID?
-    
     @ViewBuilder
-    fileprivate func SubMenuDetails(for subMenuId: SubMenuItem.ID?) -> some View {
+    fileprivate func SubMenuDetails(for subMenuId: MenuItem.ID?) -> some View {
         VStack {
             if let subMenu = model.selectedSubMenuItem(selectedSubMenuId: subMenuId) {
                 subMenu.body
@@ -30,37 +25,22 @@ struct ContentView: View {
     fileprivate var model = MenuModel()
     
     var body: some View {
-        NavigationSplitView(columnVisibility: $navigationStateManager.columnVisibility,
-                            sidebar: {
-            List(model.menuItems, selection: $menuId) { menu in
-                Text(menu.name)
-            }
-            .toolbar(content: {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    // .navigationBarTrailing
-                    Button {
-                        showSettings.toggle()
-                    } label: {
-                        Image(systemName: "gearshape")
-                    }
+        NavigationView {
+            Form {
+                OutlineGroup(self.model.menuItems, children: \.subMenuItem) { item in
+//                    NavigationLink {
+//                        SubMenuDetails(for: item.id)
+//                    } label: {
+//                        Text(item.name)
+//                    }
+                    Text(item.name)
+                        .overlay(NavigationLink(destination: SubMenuDetails(for: item.id), label: {
+                            Text("")
+                        }))
                 }
-            })
-            .sheet(isPresented: $showSettings, content: {
-                SettingsView()
-            })
+            }
             .navigationTitle("멋사 전자")
-            
-        }, content: {
-            if let menu = model.menuItem(id: menuId) {
-                List(menu.subMenuItem, selection: $subMenuId) { subMenu in
-                    Text(subMenu.name)
-                }
-            } else {
-                Text("메뉴를 선택해주세요")
-            }
-        }, detail: {
-            SubMenuDetails(for: subMenuId)
-        })
+        }
         .environmentObject(navigationStateManager)
     }
 }
