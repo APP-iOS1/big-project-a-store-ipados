@@ -22,11 +22,7 @@ struct BigProjectAStoreIpadOSApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     var body: some Scene {
         WindowGroup {
-                ContentView()
-                .fullScreenCover(isPresented: $isShownFullScreenCover) {
-                    OpenStoreView(storeName: "", storeAddress: "", isShownFullScreenCover: $isShownFullScreenCover)
-                }
-        				.environmentObject(StoreNetworkManager())
+            ContentView()
         }
     }
 }

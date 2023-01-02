@@ -13,10 +13,13 @@ struct DeliverySummaryView: View {
         // MARK: - 요약 바
         HStack {
             
+            Spacer()
             
             Button {
                 
             } label: {
+                
+                // MARK: -배송준비
                 HStack {
                     Image(systemName: "shippingbox")
                         .resizable()
@@ -33,19 +36,13 @@ struct DeliverySummaryView: View {
                             Text("건")
                         }
                     }
-                    .padding(.leading, 20)
+                    .padding(.leading, 10)
                 }
                 .font(.title2)
                 
             }
             .padding(.trailing, 50)
             .foregroundColor(.black)
-
-            
-            
-            // MARK: -배송준비
-            
-            
             
             // MARK: -배송중
             HStack {
@@ -55,7 +52,7 @@ struct DeliverySummaryView: View {
                     .frame(width: 60, height: 60)
                 
                 VStack {
-                    Text("배송중")
+                    Text(" 배송중 ")
                     
                     HStack {
                         Text("19")
@@ -64,7 +61,7 @@ struct DeliverySummaryView: View {
                         Text("건")
                     }
                 }
-                .padding(.leading, 20)
+                .padding(.leading, 10)
             }
             .font(.title2)
             .padding(.trailing, 50)
@@ -86,7 +83,7 @@ struct DeliverySummaryView: View {
                         Text("건")
                     }
                 }
-                .padding(.leading, 20)
+                .padding(.leading, 10)
             }
             .font(.title2)
             .padding(.trailing, 50)
