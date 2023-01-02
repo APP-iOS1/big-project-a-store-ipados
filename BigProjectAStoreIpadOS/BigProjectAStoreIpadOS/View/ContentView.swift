@@ -11,11 +11,10 @@ struct ContentView: View {
     @StateObject var navigationStateManager = NavigationStateManager()
     @State private var showSettings = false
     @State private var menuId: MenuItem.ID?
-//    @State private var subMenuId: SubMenuItem.ID?
     
-    @State private var haveStore = true
+    @State private var haveStore = false
     @State private var isLoggedin = true
-    @State private var isStoreApproved = true
+    @State private var isStoreApproved = false
 
     @ViewBuilder
     fileprivate func SubMenuDetails(for subMenuId: MenuItem.ID?) -> some View {
