@@ -12,8 +12,8 @@ import FirebaseFirestore
 /// Store의 데이터를 CRUD 할 수 있는 메소드를 포함하는 클래스 객체 입니다.
 /// Publish가 필요한 뷰 데이터를 요청하면 따로 설정이 가능하니, 이승준을 호출해 주세요.
 /// 메소드 이름은 Team A 코딩 컨벤션을 따릅니다.
-/// - 구현 완료 : Read(StoreUser, StoreItem, StoreItemId, StoreReview), Create(StoreItem), Delete(StoreItem)
-/// - 구현 예정 : Delete(Store Review), Create(Order info)
+/// - 구현 완료 : Read(StoreUserInfo, StoreItem, StoreItemId, StoreReview), Create(StoreItem), Delete(StoreItem)
+/// - 구현 예정 : Delete(Store Review), Create(Order info), Update(StoreInfo)
 final class StoreNetworkManager: ObservableObject {
 	/// 앱이 실행되면서 사용될 "현재 로그인 중인 StoreUser"의 정보를 저장하는 publish 변수 입니다.
 	@Published var currentStoreUserInfo: StoreInfo? = nil
@@ -92,6 +92,51 @@ final class StoreNetworkManager: ObservableObject {
 		}
 	}
 	
+	// MARK: - Update Store Info
+	/// 스토어 유저의 정보를 업데이트 합니다.
+	/// - Parameter with: Auth.auth().currentUser?.uid
+	/// - Parameter by: 어떤 데이터를 업데이트할지 열거형으로 정의되어 있는 value에 전달합니다.
+	public func updateStoreInfo(with currentStoreUserUid: String?,
+								by storeInfo: StoreInfoUpdateType...) async -> Void {
+		guard let currentStoreUserUid else { return }
+		print(#function)
+		let storePath = path.document(currentStoreUserUid)
+		do {
+			for updateInfo in storeInfo {
+				switch updateInfo {
+				case .storeId(let key, let value),
+						.storeName(let key, let value),
+						.storeEmail(let key, let value),
+						.storeLocation(let key, let value),
+						.phoneNumber(let key, let value):
+					try await storePath.updateData([
+						key: value
+					])
+				case .registerDate(let key, let value):
+					try await storePath.updateData([
+						key: value
+					])
+				case .reportingCount(let key, let value):
+					try await storePath.updateData([
+						key: value
+					])
+				case .storeImage(let key, let value):
+					try await storePath.updateData([
+						key: value
+					])
+				case .isVerified(let key, let value),
+						.isSubmitted(let key, let value),
+						.isBanned(let key, let value):
+					try await storePath.updateData([
+						key: value
+					])
+				}
+			}
+		} catch {
+			dump("\(#function) - DEBUG \(error.localizedDescription)")
+		}
+	}
+	
 	// MARK: - Read Item Id
 	@MainActor @discardableResult
 	public func requestItemIdList(with currentStoreUserUid: String?) async -> [String] {
@@ -127,7 +172,7 @@ final class StoreNetworkManager: ObservableObject {
 		let path = self.path
 			.document(currentStoreUserUid)
 			.collection("Item")
-		 
+		
 		do {
 			for id in currentStoreItemIdArray {
 				let requestedItemData = try await path.document(id).getDocument().data()
@@ -251,7 +296,7 @@ final class StoreNetworkManager: ObservableObject {
 				let rate = requestedData["rate"] as? Int ?? 0
 				
 				let orderedItems = requestedData["orderedItems"] as? [String: Any] ?? [:]
-				let orderedItem = getOrderedItemData(with: orderedItems)
+				let orderedItem = await getOrderedItemData(with: orderedItems)
 				
 				let review = ReviewInfo(reviewPostId: reviewPostId, itemId: itemId, storeId: storeId, reviewerId: reviewerId, postDescription: reviewPostDescription, postDate: postDate.formattedKoreanTime(), rate: rate, orderedItem: [orderedItem])
 				
@@ -264,14 +309,24 @@ final class StoreNetworkManager: ObservableObject {
 	
 	// MARK: - 주문한 아이템의 데이터 생성 메소드
 	/// 가져온 리뷰 데이터에서 주문한 아이템의 옵션을 가져오는 내부 메소드 입니다.
-	private func getOrderedItemData(with orderedItems: [String: Any]) -> OrderedItemInfo {
+	private func getOrderedItemData(with orderedItems: [String: Any]) async -> OrderedItemInfo {
 		let itemUid = orderedItems["itemUid"] as? String ?? ""
 		let price = orderedItems["price"] as? Double ?? 0.0
 		let deliveryStatus = orderedItems["deliveryStatus"] as? String ?? ""
+		var itemName: String = ""
+		var itemImage: [String] = [""]
+		
+		do {
+			if let snapshot = try await path.document(currentStoreUserInfo!.storeId).collection("Item").document(itemUid).getDocument().data() {
+				itemName = snapshot["itemName"] as? String ?? ""
+				itemImage = snapshot["itemImage"] as? [String] ?? [""]
+			}
+		} catch {
+			dump("\(#function) - DEBUG \(error.localizedDescription)")
+		}
 		
 		// Item Option
 		let selectedOption = orderedItems["selectedOption"] as? [String: Any] ?? [:]
-		
 		var itemOptionDict = ItemOptions(itemOptions: [:])
 		for (key, value) in selectedOption {
 			let myOption = value as? [String]
@@ -279,10 +334,11 @@ final class StoreNetworkManager: ObservableObject {
 			itemOptionDict.itemOptions.updateValue(myOption, forKey: key)
 		}
 		
-		return OrderedItemInfo(itemUid: itemUid, price: price, selectedOption: itemOptionDict)
+		return OrderedItemInfo(itemUid: itemUid, itemName: itemName, itemImage: itemImage, price: price, option: itemOptionDict)
 	}
 	
 	// MARK: - 주문된 아이템의 정보 생성 메소드
+	/// 구매한 유저의 id를 참조 경로로 삼고 가서 그 유저의 서브 콜렉션에도 저장해야 함
 	public func createOrderedItemInfo(with currentStoreUserUid: String?) async -> Void {
 		
 	}

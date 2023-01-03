@@ -43,3 +43,17 @@ struct StoreInfo: Codable {
 enum StoreApproveState {
 	case needSubmit, submitted, approved, banned
 }
+
+enum StoreInfoUpdateType {
+	case storeId(key: String = "storeId", value: String)
+	case storeName(key: String = "storeName", value: String)
+	case storeEmail(key: String = "storeEmail", value: String)
+	case storeLocation(key: String = "storeLocation", value: String)
+	case registerDate(key: String = "registerDate", value: Date)
+	case reportingCount(key: String = "reportingCount", value: Int)
+	case storeImage(key: String = "storeImage", value: [String])
+	case phoneNumber(key: String = "phoneNumber", value: String)
+	case isVerified(key: String = "isVerified", value: Bool)
+	case isSubmitted(key: String = "isSubmitted", value: Bool)
+	case isBanned(key: String = "isBanned", value: Bool)
+}
