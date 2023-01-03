@@ -12,9 +12,6 @@ struct DeliveryView: View {
     @State private var sortOrder = [KeyPathComparator(\DeliveryModel.orderState)]
     @State private var searchText = ""
     @State private var selected = Set<DeliveryModel.ID>()
-
-
-    @EnvironmentObject var navigationManager: NavigationStateManager
     
     
     #if os(iOS)
@@ -80,7 +77,7 @@ struct DeliveryView: View {
 //                }
             }
             .navigationTitle("배송 관리")
-            .searchable(text: $searchText)
+            .searchable(text: $searchText, prompt: "검색")
             
             
         } // NavigationStack
@@ -136,6 +133,5 @@ struct DeliveryView: View {
 struct DeliveryView_Previews: PreviewProvider {
     static var previews: some View {
         DeliveryView()
-            .environmentObject(NavigationStateManager())
     }
 }

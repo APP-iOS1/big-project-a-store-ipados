@@ -60,7 +60,8 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("멋사 전자")
-            ProductInventoryView()
+            
+            DeliveryView()
         }
         .environmentObject(navigationStateManager)
         .navigationSplitViewStyle(.balanced)
