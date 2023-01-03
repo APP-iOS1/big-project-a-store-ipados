@@ -66,7 +66,7 @@ struct ContentView: View {
         .environmentObject(navigationStateManager)
         .navigationSplitViewStyle(.balanced)
         .fullScreenCover(isPresented: $isLoggedin) {
-            LoginView(isLoggedin: $isLoggedin)
+            LoginView(haveStore: $haveStore, isLoggedin: $isLoggedin)
         }
         .fullScreenCover(isPresented: $haveStore) {
             OpenStoreView(haveStore: $haveStore)

@@ -12,8 +12,8 @@ import FirebaseFirestore
 /// Store의 데이터를 CRUD 할 수 있는 메소드를 포함하는 클래스 객체 입니다.
 /// Publish가 필요한 뷰 데이터를 요청하면 따로 설정이 가능하니, 이승준을 호출해 주세요.
 /// 메소드 이름은 Team A 코딩 컨벤션을 따릅니다.
-/// - 구현 완료 : Read(StoreUser, StoreItem), Create(StoreItem), Delete(StoreItem)
-/// - 구현 예정 :
+/// - 구현 완료 : Read(StoreUser, StoreItem, StoreItemId, StoreReview), Create(StoreItem), Delete(StoreItem)
+/// - 구현 예정 : Delete(Store Review), Create(Order info)
 final class StoreNetworkManager: ObservableObject {
 	/// 앱이 실행되면서 사용될 "현재 로그인 중인 StoreUser"의 정보를 저장하는 publish 변수 입니다.
 	@Published var currentStoreUserInfo: StoreInfo? = nil
@@ -21,6 +21,12 @@ final class StoreNetworkManager: ObservableObject {
 	/// 현재 로그인 중인 StoreUser의 아이템 id를 보관하는 배열입니다.
 	/// 보유 중인 Item을 그릴 때 ForEach로 전달하여 사용할 수 있습니다.
 	@Published var currentStoreItemIdArray: [String] = []
+	
+	/// 하나의 아이템에 대한 리뷰 정보 구조체를 원소로 갖는 배열 입니다.
+	@Published var eachItemReviews: [ReviewInfo] = []
+	
+	/// 스토어가 관리하는 모든 아이템을 보관하는 배열입니다.
+	@Published var currentStoreItemArray: [ItemInfo] = []
 	
 	let path = Firestore.firestore().collection("\(appCategory.rawValue)")
 	
@@ -39,9 +45,12 @@ final class StoreNetworkManager: ObservableObject {
 			let snapshot = try await storeUserPath.getDocument()
 			if let requestedData = snapshot.data() {
 				self.currentStoreUserInfo = makeCurrentStoreUser(with: requestedData)
+				guard let currentStoreUserInfo else { return }
+				setStoreApproveStatement(with: currentStoreUserInfo)
 			} else {
 				dump("\(#function) - DEBUG: NO SNAPSHOT FOUND")
 			}
+			
 		} catch {
 			dump("\(#function) - DEBUG: REQUEST FAILED")
 		}
@@ -69,11 +78,26 @@ final class StoreNetworkManager: ObservableObject {
 		return currentStoreUser
 	}
 	
-	// MARK: - Read Item
-	@MainActor
-	public func requestItemList(with currentStoreUserUid: String?) async -> [String] {
+	// MARK: - Set Store Approvement State
+	/// 스토어 유저의 인증 상태에 따라 열거형 인스턴스 값을 변경합니다.
+	private func setStoreApproveStatement(with userInfo: StoreInfo) {
+		if userInfo.isSubmitted {
+			storeApproveState = .submitted
+		} else if userInfo.isVerified {
+			storeApproveState = .approved
+		} else if userInfo.isBanned {
+			storeApproveState = .banned
+		} else if userInfo.isSubmitted == false {
+			storeApproveState = .needSubmit
+		}
+	}
+	
+	// MARK: - Read Item Id
+	@MainActor @discardableResult
+	public func requestItemIdList(with currentStoreUserUid: String?) async -> [String] {
 		guard let currentStoreUserUid else { return [""] }
-		let itemPath = path.document("\(currentStoreUserUid)")
+		let itemPath = path
+			.document("\(currentStoreUserUid)")
 			.collection("Item")
 		
 		var idArray: [String] = []
@@ -91,7 +115,49 @@ final class StoreNetworkManager: ObservableObject {
 		} catch {
 			dump("\(error.localizedDescription)")
 		}
+		
 		return self.currentStoreItemIdArray
+	}
+	
+	// MARK: Read all Item Info
+	@MainActor
+	public func requestItemInfo(with currentStoreUserUid: String?) async -> Void {
+		await requestItemIdList(with: currentStoreUserUid)
+		guard let currentStoreUserUid else { return }
+		let path = self.path
+			.document(currentStoreUserUid)
+			.collection("Item")
+		 
+		do {
+			for id in currentStoreItemIdArray {
+				let requestedItemData = try await path.document(id).getDocument().data()
+				guard let requestedItemData else { continue }
+				
+				let itemUid: String = requestedItemData["itemUid"] as? String ?? ""
+				let storeId: String = requestedItemData["storeId"] as? String ?? ""
+				let itemName: String = requestedItemData["itemName"] as? String ?? ""
+				let itemCategory: String = requestedItemData["itemCategory"] as? String ?? ""
+				let itemAmount: Int = requestedItemData["itemAmount"] as? Int ?? 0
+				let itemImage: [String] = requestedItemData["itemImage"] as? [String] ?? [""]
+				let price: Double = requestedItemData["price"] as? Double ?? 0.0
+				
+				let itemAllOption = requestedItemData["ItemAllOption"] as? [String: Any] ?? [:]
+				var itemAllOptions = ItemOptions(itemOptions: [:])
+				
+				for (key, value) in itemAllOption {
+					let options = value as? [String]
+					guard let options else { continue }
+					itemAllOptions.itemOptions.updateValue(options, forKey: key)
+				}
+				
+				let requestedItem = ItemInfo(itemUid: itemUid, storeId: storeId, itemName: itemName, itemCategory: itemCategory, itemAmount: itemAmount, itemAllOption: itemAllOptions, itemImage: itemImage, price: price)
+				
+				self.currentStoreItemArray.append(requestedItem)
+			}
+		} catch {
+			dump("\(#function) - DEBUG \(error.localizedDescription)")
+		}
+		
 	}
 	
 	// MARK: - Create Item
@@ -111,7 +177,7 @@ final class StoreNetworkManager: ObservableObject {
 				"storeId": item.storeId,
 				"itemName": item.itemName,
 				"itemCategory": item.itemCategory,
-				"itemAmount": item.itemAmount,
+//				"itemAmount": item.itemAmount,
 				"itemImage": item.itemImage,
 				"price": item.price,
 			], merge: true)
@@ -130,7 +196,7 @@ final class StoreNetworkManager: ObservableObject {
 		do {
 			for (key, value) in itemOption.itemOptions {
 				try await path.setData([
-					"ItemAllOption": [
+					"itemAllOption": [
 						key: value
 					]
 				], merge: true)
@@ -156,6 +222,70 @@ final class StoreNetworkManager: ObservableObject {
 		} catch {
 			dump("\(#function) - DEBUG \(error.localizedDescription)")
 		}
+	}
+	
+	// MARK: - Read All Reviews in Item
+	/// db에 저장된 아이템에 대한 모든 리뷰를 읽어옵니다.
+	/// - Parameter with: Auth.auth().currentUser?.uid
+	/// - Parameter fromItemId: 조회 중인 아이템의 "id"
+	/// - Returns: Void
+	@MainActor
+	public func requestItemReviews(with currentStoreUserUid: String?,
+								   fromItemId itemUid: String) async -> Void {
+		guard let currentStoreUserUid else { return }
+		let reviewPath = path.document("\(currentStoreUserUid)")
+			.collection("Item")
+			.document(itemUid)
+			.collection("Reviews")
+		
+		do {
+			let snapshot = try await reviewPath.getDocuments()
+			for document in snapshot.documents {
+				let requestedData = document.data()
+				
+				let reviewPostId = requestedData["reviewPostId"] as? String ?? ""
+				let itemId = requestedData["itemId"] as? String ?? ""
+				let storeId = requestedData["storeId"] as? String ?? ""
+				let reviewerId = requestedData["userId"] as? String ?? ""
+				let reviewPostDescription = requestedData["reviewPostDescription"] as? String ?? ""
+				let postDate = requestedData["postDate"] as? Timestamp ?? Timestamp(date: Date.now)
+				let rate = requestedData["rate"] as? Int ?? 0
+				
+				let orderedItems = requestedData["orderedItems"] as? [String: Any] ?? [:]
+				let orderedItem = getOrderedItemData(with: orderedItems)
+				
+				let review = ReviewInfo(reviewPostId: reviewPostId, itemId: itemId, storeId: storeId, reviewerId: reviewerId, postDescription: reviewPostDescription, postDate: postDate.formattedKoreanTime(), rate: rate, orderedItem: [orderedItem])
+				
+				eachItemReviews.append(review)
+			}
+		} catch {
+			dump("\(#function) - DEBUG \(error.localizedDescription)")
+		}
+	}
+	
+	// MARK: - 주문한 아이템의 데이터 생성 메소드
+	/// 가져온 리뷰 데이터에서 주문한 아이템의 옵션을 가져오는 내부 메소드 입니다.
+	private func getOrderedItemData(with orderedItems: [String: Any]) -> OrderedItemInfo {
+		let itemUid = orderedItems["itemUid"] as? String ?? ""
+		let price = orderedItems["price"] as? Double ?? 0.0
+		let deliveryStatus = orderedItems["deliveryStatus"] as? String ?? ""
+		
+		// Item Option
+		let selectedOption = orderedItems["selectedOption"] as? [String: Any] ?? [:]
+		
+		var itemOptionDict = ItemOptions(itemOptions: [:])
+		for (key, value) in selectedOption {
+			let myOption = value as? [String]
+			guard let myOption else { continue }
+			itemOptionDict.itemOptions.updateValue(myOption, forKey: key)
+		}
+		
+		return OrderedItemInfo(itemUid: itemUid, price: price, selectedOption: itemOptionDict)
+	}
+	
+	// MARK: - 주문된 아이템의 정보 생성 메소드
+	public func createOrderedItemInfo(with currentStoreUserUid: String?) async -> Void {
+		
 	}
 }
 
