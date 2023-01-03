@@ -25,14 +25,17 @@ struct ProductRegisterView: View {
     @State private var textFieldOptionName: String = ""
     //텍스트필드 2번 - 옵션의 정보를 입력받음
     @State private var textFieldOptionDetails: String = ""
-    //상품이미지
+    //판매자 등록화면에서 볼 수 있는 상품이미지
     @State private var photoArray: [UIImage] = []
-    //상품 설명
-    @State private var productDescription: String = ""
-    
+    //Firebase에 올라가는 String형태의 이미지
+    @State private var photoString: [String] = []
+
     //Use PhotosUI
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImageData: Data? = nil
+    
+    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var storeNetworkManager: StoreNetworkManager
     //
     //Delete Option
     //    func optionDelete(at offsets: IndexSet){
@@ -48,11 +51,20 @@ struct ProductRegisterView: View {
             selection: $selectedItem,
             matching: .images,
             photoLibrary: .shared()) {
-                Image(systemName: "plus")
-                    .fontWeight(.black)
-                    .frame(width:200, height: 200)
-                    .background(.gray)
-                    .opacity(0.2)
+                ZStack {
+                        Text("이미지 업로드")
+                            .font(.system(size: 70))
+                            .foregroundColor(.black)
+                            .opacity(0.2)
+                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 200, trailing: 0))
+                        Image(systemName: "plus")
+                            .font(.title)
+                            .fontWeight(.black)
+                            .frame(width:550, height: 550)
+                            .background(.gray)
+                            .opacity(0.2)
+                }
+
                 
             }
             .onChange(of: selectedItem) { newItem in
@@ -61,6 +73,7 @@ struct ProductRegisterView: View {
                         selectedImageData = data
                         if let selectedImageData, let uiImage = UIImage(data:selectedImageData){
                             photoArray.append(uiImage)
+                            photoString.append(uiImage.toImageString() ?? "")
                         }
                     }
                 }
@@ -117,6 +130,10 @@ struct ProductRegisterView: View {
                     Section(header: Text("상품카테고리").font(.title)) {
                         TextField("카테고리 입력", text: $productCategory)
                     }
+                    //상품 가격
+                    Section(header: Text("가격").font(.title)) {
+                        TextField("상품 가격 입력", text: $productPrice)
+                    }
                     //상품 옵션
                     Section(header: Text("옵션").font(.title)) {
                         ForEach(Array(productOption.keys.enumerated()), id: \.element) { _, key in
@@ -149,18 +166,12 @@ struct ProductRegisterView: View {
                                 ForEach(photoArray,id:\.self) { photo in
                                     Image(uiImage: photo)
                                         .resizable()
-                                        .frame(width: 200, height: 200)
+                                        .frame(width: 550, height: 550)
                                 }
                                 Spacer()
                                 photoLogic()
                             }
                         }
-                        
-                    }
-                    //상품 설명
-                    Section(header: Text("상품설명").font(.title)) {
-                        TextEditor(text: $productDescription)
-                            .frame(height:200)
                         
                     }
                 }
@@ -175,6 +186,13 @@ struct ProductRegisterView: View {
             .navigationTitle(Text("상품 등록"))
 //            .navigationBarBackButtonHidden(true)
 //            .navigationBarItems(leading: <#T##L#>, trailing: <#T##T#>)
+    }
+}
+
+extension UIImage {
+    func toImageString() -> String? {
+        let data = self.pngData()
+        return data?.base64EncodedString(options: .endLineWithLineFeed)
     }
 }
 
