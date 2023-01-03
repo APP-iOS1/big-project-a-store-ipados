@@ -23,10 +23,11 @@ struct BigProjectAStoreIpadOSApp: App {
     var body: some Scene {
         WindowGroup {
                 ContentView()
-                .fullScreenCover(isPresented: $isShownFullScreenCover) {
-                    OpenStoreView(storeName: "", storeAddress: "", isShownFullScreenCover: $isShownFullScreenCover)
-                }
-        				.environmentObject(StoreNetworkManager())
+//                .fullScreenCover(isPresented: $isShownFullScreenCover) {
+//                    OpenStoreView(storeName: "", storeAddress: "", isShownFullScreenCover: $isShownFullScreenCover)
+//                }
+//				ModelTestView()
+				.environmentObject(StoreNetworkManager())
         }
     }
 }
