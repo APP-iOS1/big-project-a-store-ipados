@@ -5,8 +5,9 @@
 //  Created by 추현호 on 2022/12/27.
 //
 
-import SwiftUI
+import FirebaseAuth
 import PhotosUI
+import SwiftUI
 
 //사용자가 옵션 작성시 언더바까지 입력했을 때
 
@@ -16,8 +17,10 @@ struct ProductRegisterView: View {
     @State private var productName: String = ""
     //상품 카테고리
     @State private var productCategory: String = ""
-    //옵션(현재는 더미데이터)
-    @State private var productOption: [String:[String]] = ["램추가":["8GB_10000","16GB_20000"],"SSD추가":["256GB_10000","512GB_20000"]]
+    //상품 가격
+    @State private var productPrice: String = ""
+    //옵션
+    @State private var productOption: [String:[String]] = [:]
     //텍스트필드1번 - 옵션을 입력받음
     @State private var textFieldOptionName: String = ""
     //텍스트필드 2번 - 옵션의 정보를 입력받음
@@ -77,9 +80,25 @@ struct ProductRegisterView: View {
     }
     
     private func checkProductRegistraion() {
-        if !((productName.isEmpty) && (productCategory.isEmpty)) {
+        if !(((productName.isEmpty) && (productCategory.isEmpty)) && (productPrice.isEmpty)) {
             print("성공적으로 등록 될 예정")
+            //데이터 통신
+            /// - Parameter with: Auth.auth().currentUser.uid
+            /// - Parameter item: 새로 생성될 ItemInfo 구조체를 생성 후 아규먼트 전달
+      
+            let item = ItemInfo(
+                itemUid: UUID().uuidString,
+                storeId: Auth.auth().currentUser?.uid ?? "test",
+                itemName: productName,
+                itemCategory: productCategory,
+                itemAllOption: ItemOptions(itemOptions: productOption),
+                itemImage: ["test"],
+                price: Double(productPrice) ?? 0.0)
+            Task {
+                await storeNetworkManager.createNewItem(with: "Test", item: item)
+            }
             //뷰 벗어나는 코드 작성하기
+            dismiss()
         }
         else {
             print("무언가 작성하지 않았음")
