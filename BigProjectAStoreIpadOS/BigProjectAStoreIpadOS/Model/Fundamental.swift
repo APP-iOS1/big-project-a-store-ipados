@@ -26,13 +26,13 @@ enum AppCategoryEnum: String, Codable {
 /// - 앱에 로그인한 사용자는 자기 자신의 uid로 접근할 수 있는 데이터에 한하여 CRUD를 진행할 수 있습니다.
 struct StoreInfo: Codable {
 	var storeId: String // 회원가입 시점에 생성되는 uid를 할당합니다.
-	var storeName: String
 	var storeEmail: String
-	var storeLocation: String
 	var registerDate: String // Timestamp Extension 메소드로 리턴받은 String을 할당합니다.
 	var reportingCount: Int
 	var storeImage: String?
-	var phoneNumber: String
+	var phoneNumber: String?
+	var storeLocation: String?
+	var storeName: String?
 	var isVerified: Bool = false // 입점 허가 여부
 	var isSubmitted: Bool = false
 	var isBanned: Bool = false // 신고 누적으로 인한 퇴출 여부
