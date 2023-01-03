@@ -40,7 +40,7 @@ struct SignUpView: View {
                                     Task {
                                         // FIXME: 서버랑 연결 다시 확인
                                         // true : 중복 아님
-//                                        isIDChecked = await signUpViewModel.isEmailDuplicated(currentUserEmail: userID)
+                                        //                                        isIDChecked = await signUpViewModel.isEmailDuplicated(currentUserEmail: userID)
                                         isIDChecked = true
                                     }
                                 } label: {
@@ -69,7 +69,7 @@ struct SignUpView: View {
                         }
                     }
                     // MARK: 비밀번호 입력
-                    // FIXME: 비밀번호 정규식 적용
+                    // TODO: 비밀번호 정규식 적용
                     HStack(alignment: .top) {
                         Text("비밀번호")
                             .modifier(contentNameModifier())
@@ -111,67 +111,15 @@ struct SignUpView: View {
                 } header: {
                     Text("아이디/패스워드")
                 }
-                // MARK: 판매자 정보 입력
-//                Section {
-//                    HStack(alignment: .top) {
-//                        Text("스토어명")
-//                            .modifier(contentNameModifier())
-//                        VStack(alignment: .leading) {
-//                            TextField("스토어 이름을 입력해주세요", text: $storeName)
-//                                .modifier(contentFieldModifier())
-//                            HStack() {
-//                                Button {
-//                                    Task {
-//                                        // FIXME: 서버랑 연결 다시 확인
-//                                        // true : 중복 아님
-//                                        isNameChecked = await signUpViewModel.isNicknameDuplicated(currentStoreName: storeName)
-//                                    }
-//                                } label: {
-//                                    Text("중복검사")
-//                                        .padding(3)
-//                                        .background(.blue)
-//                                        .foregroundColor(.white)
-//                                }
-//                                .buttonStyle(PlainButtonStyle())
-//                                .padding(.horizontal, 10)
-//
-//                                // FIXME: 아이디 다시 입력할 때 텍스트 떠있는 현상 고치기
-//                                if isNameChecked {
-//                                    Text("사용 가능한 이름입니다")
-//                                } else {
-//                                    Text("이름을 다시 입력해주세요")
-//                                }
-//                            }
-//                        }
-//                    }
-//
-//                    HStack(alignment: .top) {
-//                        Text("사업장소재지")
-//                            .modifier(contentNameModifier())
-//                        TextField("스토어 주소를 입력해주세요", text: $storeLocation)
-//                            .modifier(contentFieldModifier())
-//                    }
-//
-//                    HStack(alignment: .top) {
-//                        Text("연락처")
-//                            .modifier(contentNameModifier())
-//                        TextField("휴대폰 번호를 - 빼고 입력해주세요", text: $phoneNumber)
-//                            .keyboardType(.numberPad)
-//                            .modifier(contentFieldModifier())
-//                    }
-//                } header: {
-//                    Text("판매자 정보")
-//                }
                 
                 Section {
                     HStack {
-                        // TODO: 서버랑 연결해서 회원가입 정보 넘겨주기
                         Button {
                             Task {
-                                // FIXME: 
+                                // 앞에 조건 다 통과하면 회원가입 가능
                                 if (isIDChecked == true) && (isValidEmail(testStr: userID) == true) && (userPassword.count >= 6) && (userPassword != "" && userPassword == userPasswordCorrect) {
                                     isSignUpChecked = true
-                                    signupTest = await signUpViewModel.createUser(email: userID, password: userPassword, nickname: "찌리릿")
+                                    signupTest = await signUpViewModel.createUser(email: userID, password: userPassword)
                                     
                                     print(signupTest)
                                 }

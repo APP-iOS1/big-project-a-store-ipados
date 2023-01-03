@@ -32,7 +32,7 @@ final class SignUpViewModel: ObservableObject {
 	/// - Parameter nickname: 입력받은 사용자의 nickname
 	///
 	@MainActor
-	public func createUser(email: String, password: String, nickname: String) async -> Bool {
+	public func createUser(email: String, password: String) async -> Bool {
 		authenticationState = .authenticating
 		do  {
 			try await authentication.createUser(withEmail: email, password: password)
@@ -41,7 +41,7 @@ final class SignUpViewModel: ObservableObject {
 			authenticationState = .authenticated
 			// firestore에 user 등록
 			let currentUserId = authentication.currentUser?.uid ?? ""
-			registerUser(with: currentUserId, email: email, nickname: nickname)
+			registerUser(with: currentUserId, email: email)
 			return true
 		}
 		catch {
@@ -57,13 +57,12 @@ final class SignUpViewModel: ObservableObject {
 	/// - Parameter uid: 현재 사용자의 Auth uid
 	/// - Parameter email: 현재 사용자의 email
 	/// - Parameter nickname: 현재 사용자의 nickname
-	private func registerUser(with uid: String, email: String, nickname: String) {
+	private func registerUser(with uid: String, email: String) {
 		database.collection("\(appCategory.rawValue)")
 			.document(uid)
 			.setData([
 				"id" : uid,
 				"userEmail" : email,
-				"userNickname" : nickname
 			])
 	}
 	
