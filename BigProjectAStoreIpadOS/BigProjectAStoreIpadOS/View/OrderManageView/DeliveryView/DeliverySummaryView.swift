@@ -11,26 +11,61 @@ struct DeliverySummaryView: View {
     
     var body: some View {
         // MARK: - 요약 바
-        HStack {
+        VStack {
             
-            Spacer()
+            HStack {
+                Text("배송 관리")
+                
+                Spacer()
+            } // HStack
+            .font(.largeTitle)
+            .bold()
             
-            Button {
+            HStack {
                 
-            } label: {
+                Spacer()
                 
-                // MARK: -배송준비
+                Button {
+                    
+                } label: {
+                    
+                    // MARK: -배송준비
+                    HStack {
+                        Image(systemName: "shippingbox")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 50, height: 50)
+                        
+                        VStack {
+                            Text("배송준비")
+                            
+                            HStack {
+                                Text("15")
+                                    .font(.title)
+                                    .bold()
+                                Text("건")
+                            }
+                        }
+                        .padding(.leading, 10)
+                    }
+                    .font(.title2)
+                    
+                }
+                .padding(.trailing, 50)
+                .foregroundColor(.black)
+                
+                // MARK: -배송중
                 HStack {
-                    Image(systemName: "shippingbox")
+                    Image(systemName: "box.truck")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 50, height: 50)
+                        .frame(width: 60, height: 60)
                     
                     VStack {
-                        Text("배송준비")
+                        Text(" 배송중 ")
                         
                         HStack {
-                            Text("15")
+                            Text("19")
                                 .font(.title)
                                 .bold()
                             Text("건")
@@ -39,57 +74,33 @@ struct DeliverySummaryView: View {
                     .padding(.leading, 10)
                 }
                 .font(.title2)
+                .padding(.trailing, 50)
                 
-            }
-            .padding(.trailing, 50)
-            .foregroundColor(.black)
-            
-            // MARK: -배송중
-            HStack {
-                Image(systemName: "box.truck")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 60, height: 60)
-                
-                VStack {
-                    Text(" 배송중 ")
+                // MARK: -배송완료
+                HStack {
+                    Image(systemName: "checkmark.square")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 40, height: 40)
                     
-                    HStack {
-                        Text("19")
-                            .font(.title)
-                            .bold()
-                        Text("건")
+                    VStack {
+                        Text("배송완료")
+                        
+                        HStack {
+                            Text("12")
+                                .font(.title)
+                                .bold()
+                            Text("건")
+                        }
                     }
+                    .padding(.leading, 10)
                 }
-                .padding(.leading, 10)
-            }
-            .font(.title2)
-            .padding(.trailing, 50)
-            
-            // MARK: -배송완료
-            HStack {
-                Image(systemName: "checkmark.square")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 40, height: 40)
+                .font(.title2)
+                .padding(.trailing, 50)
                 
-                VStack {
-                    Text("배송완료")
-                    
-                    HStack {
-                        Text("12")
-                            .font(.title)
-                            .bold()
-                        Text("건")
-                    }
-                }
-                .padding(.leading, 10)
-            }
-            .font(.title2)
-            .padding(.trailing, 50)
-            
-            Spacer()
-        }
+                Spacer()
+            } // HStack
+        } // VStack
         .padding()
     }
 }

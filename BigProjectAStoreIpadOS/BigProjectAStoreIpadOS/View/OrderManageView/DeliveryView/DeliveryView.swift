@@ -9,12 +9,9 @@ import SwiftUI
 
 struct DeliveryView: View {
     
-    @State private var sortOrder = [KeyPathComparator(\DeliveryModel.orderState)]
+    @State private var sortOrder = [KeyPathComparator(\DeliveryModel.shippingDate)]
     @State private var searchText = ""
     @State private var selected = Set<DeliveryModel.ID>()
-
-
-    @EnvironmentObject var navigationManager: NavigationStateManager
     
     
     #if os(iOS)
@@ -39,11 +36,40 @@ struct DeliveryView: View {
                 Divider()
                 
                 Table(sampleDeliveryData, selection: $selected, sortOrder: $sortOrder) {
-                    TableColumn("주문 상태", value: \.orderState) { delivery in
+                    TableColumn("배송 상태", value: \.orderState) { delivery in
                         if delivery.orderState == "0" {
-                            Text("배송 준비")
+                            
+                            Button {
+                                //delivery.orderState = "2"
+                            } label: {
+                                HStack {
+                                    Text("배송 준비")
+                                        .foregroundColor(.black)
+                                        .padding(5)
+                                        .overlay(Rectangle()
+                                            .stroke(Color.black, lineWidth:0.5))
+                                    
+                                    Spacer()
+                                }
+                            }
+                            .frame(minWidth: 100)
+                            
                         } else if delivery.orderState == "2" {
-                            Text("배송 중")
+                            Button {
+                                //delivery.orderState = "1"
+                            } label: {
+                                HStack {
+                                    Text(" 배송 중 ")
+                                        .foregroundColor(.black)
+                                        .padding(5)
+                                        .overlay(Rectangle()
+                                            .stroke(Color.black, lineWidth:0.5))
+                                    
+                                    Spacer()
+                                }
+                            }
+                            .frame(minWidth: 100)
+                            
                         } else {
                             Text("배송 완료")
                         }
@@ -79,8 +105,7 @@ struct DeliveryView: View {
 //                    EmptyView()
 //                }
             }
-            .navigationTitle("배송 관리")
-            .searchable(text: $searchText)
+            .searchable(text: $searchText, prompt: "검색")
             
             
         } // NavigationStack
@@ -136,6 +161,5 @@ struct DeliveryView: View {
 struct DeliveryView_Previews: PreviewProvider {
     static var previews: some View {
         DeliveryView()
-            .environmentObject(NavigationStateManager())
     }
 }

@@ -295,7 +295,6 @@ struct ProductInventoryView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
             ProductInventoryView()
-                .environmentObject(NavigationStateManager())
         }
     }
 }
