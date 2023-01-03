@@ -137,6 +137,48 @@ final class StoreNetworkManager: ObservableObject {
 		}
 	}
 	
+	// MARK: - Create Store Info
+	public func createStoreInfo(with storeUser: StoreInfo) async -> Void {
+		do {
+			try await path.document(storeUser.storeId).setData([
+				"storeId": storeUser.storeId,
+				"storeEmail": storeUser.storeEmail,
+				"registerDate": storeUser.registerDate,
+				"reportingCount": storeUser.reportingCount,
+				"isVerified": storeUser.isVerified,
+				"isSubmitted": storeUser.isSubmitted,
+				"isBanned": storeUser.isBanned
+//				"storeImage": storeUser.storeImage,
+//				"phoneNumber": storeUser.phoneNumber,
+//				"storeLocation": storeUser.storeLocation,
+//				"storeName": storeUser.storeName
+			], merge: true)
+			
+			try await path.document(storeUser.storeId).collection("Notification").document("알람").setData([
+				"init":""
+			], merge: true)
+			
+			try await
+			path.document(storeUser.storeId).collection("Sales").document("init")
+				.setData([
+					"init":""
+				], merge: true)
+			
+			try await path.document(storeUser.storeId).collection("Items").document("init").collection("Reviews").document("리뷰").setData([
+				"init":""
+			], merge: true)
+			
+			try await
+			path.document(storeUser.storeId).collection("Items").document("init").collection("OrderedInfo").document("주문정보").setData([
+				"init":""
+			], merge: true)
+			
+		} catch {
+			dump("\(#function) - DEBUG \(error.localizedDescription)")
+		}
+		
+	}
+	
 	// MARK: - Read Item Id
 	@MainActor @discardableResult
 	public func requestItemIdList(with currentStoreUserUid: String?) async -> [String] {
