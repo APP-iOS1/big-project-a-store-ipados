@@ -151,7 +151,7 @@ final class StoreNetworkManager: ObservableObject {
 			if snapshot.count != 0 {
 				for document in snapshot.documents {
 					let requestedData = document.data()
-					let id = requestedData["id"] as? String ?? "NO ID?"
+					let id = requestedData["itemUid"] as? String ?? "NO ID?"
 					idArray.append(id)
 				}
 			}
@@ -218,7 +218,7 @@ final class StoreNetworkManager: ObservableObject {
 		
 		do {
 			try await storeItemPath.setData([
-				"id": item.itemUid,
+				"itemUid": item.itemUid,
 				"storeId": item.storeId,
 				"itemName": item.itemName,
 				"itemCategory": item.itemCategory,
@@ -231,7 +231,6 @@ final class StoreNetworkManager: ObservableObject {
 		} catch {
 			dump("\(error.localizedDescription)")
 		}
-		
 		self.currentStoreItemIdArray.append(item.itemUid)
 	}
 	

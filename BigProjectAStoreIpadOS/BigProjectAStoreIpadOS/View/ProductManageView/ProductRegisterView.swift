@@ -101,14 +101,14 @@ struct ProductRegisterView: View {
       
             let item = ItemInfo(
                 itemUid: UUID().uuidString,
-                storeId: Auth.auth().currentUser?.uid ?? "",
+                storeId: Auth.auth().currentUser?.uid ?? "test",
                 itemName: productName,
                 itemCategory: productCategory,
                 itemAllOption: ItemOptions(itemOptions: productOption),
                 itemImage: photoString,
                 price: Double(productPrice) ?? 0.0)
             Task {
-                await storeNetworkManager.createNewItem(with: storeNetworkManager.currentStoreUserInfo?.storeId, item: item)
+                await storeNetworkManager.createNewItem(with: Auth.auth().currentUser?.uid ?? "test", item: item)
 //                await storeNetworkManager.createNewItem(with: "Test", item: item)
             }
             //뷰 벗어나는 코드 작성하기
