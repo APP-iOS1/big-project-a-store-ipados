@@ -12,7 +12,7 @@ struct ItemInfo: Codable {
 	var storeId: String
 	var itemName: String
 	var itemCategory: String
-	var itemAmount: Int
+//	var itemAmount: Int
 	var itemAllOption: ItemOptions
 	var itemImage: [String]
 	var price: Double

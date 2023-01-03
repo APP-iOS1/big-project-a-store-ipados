@@ -10,7 +10,9 @@ import SwiftUI
 struct OpenStoreView: View {
     @State var storeName = ""
     @State var storeAddress = ""
+    @State var phoneNumber = ""
     @Binding var haveStore: Bool
+    @StateObject var storeNetworkManager: StoreNetworkManager = StoreNetworkManager()
     
     var body: some View {
         VStack {
@@ -26,6 +28,13 @@ struct OpenStoreView: View {
                         Text("사업장소재지 주소")
                             .modifier(contentNameModifier())
                         TextField("주소를 입력해주세요", text: $storeAddress)
+                            .modifier(contentFieldModifier())
+                    }
+                    HStack(alignment: .top) {
+                        Text("연락처")
+                            .modifier(contentNameModifier())
+                        TextField("휴대폰 번호를 - 빼고 입력해주세요", text: $phoneNumber)
+                            .keyboardType(.numberPad)
                             .modifier(contentFieldModifier())
                     }
                 } header: {

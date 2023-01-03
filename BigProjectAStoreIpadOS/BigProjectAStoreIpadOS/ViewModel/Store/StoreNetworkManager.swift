@@ -177,7 +177,7 @@ final class StoreNetworkManager: ObservableObject {
 				"storeId": item.storeId,
 				"itemName": item.itemName,
 				"itemCategory": item.itemCategory,
-				"itemAmount": item.itemAmount,
+//				"itemAmount": item.itemAmount,
 				"itemImage": item.itemImage,
 				"price": item.price,
 			], merge: true)

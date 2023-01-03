@@ -80,7 +80,6 @@ struct DeliveryView: View {
 //                }
             }
             .navigationTitle("배송 관리")
-            .modifier(CloseUpDetailModifier())
             .searchable(text: $searchText)
             
             

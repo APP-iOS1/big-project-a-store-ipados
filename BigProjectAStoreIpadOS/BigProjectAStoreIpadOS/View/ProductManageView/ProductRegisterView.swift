@@ -5,8 +5,9 @@
 //  Created by 추현호 on 2022/12/27.
 //
 
-import SwiftUI
+import FirebaseAuth
 import PhotosUI
+import SwiftUI
 
 //사용자가 옵션 작성시 언더바까지 입력했을 때
 
@@ -16,20 +17,25 @@ struct ProductRegisterView: View {
     @State private var productName: String = ""
     //상품 카테고리
     @State private var productCategory: String = ""
-    //옵션(현재는 더미데이터)
-    @State private var productOption: [String:[String]] = ["램추가":["8GB_10000","16GB_20000"],"SSD추가":["256GB_10000","512GB_20000"]]
+    //상품 가격
+    @State private var productPrice: String = ""
+    //옵션
+    @State private var productOption: [String:[String]] = [:]
     //텍스트필드1번 - 옵션을 입력받음
     @State private var textFieldOptionName: String = ""
     //텍스트필드 2번 - 옵션의 정보를 입력받음
     @State private var textFieldOptionDetails: String = ""
-    //상품이미지
+    //판매자 등록화면에서 볼 수 있는 상품이미지
     @State private var photoArray: [UIImage] = []
-    //상품 설명
-    @State private var productDescription: String = ""
-    
+    //Firebase에 올라가는 String형태의 이미지
+    @State private var photoString: [String] = []
+
     //Use PhotosUI
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImageData: Data? = nil
+    
+    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var storeNetworkManager: StoreNetworkManager
     //
     //Delete Option
     //    func optionDelete(at offsets: IndexSet){
@@ -45,11 +51,20 @@ struct ProductRegisterView: View {
             selection: $selectedItem,
             matching: .images,
             photoLibrary: .shared()) {
-                Image(systemName: "plus")
-                    .fontWeight(.black)
-                    .frame(width:200, height: 200)
-                    .background(.gray)
-                    .opacity(0.2)
+                ZStack {
+                        Text("이미지 업로드")
+                            .font(.system(size: 70))
+                            .foregroundColor(.black)
+                            .opacity(0.2)
+                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 200, trailing: 0))
+                        Image(systemName: "plus")
+                            .font(.title)
+                            .fontWeight(.black)
+                            .frame(width:550, height: 550)
+                            .background(.gray)
+                            .opacity(0.2)
+                }
+
                 
             }
             .onChange(of: selectedItem) { newItem in
@@ -58,6 +73,7 @@ struct ProductRegisterView: View {
                         selectedImageData = data
                         if let selectedImageData, let uiImage = UIImage(data:selectedImageData){
                             photoArray.append(uiImage)
+                            photoString.append(uiImage.toImageString() ?? "")
                         }
                     }
                 }
@@ -77,9 +93,25 @@ struct ProductRegisterView: View {
     }
     
     private func checkProductRegistraion() {
-        if !((productName.isEmpty) && (productCategory.isEmpty)) {
+        if !(((productName.isEmpty) && (productCategory.isEmpty)) && (productPrice.isEmpty)) {
             print("성공적으로 등록 될 예정")
+            //데이터 통신
+            /// - Parameter with: Auth.auth().currentUser.uid
+            /// - Parameter item: 새로 생성될 ItemInfo 구조체를 생성 후 아규먼트 전달
+      
+            let item = ItemInfo(
+                itemUid: UUID().uuidString,
+                storeId: Auth.auth().currentUser?.uid ?? "test",
+                itemName: productName,
+                itemCategory: productCategory,
+                itemAllOption: ItemOptions(itemOptions: productOption),
+                itemImage: ["test"],
+                price: Double(productPrice) ?? 0.0)
+            Task {
+                await storeNetworkManager.createNewItem(with: "Test", item: item)
+            }
             //뷰 벗어나는 코드 작성하기
+            dismiss()
         }
         else {
             print("무언가 작성하지 않았음")
@@ -97,6 +129,10 @@ struct ProductRegisterView: View {
                     //상품 카테고리
                     Section(header: Text("상품카테고리").font(.title)) {
                         TextField("카테고리 입력", text: $productCategory)
+                    }
+                    //상품 가격
+                    Section(header: Text("가격").font(.title)) {
+                        TextField("상품 가격 입력", text: $productPrice)
                     }
                     //상품 옵션
                     Section(header: Text("옵션").font(.title)) {
@@ -130,18 +166,12 @@ struct ProductRegisterView: View {
                                 ForEach(photoArray,id:\.self) { photo in
                                     Image(uiImage: photo)
                                         .resizable()
-                                        .frame(width: 200, height: 200)
+                                        .frame(width: 550, height: 550)
                                 }
                                 Spacer()
                                 photoLogic()
                             }
                         }
-                        
-                    }
-                    //상품 설명
-                    Section(header: Text("상품설명").font(.title)) {
-                        TextEditor(text: $productDescription)
-                            .frame(height:200)
                         
                     }
                 }
@@ -156,6 +186,13 @@ struct ProductRegisterView: View {
             .navigationTitle(Text("상품 등록"))
 //            .navigationBarBackButtonHidden(true)
 //            .navigationBarItems(leading: <#T##L#>, trailing: <#T##T#>)
+    }
+}
+
+extension UIImage {
+    func toImageString() -> String? {
+        let data = self.pngData()
+        return data?.base64EncodedString(options: .endLineWithLineFeed)
     }
 }
 

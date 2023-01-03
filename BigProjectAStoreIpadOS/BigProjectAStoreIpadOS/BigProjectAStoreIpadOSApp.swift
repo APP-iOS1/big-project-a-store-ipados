@@ -9,12 +9,12 @@ import SwiftUI
 import FirebaseCore
 
 class AppDelegate: NSObject, UIApplicationDelegate {
-	func application(_ application: UIApplication,
-					 didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-		FirebaseApp.configure()
-		
-		return true
-	}
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        FirebaseApp.configure()
+        
+        return true
+    }
 }
 
 @main
@@ -22,12 +22,9 @@ struct BigProjectAStoreIpadOSApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     var body: some Scene {
         WindowGroup {
-                ContentView()
-//                .fullScreenCover(isPresented: $isShownFullScreenCover) {
-//                    OpenStoreView(storeName: "", storeAddress: "", isShownFullScreenCover: $isShownFullScreenCover)
-//                }
-//				ModelTestView()
-				.environmentObject(StoreNetworkManager())
+            ContentView()
+                .environmentObject(StoreNetworkManager())
         }
     }
 }
+

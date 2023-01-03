@@ -11,11 +11,10 @@ struct ContentView: View {
     @StateObject var navigationStateManager = NavigationStateManager()
     @State private var showSettings = false
     @State private var menuId: MenuItem.ID?
-    @State private var subMenuId: SubMenuItem.ID?
     
-    @State private var haveStore = true
+    @State private var haveStore = false
     @State private var isLoggedin = true
-    @State private var isStoreApproved = true
+    @State private var isStoreApproved = false
 
     @ViewBuilder
     fileprivate func SubMenuDetails(for subMenuId: MenuItem.ID?) -> some View {
@@ -23,7 +22,22 @@ struct ContentView: View {
             if let subMenu = model.selectedSubMenuItem(selectedSubMenuId: subMenuId) {
                 subMenu.body
             } else {
-                Text("세부 메뉴를 선택해주세요")
+                if let mainMenu = model.menuItem(id: subMenuId) {
+                    switch mainMenu.name {
+                    case "상품 관리":
+                        ProductInventoryView()
+                    case "주문 관리":
+                        OrderHistoryView()
+                    case "스토어 관리":
+                        EditStoreView()
+                    case "매출현황":
+                        ChartDetailView()
+                    case "문의 및 리뷰 관리":
+                        InquiryView()
+                    default:
+                        ProductInventoryView()
+                    }
+                }
             }
         }
     }
@@ -46,11 +60,12 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("멋사 전자")
+            ProductInventoryView()
         }
         .environmentObject(navigationStateManager)
         .navigationSplitViewStyle(.balanced)
         .fullScreenCover(isPresented: $isLoggedin) {
-            LoginView(isLoggedin: $isLoggedin)
+            LoginView(haveStore: $haveStore, isLoggedin: $isLoggedin)
         }
         .fullScreenCover(isPresented: $haveStore) {
             OpenStoreView(haveStore: $haveStore)

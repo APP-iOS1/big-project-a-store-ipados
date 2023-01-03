@@ -41,6 +41,7 @@ struct ProductInventoryView: View {
                 Divider()
                 // 전체 상품 상태 바
                 productStatusBar
+                    .navigationTitle("상품 관리")
                 // 상품목록 펼쳐보기
                 if wideButtonTapped {
                     // 상품 목록 조회 검색 UI
@@ -234,7 +235,7 @@ struct ProductInventoryView: View {
                 Spacer()
             }
         }
-        .navigationTitle("상품 리스트")
+//        .navigationTitle("상품 리스트")
         //        .modifier(CloseUpDetailModifier())
     }
 }
