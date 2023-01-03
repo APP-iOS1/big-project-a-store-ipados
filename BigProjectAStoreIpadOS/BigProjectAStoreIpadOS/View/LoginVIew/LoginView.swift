@@ -13,8 +13,9 @@ struct LoginView: View {
     @State private var userPassword = ""
     @Binding var haveStore: Bool
     @Binding var isLoggedin: Bool
+    @Binding var isStoreApproved: Bool
     @StateObject var signUpViewModel: SignUpViewModel = SignUpViewModel()
-    @StateObject var storeNetworkManager: StoreNetworkManager = StoreNetworkManager()
+    @EnvironmentObject var storeNetworkManager: StoreNetworkManager
     
     var body: some View {
         NavigationView {
@@ -32,10 +33,12 @@ struct LoginView: View {
                     Task {
                         // isSubmitted, isLoggedin 기본값이 false
                         isLoggedin = !(await signUpViewModel.requestUserLogin(withEmail: userID, withPassword: userPassword))
-                        // 스토어 승인여부 가져와서 입점신청뷰로 넘어갈지 말지 지정해줌
+                        // 입점신청여부 가져와서 입점신청뷰로 넘길지 말지 지정
                         haveStore = !((storeNetworkManager.currentStoreUserInfo?.isSubmitted) != nil)
-                        print(isLoggedin)
-                        print(haveStore)
+                        
+                        // 입점승인여부 가져와서 대기중뷰로 넘길지 말지 지정
+                        // TODO: 백오피스에서 승인 업데이트해줘야함
+                        isStoreApproved = !((storeNetworkManager.currentStoreUserInfo?.isVerified) != nil)
                     }
                 } label: {
                     Text("로그인")

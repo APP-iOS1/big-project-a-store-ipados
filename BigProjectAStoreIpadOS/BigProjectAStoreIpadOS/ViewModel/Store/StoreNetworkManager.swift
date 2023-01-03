@@ -195,7 +195,7 @@ final class StoreNetworkManager: ObservableObject {
 					itemAllOptions.itemOptions.updateValue(options, forKey: key)
 				}
 				
-				let requestedItem = ItemInfo(itemUid: itemUid, storeId: storeId, itemName: itemName, itemCategory: itemCategory, itemAmount: itemAmount, itemAllOption: itemAllOptions, itemImage: itemImage, price: price)
+				let requestedItem = ItemInfo(itemUid: itemUid, storeId: storeId, itemName: itemName, itemCategory: itemCategory, itemAllOption: itemAllOptions, itemImage: itemImage, price: price)
 				
 				self.currentStoreItemArray.append(requestedItem)
 			}
