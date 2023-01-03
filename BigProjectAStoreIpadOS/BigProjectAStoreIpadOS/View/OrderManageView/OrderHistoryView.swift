@@ -10,6 +10,7 @@ import SwiftUI
 
 struct OrderHistoryView: View {
     
+    @State private var searchText: String = ""
     @State private var customerOrders = [
         CustomerOrder(orderNumber: "1dfsf", orderTime: "2022-12-27 13:36", orderProduct: "맥북 프로", orderOption: "스페이스 그레이_0", orderQuantity: 2, purchaseConfirmation: false),
         CustomerOrder(orderNumber: "2sdef", orderTime: "2022-2-1 09:12", orderProduct: "아이패드", orderOption: "스페이스 그레이_0", orderQuantity: 3, purchaseConfirmation: true),
@@ -47,6 +48,7 @@ struct OrderHistoryView: View {
                 }
             }//v
             .navigationTitle("주문 내역")
+            .searchable(text: $searchText, prompt: "검색")
         }//navigationstack
         //.modifier(CloseUpDetailModifier())
         

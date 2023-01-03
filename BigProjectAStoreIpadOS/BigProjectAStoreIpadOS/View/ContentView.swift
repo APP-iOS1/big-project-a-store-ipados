@@ -59,9 +59,9 @@ struct ContentView: View {
                         }))
                 }
             }
-            .navigationTitle("멋사 전자")
+            .navigationTitle("ZZIRIT 스토어")
             
-            DeliveryView()
+            ProductInventoryView()
         }
         .environmentObject(navigationStateManager)
         .navigationSplitViewStyle(.balanced)
