@@ -68,6 +68,7 @@ final class SignUpViewModel: ObservableObject {
 	}
 	
 	// MARK: - 이메일 중복 검사
+	/// 잘 안되고 잇음
 	/// 사용자가 입력한 이메일이 이미 사용하고 있는지 검사합니다.
 	/// 입력받은 이메일이 DB에 이미 있다면 false를, 그렇지 않다면 true를 반환합니다.
 	/// - Parameter currentUserEmail: 입력받은 사용자 이메일
@@ -103,7 +104,7 @@ final class SignUpViewModel: ObservableObject {
 	
 	// MARK: - Login
 	/// 유저 로그인을 실행합니다.
-	/// - Important: 메소드 호출 후 리턴된 값이 `true`일 때, 앱 전체에서 활용할 `StoreUser`를 만드는 메소드를 `StoreNetworkManager` 모델에서 호출해야 합니다.
+	/// - Important: 메소드 호출 후 리턴된 값이 `true`일 때, 앱 전체에서 활용할 `StoreUser`를 만드는 requestStoreInfo() 메소드를 `StoreNetworkManager` 모델에서 호출해야 합니다.
 	/// - Parameter withEmail: 로그인을 시도하는 이메일
 	/// - Parameter withPassword: 로그인 인증을 위한 비밀번호
 	/// - Returns: 로그인 성공 시 true, 실패 시 false 를 리턴합니다.

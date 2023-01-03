@@ -8,11 +8,13 @@
 import Foundation
 
 struct ReviewInfo: Codable {
-	var id: String = UUID().uuidString
-	var postDescription: String
-	var postDate: Date
+	var reviewPostId: String
+	var itemId: String
+	var storeId: String
 	var reviewerId: String
-	var rate: Double
+	var postDescription: String
+	var postDate: String
+	var rate: Int
 	var orderedItem: [OrderedItemInfo]
 }
 
