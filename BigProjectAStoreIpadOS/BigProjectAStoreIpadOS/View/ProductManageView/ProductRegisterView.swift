@@ -108,7 +108,7 @@ struct ProductRegisterView: View {
                 itemImage: ["test"],
                 price: Double(productPrice) ?? 0.0)
             Task {
-                await storeNetworkManager.createNewItem(with: "Test", item: item)
+                await storeNetworkManager.createNewItem(with: Auth.auth().currentUser?.uid, item: item)
             }
             //뷰 벗어나는 코드 작성하기
             dismiss()

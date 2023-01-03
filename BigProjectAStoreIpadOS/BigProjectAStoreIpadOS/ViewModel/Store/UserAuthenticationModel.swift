@@ -108,6 +108,7 @@ final class SignUpViewModel: ObservableObject {
 	/// - Parameter withEmail: 로그인을 시도하는 이메일
 	/// - Parameter withPassword: 로그인 인증을 위한 비밀번호
 	/// - Returns: 로그인 성공 시 true, 실패 시 false 를 리턴합니다.
+    @MainActor
 	public func requestUserLogin(withEmail email: String, withPassword password: String) async -> Bool {
 		do {
 			try await authentication.signIn(withEmail: email, password: password)

@@ -151,8 +151,9 @@ final class StoreNetworkManager: ObservableObject {
 			if snapshot.count != 0 {
 				for document in snapshot.documents {
 					let requestedData = document.data()
-					let id = requestedData["id"] as? String ?? "NO ID?"
+					let id = requestedData["itemUid"] as? String ?? "NO ID?"
 					idArray.append(id)
+                    
 				}
 			}
 			self.currentStoreItemIdArray = idArray
@@ -170,10 +171,10 @@ final class StoreNetworkManager: ObservableObject {
 		await requestItemIdList(with: currentStoreUserUid)
 		guard let currentStoreUserUid else { return }
 		let path = self.path
-			.document(currentStoreUserUid)
+			.document("\(currentStoreUserUid)")
 			.collection("Item")
-		
 		do {
+            self.currentStoreItemArray.removeAll()
 			for id in currentStoreItemIdArray {
 				let requestedItemData = try await path.document(id).getDocument().data()
 				guard let requestedItemData else { continue }
@@ -217,7 +218,7 @@ final class StoreNetworkManager: ObservableObject {
 		
 		do {
 			try await storeItemPath.setData([
-				"id": item.itemUid,
+				"itemUid": item.itemUid,
 				"storeId": item.storeId,
 				"itemName": item.itemName,
 				"itemCategory": item.itemCategory,
@@ -225,7 +226,7 @@ final class StoreNetworkManager: ObservableObject {
 				"itemImage": item.itemImage,
 				"price": item.price,
 			], merge: true)
-			
+			print("등록완료")
 			await updateItemOption(with: item.itemAllOption, path: storeItemPath)
 		} catch {
 			dump("\(error.localizedDescription)")

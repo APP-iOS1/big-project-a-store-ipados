@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct ProductInventoryView: View {
     
@@ -23,7 +24,6 @@ struct ProductInventoryView: View {
     @State private var deleteTapped = false  // 상품 삭제 alert
     @State private var deleteItemIndex = 0   // 선택 상품 index
     @State private var sortOrder = [KeyPathComparator(\ItemInfo.itemName)]
-    
     
     let columns = [
         GridItem(.flexible(),alignment: .center),
@@ -134,18 +134,18 @@ struct ProductInventoryView: View {
                             withAnimation {
                                 wideButtonTapped = true
                             }
-                            
                         } label: {
                             HStack{
                                 Text("상품검색")
                                 Image(systemName: "magnifyingglass")
                             }
-                            
                         }
                         .padding(.trailing, 40)
                         NavigationLink {
                             ProductRegisterView()
-                                .environmentObject(NavigationStateManager())
+                                .onDisappear{
+                                        productArr = storeNetworkManager.currentStoreItemArray
+                                }
                         } label: {
                             HStack{
                                 Text("상품추가")
@@ -186,7 +186,6 @@ struct ProductInventoryView: View {
                             Button {
                                 productCode = product.itemUid
                                 // 해당 등록 상품 삭제
-                                
                                 deleteTapped.toggle()
                             } label: {
                                 Text("삭제")
@@ -195,25 +194,30 @@ struct ProductInventoryView: View {
                         }
                         
                     }
+                    .onAppear{
+                        Task{
+                            await storeNetworkManager.requestItemInfo(with: Auth.auth().currentUser?.uid)
+                            productArr = storeNetworkManager.currentStoreItemArray
+                        }
+                    }
                     .alert("삭제하시겠습니까?", isPresented: $deleteTapped){
                         Button("아니요"){
                         }
                         Button ("네"){
                             Task{
-                                await storeNetworkManager.removeItem(from: storeNetworkManager.currentStoreUserInfo?.storeId, withItemUid: productCode)
-                                await storeNetworkManager.requestItemInfo(with: storeNetworkManager.currentStoreUserInfo?.storeId)
+                                await storeNetworkManager.removeItem(from: Auth.auth().currentUser?.uid, withItemUid: productCode)
+                                await storeNetworkManager.requestItemInfo(with: Auth.auth().currentUser?.uid)
                                 productArr = storeNetworkManager.currentStoreItemArray
                             }
-                            
-                            
-                            
-                            
                         }
                     } message:{
                         Text("해당 상품이 목록에서 제거됩니다.")
                     }
                     .fullScreenCover(isPresented: $isTapped, content: {
                         ProductModifyView(productId: $productCode)
+                            .onDisappear{
+                                productArr = storeNetworkManager.currentStoreItemArray
+                            }
                     })
                     .onChange(of: sortOrder) { newOrder in
                         productArr.sort(using: newOrder)
@@ -223,11 +227,7 @@ struct ProductInventoryView: View {
                 }
                 Spacer()
             }
-        } .onAppear{
-            Task{
-                await storeNetworkManager.requestItemInfo(with: storeNetworkManager.currentStoreUserInfo?.storeId)
-                productArr = storeNetworkManager.currentStoreItemArray
-            }
+ 
             
         }
         
