@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
 import FirebaseAuth
 
 struct OpenStoreView: View {
@@ -47,9 +48,11 @@ struct OpenStoreView: View {
                         Button {
                             Task{
                                 // TODO: CreateStoreInfo
+                                // TODO: User 정보(Email) read 해야함.
+                                await storeNetworkManager.createStoreInfo(with: StoreInfo(storeId: Auth.auth().currentUser?.uid ?? "", storeEmail: storeNetworkManager.currentStoreUserInfo?.storeEmail ?? "", registerDate: Date.getKoreanNowTimeString(), reportingCount: 0))
                                 await storeNetworkManager.updateStoreInfo(with: Auth.auth().currentUser?.uid, by: .isSubmitted(value: true))
-                                haveStore = !((storeNetworkManager.currentStoreUserInfo?.isSubmitted) != nil)
                             }
+                            haveStore = !((storeNetworkManager.currentStoreUserInfo?.isSubmitted) != nil)
                         } label: {
                             Text("신청하기")
                         }.buttonStyle(PlainButtonStyle())

@@ -68,12 +68,12 @@ final class StoreNetworkManager: ObservableObject {
 		let reportingCount: Int = requestedData["reportingCount"] as? Int ?? 0
 		let phoneNumber: String = requestedData["phoneNumber"] as? String ?? ""
 		let isVerified: Bool = requestedData["isVerified"] as? Bool ?? false
-		let isSubmited: Bool = requestedData["isSubmited"] as? Bool ?? false
+		let isSubmitted: Bool = requestedData["isSubmitted"] as? Bool ?? false
 		let isBanned: Bool = requestedData["isBanned"] as? Bool ?? false
 		
 		let storeImage: String = requestedData["storeImage"] as? String ?? ""
 		
-		let currentStoreUser = StoreInfo(storeId: storeId, storeName: storeName, storeEmail: storeEmail, storeLocation: storeLocation, registerDate: registerDate.formattedKoreanTime(), reportingCount: reportingCount, phoneNumber: phoneNumber, isVerified: isVerified, isBanned: isBanned)
+        let currentStoreUser = StoreInfo(storeId: storeId, storeEmail: storeEmail, registerDate: registerDate.formattedKoreanTime(), reportingCount: reportingCount,   phoneNumber: phoneNumber, storeLocation: storeLocation, storeName: storeName, isVerified: isVerified, isSubmitted: isSubmitted, isBanned: isBanned)
 		
 		return currentStoreUser
 	}
