@@ -7,7 +7,10 @@
 
 import Foundation
 
-struct ItemInfo: Codable {
+struct ItemInfo: Codable, Identifiable {
+	var id: String {
+		self.itemUid
+	}
 	var itemUid: String
 	var storeId: String
 	var itemName: String
@@ -38,8 +41,10 @@ struct OrderInfo: Codable {
 
 struct OrderedItemInfo: Codable {
 	var itemUid: String
+	var itemName: String
+	var itemImage: [String]
 	var price: Double
-	var selectedOption: ItemOptions
+	var option: ItemOptions
 	var deliveryStatus: DeliveryStatusEnum = .pending
 }
 
