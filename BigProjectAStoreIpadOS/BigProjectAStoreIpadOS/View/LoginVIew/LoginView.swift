@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct LoginView: View {
-    @State var userID = ""
-    @State var userPassword = ""
-    @State var haveStore = true
+    @State private var userID = ""
+    @State private var userPassword = ""
+    @Binding var haveStore: Bool
     @Binding var isLoggedin: Bool
+    @StateObject var signUpViewModel: SignUpViewModel = SignUpViewModel()
+    @StateObject var storeNetworkManager: StoreNetworkManager = StoreNetworkManager()
     
     var body: some View {
         NavigationView {
@@ -26,9 +29,14 @@ struct LoginView: View {
                     .padding(.bottom, 30)
                 
                 Button {
-                    // FIXME: Auth에서 로그인 상태 가져오기
-//                    let loginResult = 
-                    isLoggedin = false
+                    Task {
+                        // isSubmitted, isLoggedin 기본값이 false
+                        isLoggedin = !(await signUpViewModel.requestUserLogin(withEmail: userID, withPassword: userPassword))
+                        // 스토어 승인여부 가져와서 입점신청뷰로 넘어갈지 말지 지정해줌
+                        haveStore = !((storeNetworkManager.currentStoreUserInfo?.isSubmitted) != nil)
+                        print(isLoggedin)
+                        print(haveStore)
+                    }
                 } label: {
                     Text("로그인")
                         .foregroundColor(.white)
