@@ -23,6 +23,7 @@ struct BigProjectAStoreIpadOSApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(StoreNetworkManager())
         }
     }
 }
