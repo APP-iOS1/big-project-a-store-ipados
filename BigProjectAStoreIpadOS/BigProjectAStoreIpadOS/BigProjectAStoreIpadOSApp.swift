@@ -20,11 +20,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct BigProjectAStoreIpadOSApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @StateObject var storeNetworkManager = StoreNetworkManager()
     var body: some Scene {
         WindowGroup {
             ContentView()
-//			ModelTestView()
-                .environmentObject(StoreNetworkManager())
+                .environmentObject(storeNetworkManager)
         }
     }
 }

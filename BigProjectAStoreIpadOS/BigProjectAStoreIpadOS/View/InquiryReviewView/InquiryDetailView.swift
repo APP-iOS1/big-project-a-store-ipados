@@ -13,8 +13,6 @@ struct InquiryDetailView: View {
     var body: some View {
         VStack{
             Text("Hello, World!")
-        }.onAppear{
-            print(inquiry)
         }
     }
 }
