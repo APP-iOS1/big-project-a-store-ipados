@@ -182,7 +182,7 @@ final class StoreNetworkManager: ObservableObject {
 				let storeId: String = requestedItemData["storeId"] as? String ?? ""
 				let itemName: String = requestedItemData["itemName"] as? String ?? ""
 				let itemCategory: String = requestedItemData["itemCategory"] as? String ?? ""
-				let itemAmount: Int = requestedItemData["itemAmount"] as? Int ?? 0
+//				let itemAmount: Int = requestedItemData["itemAmount"] as? Int ?? 0
 				let itemImage: [String] = requestedItemData["itemImage"] as? [String] ?? [""]
 				let price: Double = requestedItemData["price"] as? Double ?? 0.0
 				
@@ -195,7 +195,7 @@ final class StoreNetworkManager: ObservableObject {
 					itemAllOptions.itemOptions.updateValue(options, forKey: key)
 				}
 				
-				let requestedItem = ItemInfo(itemUid: itemUid, storeId: storeId, itemName: itemName, itemCategory: itemCategory, itemAmount: itemAmount, itemAllOption: itemAllOptions, itemImage: itemImage, price: price)
+				let requestedItem = ItemInfo(itemUid: itemUid, storeId: storeId, itemName: itemName, itemCategory: itemCategory, itemAllOption: itemAllOptions, itemImage: itemImage, price: price)
 				
 				self.currentStoreItemArray.append(requestedItem)
 			}
