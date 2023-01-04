@@ -99,46 +99,45 @@ final class StoreNetworkManager: ObservableObject {
 	/// 스토어 유저의 정보를 업데이트 합니다.
 	/// - Parameter with: Auth.auth().currentUser?.uid
 	/// - Parameter by: 어떤 데이터를 업데이트할지 열거형으로 정의되어 있는 value에 전달합니다.
-	public func updateStoreInfo(with currentStoreUserUid: String?,
-								by storeInfo: StoreInfoUpdateType...) async -> Void {
-		guard let currentStoreUserUid else { return }
-		print(#function)
-		let storePath = path.document(currentStoreUserUid)
-		do {
-			for updateInfo in storeInfo {
-				switch updateInfo {
-				case .storeId(let key, let value),
-						.storeName(let key, let value),
-						.storeEmail(let key, let value),
-						.storeLocation(let key, let value),
-						.phoneNumber(let key, let value):
-					try await storePath.updateData([
-						key: value
-					])
-				case .registerDate(let key, let value):
-					try await storePath.updateData([
-						key: value
-					])
-				case .reportingCount(let key, let value):
-					try await storePath.updateData([
-						key: value
-					])
-				case .storeImage(let key, let value):
-					try await storePath.updateData([
-						key: value
-					])
-				case .isVerified(let key, let value),
-						.isSubmitted(let key, let value),
-						.isBanned(let key, let value):
-					try await storePath.updateData([
-						key: value
-					])
-				}
-			}
-		} catch {
-			dump("\(#function) - DEBUG \(error.localizedDescription)")
-		}
-	}
+	public func updateStoreInfo(with currentStoreUserUid: String?, by storeInfo: StoreInfoUpdateType...) async -> Void {
+    guard let currentStoreUserUid else { return }
+    print(#function)
+    let storePath = path.document(currentStoreUserUid)
+    do {
+        for updateInfo in storeInfo {
+            switch updateInfo {
+            case .storeId(let key, let value),
+                    .storeName(let key, let value),
+                    .storeEmail(let key, let value),
+                    .storeLocation(let key, let value),
+                    .phoneNumber(let key, let value):
+                try await storePath.updateData([
+                    key: value
+                ])
+            case .registerDate(let key, let value):
+                try await storePath.updateData([
+                    key: value
+                ])
+            case .reportingCount(let key, let value):
+                try await storePath.updateData([
+                    key: value
+                ])
+            case .storeImage(let key, let value):
+                try await storePath.updateData([
+                    key: value
+                ])
+            case .isVerified(let key, let value),
+                    .isSubmitted(let key, let value),
+                    .isBanned(let key, let value):
+                try await storePath.updateData([
+                    key: value
+                ])
+            }
+        }
+    } catch {
+        dump("\(#function) - DEBUG \(error.localizedDescription)")
+    }
+}
 	
 	// MARK: - Create Store Info
 	/// - Important: DEPRECATED
@@ -326,6 +325,7 @@ final class StoreNetworkManager: ObservableObject {
 	public func requestItemReviews(with currentStoreUserUid: String?,
 								   fromItemId itemUid: String) async -> Void {
 		guard let currentStoreUserUid else { return }
+
 		let reviewPath = path.document("\(currentStoreUserUid)")
 			.collection("Items")
 			.document(itemUid)
@@ -334,6 +334,7 @@ final class StoreNetworkManager: ObservableObject {
 		do {
 			let snapshot = try await reviewPath.getDocuments()
 			for document in snapshot.documents {
+                
 				let requestedData = document.data()
 				
 				let reviewPostId = requestedData["reviewPostId"] as? String ?? ""
@@ -345,9 +346,9 @@ final class StoreNetworkManager: ObservableObject {
 				let rate = requestedData["rate"] as? Int ?? 0
 				
 				let orderedItems = requestedData["orderedItems"] as? [String: Any] ?? [:]
-				let orderedItem = await getOrderedItemData(with: orderedItems)
-				
-				let review = ReviewInfo(reviewPostId: reviewPostId, itemId: itemId, storeId: storeId, reviewerId: reviewerId, postDescription: reviewPostDescription, postDate: postDate.formattedKoreanTime(), rate: rate, orderedItem: orderedItem)
+				//let orderedItem = await getOrderedItemData(with: orderedItems)
+                //실험용 itemName 넣음
+                let review = ReviewInfo(reviewPostId: reviewPostId, itemId: itemId, storeId: storeId, reviewerId: reviewerId, postDescription: reviewPostDescription, postDate: postDate.formattedKoreanTime(), rate: rate, orderedItem: [], itemName: "")
 				
 				eachItemReviews.append(review)
 			}
@@ -364,9 +365,11 @@ final class StoreNetworkManager: ObservableObject {
 		let deliveryStatus = orderedItems["deliveryStatus"] as? String ?? ""
 		var itemName: String = ""
 		var itemImage: [String] = [""]
-		
+        let storeID = currentStoreUserInfo?.storeId
+        print("currentStoreUserInfo: \(currentStoreUserInfo)")
+        print("storeID; \(storeID)") //nil
 		do {
-			if let snapshot = try await path.document(currentStoreUserInfo!.storeId).collection("Items").document(itemUid).getDocument().data() {
+			if let snapshot = try await path.document(storeID!).collection("Item").document(itemUid).getDocument().data() {
 				itemName = snapshot["itemName"] as? String ?? ""
 				itemImage = snapshot["itemImage"] as? [String] ?? [""]
 			}
