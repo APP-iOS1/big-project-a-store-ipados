@@ -9,11 +9,11 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject var navigationStateManager = NavigationStateManager()
+	@StateObject var authViewModel = SignUpViewModel()
     @State private var showSettings = false
     @State private var menuId: MenuItem.ID?
-    
+	
     @State var haveStore = false
-    @State var isLoggedin = true
     @State var isStoreApproved = false
 
     @ViewBuilder
@@ -34,6 +34,8 @@ struct ContentView: View {
                         ChartDetailView()
                     case "문의 및 리뷰 관리":
                         InquiryView()
+					case "로그아웃":
+						SettingsView()
                     default:
                         ProductInventoryView()
                     }
@@ -61,12 +63,13 @@ struct ContentView: View {
             }
             .navigationTitle("ZZIRIT 스토어")
             
-            ProductInventoryView()
+			ProductInventoryView()
         }
         .environmentObject(navigationStateManager)
+		.environmentObject(authViewModel)
         .navigationSplitViewStyle(.balanced)
-        .fullScreenCover(isPresented: $isLoggedin) {
-            LoginView(haveStore: $haveStore, isLoggedin: $isLoggedin, isStoreApproved: $isStoreApproved)
+		.fullScreenCover(isPresented: $authViewModel.isLoggedin) {
+            LoginView(haveStore: $haveStore, isLoggedin: $authViewModel.isLoggedin, isStoreApproved: $isStoreApproved)
         }
         .fullScreenCover(isPresented: $haveStore) {
             OpenStoreView(haveStore: $haveStore)
