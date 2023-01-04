@@ -49,8 +49,11 @@ struct OpenStoreView: View {
                             Task{
                                 // TODO: CreateStoreInfo
                                 // TODO: User 정보(Email) read 해야함.
-                                await storeNetworkManager.createStoreInfo(with: StoreInfo(storeId: Auth.auth().currentUser?.uid ?? "", storeEmail: storeNetworkManager.currentStoreUserInfo?.storeEmail ?? "", registerDate: Date.getKoreanNowTimeString(), reportingCount: 0))
-                                await storeNetworkManager.updateStoreInfo(with: Auth.auth().currentUser?.uid, by: .isSubmitted(value: true))
+								/// 입점신청한 다음에 받아온 정보로 스토어 정보를 추가한다.
+								/// 회원가입 시점에 db에 id와 email은 저장되기 때문에, 필요한 정보를 따로 업데이트하기만 하면 된다.
+//                                await storeNetworkManager.createStoreInfo(with: StoreInfo(storeId: Auth.auth().currentUser?.uid ?? "", storeEmail: storeNetworkManager.currentStoreUserInfo?.storeEmail ?? "", registerDate: Date.getKoreanNowTimeString(), reportingCount: 0))
+								
+								await storeNetworkManager.updateStoreInfo(with: Auth.auth().currentUser?.uid, by: .isSubmitted(value: true), .registerDate(value: Date.now), .storeName(value: "새로만든스토어"))
                             }
                             haveStore = !((storeNetworkManager.currentStoreUserInfo?.isSubmitted) != nil)
                         } label: {

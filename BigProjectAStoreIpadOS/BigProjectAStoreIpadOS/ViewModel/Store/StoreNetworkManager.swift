@@ -138,6 +138,7 @@ final class StoreNetworkManager: ObservableObject {
 	}
 	
 	// MARK: - Create Store Info
+	/// - Important: DEPRECATED
 	public func createStoreInfo(with storeUser: StoreInfo) async -> Void {
 		do {
 			try await path.document(storeUser.storeId).setData([
@@ -185,7 +186,7 @@ final class StoreNetworkManager: ObservableObject {
 		guard let currentStoreUserUid else { return [""] }
 		let itemPath = path
 			.document("\(currentStoreUserUid)")
-			.collection("Item")
+			.collection("Items")
 		
 		var idArray: [String] = []
 		do {
@@ -213,8 +214,9 @@ final class StoreNetworkManager: ObservableObject {
 		await requestItemIdList(with: currentStoreUserUid)
 		guard let currentStoreUserUid else { return }
 		let path = self.path
-			.document("\(currentStoreUserUid)")
-			.collection("Item")
+			.document(currentStoreUserUid)
+			.collection("Items")
+
 		do {
             self.currentStoreItemArray.removeAll()
 			for id in currentStoreItemIdArray {
@@ -258,7 +260,7 @@ final class StoreNetworkManager: ObservableObject {
 	public func createNewItem(with currentStoreUserUid: String?, item: ItemInfo) async -> Void {
 		guard let currentStoreUserUid else { return }
 		let storeItemPath = path.document("\(currentStoreUserUid)")
-			.collection("Item")
+			.collection("Items")
 			.document(item.itemUid)
 		
 		do {
@@ -305,7 +307,7 @@ final class StoreNetworkManager: ObservableObject {
 		guard let currentStoreUserUid else { return }
 		do {
 			try await path.document("\(currentStoreUserUid)")
-				.collection("Item")
+				.collection("Items")
 				.document(item)
 				.delete()
 		} catch {
@@ -323,7 +325,7 @@ final class StoreNetworkManager: ObservableObject {
 								   fromItemId itemUid: String) async -> Void {
 		guard let currentStoreUserUid else { return }
 		let reviewPath = path.document("\(currentStoreUserUid)")
-			.collection("Item")
+			.collection("Items")
 			.document(itemUid)
 			.collection("Reviews")
 		
@@ -362,7 +364,7 @@ final class StoreNetworkManager: ObservableObject {
 		var itemImage: [String] = [""]
 		
 		do {
-			if let snapshot = try await path.document(currentStoreUserInfo!.storeId).collection("Item").document(itemUid).getDocument().data() {
+			if let snapshot = try await path.document(currentStoreUserInfo!.storeId).collection("Items").document(itemUid).getDocument().data() {
 				itemName = snapshot["itemName"] as? String ?? ""
 				itemImage = snapshot["itemImage"] as? [String] ?? [""]
 			}
@@ -384,8 +386,37 @@ final class StoreNetworkManager: ObservableObject {
 	
 	// MARK: - 주문된 아이템의 정보 생성 메소드
 	/// 구매한 유저의 id를 참조 경로로 삼고 가서 그 유저의 서브 콜렉션에도 저장해야 함
-	public func createOrderedItemInfo(with currentStoreUserUid: String?) async -> Void {
+	/// 스토어의 모든 아이템 id를 가져온 다음,
+	/// 주문 건은 하나고, 그 안에 여러 아이템의 id를 다 갖고 있어야 함.
+	public func createOrderedItemInfo(with currentUserUid: String?,
+									  in currentStoreUserUid: String?,
+									  withItem item: ItemInfo...) async -> Void {
+		guard let currentStoreUserUid, let currentUserUid else { return }
+
+		// 주문한 아이템의 정보를 담는 배열
+		var orderedItemsArray: [OrderedItemInfo] = []
+		
+		for orderedItem in item {
+			let orderedItemsInfo = OrderedItemInfo(itemUid: orderedItem.itemUid, itemName: orderedItem.itemName, itemImage: orderedItem.itemImage, price: orderedItem.price, option: orderedItem.itemAllOption)
+			orderedItemsArray.append(orderedItemsInfo)
+		}
+		
+		// 주문 정보 생성
+		let newOrderInfo = OrderInfo(orderedUserInfo: currentUserUid, orderTime: Date.getKoreanNowTimeString(), orderedItems: orderedItemsArray, orderAddress: "배송주소")
+		
+		do {
+			for orderdItemInfo in orderedItemsArray {
+				let path = path.document(currentStoreUserUid)
+					.collection("Items").document(orderdItemInfo.itemUid) // 서로 다른 아이템 id에 하나의 주문 건 아이디만 넣어주기
+					.collection("OrderedInfo").document(newOrderInfo.orderId) // 주문 건 아이디는 유지
+				
+				try await path.setData([
+					:
+				])
+			}
+		} catch {
+			dump("\(#function) - DEBUG \(error.localizedDescription)")
+		}
 		
 	}
 }
-
