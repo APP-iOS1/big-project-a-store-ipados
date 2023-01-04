@@ -13,6 +13,7 @@ struct OpenStoreView: View {
     @State var storeName = ""
     @State var storeAddress = ""
     @State var phoneNumber = ""
+    @State private var showingAlert = false
     @Binding var haveStore: Bool
     @EnvironmentObject var storeNetworkManager: StoreNetworkManager
     
@@ -49,23 +50,32 @@ struct OpenStoreView: View {
                             Task{
                                 // TODO: CreateStoreInfo
                                 // TODO: User 정보(Email) read 해야함.
-								/// 입점신청한 다음에 받아온 정보로 스토어 정보를 추가한다.
-								/// 회원가입 시점에 db에 id와 email은 저장되기 때문에, 필요한 정보를 따로 업데이트하기만 하면 된다.
-//                                await storeNetworkManager.createStoreInfo(with: StoreInfo(storeId: Auth.auth().currentUser?.uid ?? "", storeEmail: storeNetworkManager.currentStoreUserInfo?.storeEmail ?? "", registerDate: Date.getKoreanNowTimeString(), reportingCount: 0))
-								
-								await storeNetworkManager.updateStoreInfo(with: Auth.auth().currentUser?.uid, by: .isSubmitted(value: true), .registerDate(value: Date.now), .storeName(value: "새로만든스토어"))
+                                /// 입점신청한 다음에 받아온 정보로 스토어 정보를 추가한다.
+                                /// 회원가입 시점에 db에 id와 email은 저장되기 때문에, 필요한 정보를 따로 업데이트하기만 하면 된다.
+                                //                                await storeNetworkManager.createStoreInfo(with: StoreInfo(storeId: Auth.auth().currentUser?.uid ?? "", storeEmail: storeNetworkManager.currentStoreUserInfo?.storeEmail ?? "", registerDate: Date.getKoreanNowTimeString(), reportingCount: 0))
+                                if !(storeName=="" && storeAddress=="" && phoneNumber=="") {
+                                    await storeNetworkManager.updateStoreInfo(with: Auth.auth().currentUser?.uid, by: .storeName(value: storeName),  .storeLocation(value: storeAddress), .phoneNumber(value: phoneNumber), .registerDate(value: Date.now), .reportingCount(value: 0), .storeImage(value: [""]), .isVerified(value: false),  .isSubmitted(value: true), .isBanned(value: false))
+                                    
+//                                    haveStore =  !((storeNetworkManager.currentStoreUserInfo?.isSubmitted) != nil)
+                                    haveStore = false
+                                } else {
+                                    showingAlert = true
+                                }
                             }
-                            haveStore = !((storeNetworkManager.currentStoreUserInfo?.isSubmitted) != nil)
+                            
+                            print(haveStore)
                         } label: {
                             Text("신청하기")
                         }.buttonStyle(PlainButtonStyle())
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                             .foregroundColor(.accentColor)
-                        
+                            .alert("주의", isPresented: $showingAlert) {
+                                Button("Ok") { showingAlert = false} } message: {
+                                    Text("정보를 모두 입력해주세요")
+                                }
                     }
-                }.listRowBackground(Color.clear)
-            }
-            
+                }
+            }.listRowBackground(Color.clear)
         }
         .textInputAutocapitalization(.never)
         .autocorrectionDisabled()

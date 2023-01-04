@@ -33,6 +33,11 @@ struct LoginView: View {
                     Task {
                         // isSubmitted, isLoggedin 기본값이 false
                         isLoggedin = !(await signUpViewModel.requestUserLogin(withEmail: userID, withPassword: userPassword))
+                        
+                        await storeNetworkManager.requestStoreInfo(with: Auth.auth().currentUser?.uid)
+                        
+                        print(Auth.auth().currentUser?.uid)
+                        await print(storeNetworkManager.currentStoreUserInfo)
                         // 입점신청여부 가져와서 입점신청뷰로 넘길지 말지 지정
                         haveStore = !((storeNetworkManager.currentStoreUserInfo?.isSubmitted) != nil)
                         
