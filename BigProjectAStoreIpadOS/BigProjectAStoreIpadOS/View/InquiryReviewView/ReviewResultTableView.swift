@@ -43,6 +43,10 @@ struct ReviewResultTableView: View {
             }
             .background(Color(hue: 1.0, saturation: 0.006, brightness: 0.912))
             .padding(.bottom, 20)
+            ForEach(storeNetworkManager.currentStoreItemArray, id: \.id) { arr in
+                Text("arr : \(arr.itemName)")
+                 
+            }
             
 //            Table(storeNetworkManager.currentStoreItemArray) {
 //                TableColumn("주문 번호", value: \.orderNumber)
@@ -68,8 +72,8 @@ struct ReviewResultTableView: View {
         }
         .onAppear {
             Task {
-                let item: Void = await storeNetworkManager.requestItemInfo(with: Auth.auth().currentUser?.uid)
-                print("this is item \(item.self)")
+                await storeNetworkManager.requestItemInfo(with: Auth.auth().currentUser?.uid)
+                //print("this is item \(item.self)") //못 가져옴
                 
                 let itemList: [String] = await storeNetworkManager.requestItemIdList(with: Auth.auth().currentUser?.uid)
                 
