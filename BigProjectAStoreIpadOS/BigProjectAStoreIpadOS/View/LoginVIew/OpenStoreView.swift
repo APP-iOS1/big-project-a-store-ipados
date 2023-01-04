@@ -48,11 +48,8 @@ struct OpenStoreView: View {
                     HStack {
                         Button {
                             Task{
-                                // TODO: CreateStoreInfo
-                                // TODO: User 정보(Email) read 해야함.
                                 /// 입점신청한 다음에 받아온 정보로 스토어 정보를 추가한다.
                                 /// 회원가입 시점에 db에 id와 email은 저장되기 때문에, 필요한 정보를 따로 업데이트하기만 하면 된다.
-                                //                                await storeNetworkManager.createStoreInfo(with: StoreInfo(storeId: Auth.auth().currentUser?.uid ?? "", storeEmail: storeNetworkManager.currentStoreUserInfo?.storeEmail ?? "", registerDate: Date.getKoreanNowTimeString(), reportingCount: 0))
                                 if !(storeName=="" && storeAddress=="" && phoneNumber=="") {
                                     await storeNetworkManager.updateStoreInfo(with: Auth.auth().currentUser?.uid, by: .storeName(value: storeName),  .storeLocation(value: storeAddress), .phoneNumber(value: phoneNumber), .registerDate(value: Date.now), .reportingCount(value: 0), .storeImage(value: [""]), .isVerified(value: false),  .isSubmitted(value: true), .isBanned(value: false))
                                     

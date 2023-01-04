@@ -12,8 +12,8 @@ struct WaitingView: View {
     var body: some View {
         Text("입점 승인 대기중입니다.")
         
+        // TODO: 서버에서 잘 불러와지면 삭제될 버튼
         Button {
-            // FIXME: Auth에서 로그인 상태 가져오기
             isStoreApproved = false
         } label: {
             Text("창닫기")
