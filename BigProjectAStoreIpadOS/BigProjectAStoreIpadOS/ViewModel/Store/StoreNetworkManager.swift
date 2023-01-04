@@ -195,6 +195,7 @@ final class StoreNetworkManager: ObservableObject {
 					let requestedData = document.data()
 					let id = requestedData["itemUid"] as? String ?? "NO ID?"
 					idArray.append(id)
+                    
 				}
 			}
 			self.currentStoreItemIdArray = idArray
@@ -212,10 +213,10 @@ final class StoreNetworkManager: ObservableObject {
 		await requestItemIdList(with: currentStoreUserUid)
 		guard let currentStoreUserUid else { return }
 		let path = self.path
-			.document(currentStoreUserUid)
+			.document("\(currentStoreUserUid)")
 			.collection("Item")
-		
 		do {
+            self.currentStoreItemArray.removeAll()
 			for id in currentStoreItemIdArray {
 				let requestedItemData = try await path.document(id).getDocument().data()
 				guard let requestedItemData else { continue }
@@ -224,7 +225,7 @@ final class StoreNetworkManager: ObservableObject {
 				let storeId: String = requestedItemData["storeId"] as? String ?? ""
 				let itemName: String = requestedItemData["itemName"] as? String ?? ""
 				let itemCategory: String = requestedItemData["itemCategory"] as? String ?? ""
-//				let itemAmount: Int = requestedItemData["itemAmount"] as? Int ?? 0
+
 				let itemImage: [String] = requestedItemData["itemImage"] as? [String] ?? [""]
 				let price: Double = requestedItemData["price"] as? Double ?? 0.0
 				
@@ -237,7 +238,9 @@ final class StoreNetworkManager: ObservableObject {
 					itemAllOptions.itemOptions.updateValue(options, forKey: key)
 				}
 				
-				let requestedItem = ItemInfo(itemUid: itemUid, storeId: storeId, itemName: itemName, itemCategory: itemCategory, itemAllOption: itemAllOptions, itemImage: itemImage, price: price)
+
+				let requestedItem = ItemInfo(itemUid: itemUid, storeId: storeId, itemName: itemName, itemCategory: itemCategory,  itemAllOption: itemAllOptions, itemImage: itemImage, price: price)
+
 				
 				self.currentStoreItemArray.append(requestedItem)
 			}
@@ -268,7 +271,7 @@ final class StoreNetworkManager: ObservableObject {
 				"itemImage": item.itemImage,
 				"price": item.price,
 			], merge: true)
-			
+			print("등록완료")
 			await updateItemOption(with: item.itemAllOption, path: storeItemPath)
 		} catch {
 			dump("\(error.localizedDescription)")
