@@ -23,7 +23,7 @@ struct TestView: View {
                     .font(.title)
                     .bold()
                     .padding()
-                Table(inquiryNetworkManager.customerService, selection: $selectedInquiry, sortOrder: $sortOrder) {
+                Table(inquiryNetworkManager.customerService, selection: $selectedInquiry) {
                     TableColumn("주문 번호", value: \.orderId)
                     TableColumn("상품명", value: \.itemName)
                     TableColumn("문의 제목", value: \.title)
@@ -55,15 +55,6 @@ struct TestView: View {
                 Task{
                     await inquiryNetworkManager.requestCustomerServiceList()
                 }
-                //                filter를 날짜로 한번하고 그 이후 필터 진행
-                let dateFilteredData = inquiryNetworkManager.customerService
-                
-                if !searchUserText.isEmpty {
-                    results = dateFilteredData.filter {
-                        $0.itemName .contains(searchUserText)
-                    }
-                }
-                results = dateFilteredData
             }
         }
     }
