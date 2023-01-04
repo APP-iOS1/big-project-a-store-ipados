@@ -39,7 +39,7 @@ struct ReviewView: View {
     @State private var reviewChannelSmartStore: Bool = false
     
     //리뷰조건- 구매자 평점
-    @State private var customerRateTotal: Bool = false
+    @State private var customerRateTotal: Bool = true
     @State private var customerRateOne: Bool = false
     @State private var customerRateTwo: Bool = false
     @State private var customerRateThree: Bool = false
