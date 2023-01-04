@@ -395,8 +395,11 @@ final class StoreNetworkManager: ObservableObject {
 		var requestedOrderInfo: [OrderInfo] = []
 		
 		do {
-			for itemInfo in self.currentStoreItemArray {
-				let requestedSnapshot = try await orderedInfoPath.document(itemInfo.itemUid).collection("OrderedInfo").getDocuments()
+			if self.currentStoreItemArray.isEmpty { // id 어레이가 비어있으면 id 를 채웁니다.
+				await requestItemIdList(with: currentUserUid)
+			}
+			for itemId in self.currentStoreItemIdArray {
+				let requestedSnapshot = try await orderedInfoPath.document(itemId).collection("OrderedInfo").getDocuments()
 				
 				for docs in requestedSnapshot.documents {
 					let requestedData = docs.data()
