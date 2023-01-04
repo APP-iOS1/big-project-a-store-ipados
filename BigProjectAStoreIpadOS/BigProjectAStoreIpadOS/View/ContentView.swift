@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject var navigationStateManager = NavigationStateManager()
+    @StateObject var signUpViewModel: SignUpViewModel  = SignUpViewModel()
     @State private var showSettings = false
     @State private var menuId: MenuItem.ID?
     
@@ -72,7 +73,7 @@ struct ContentView: View {
             OpenStoreView(haveStore: $haveStore)
         }
         .fullScreenCover(isPresented: $isStoreApproved) {
-            WaitingView(isStoreApproved: $isStoreApproved)
+            WaitingView(isStoreApproved: $isStoreApproved, isLoggedin: $isLoggedin)
         }
     }
 }

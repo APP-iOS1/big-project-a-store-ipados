@@ -53,9 +53,10 @@ struct OpenStoreView: View {
                                 if !(storeName=="" && storeAddress=="" && phoneNumber=="") {
                                     await storeNetworkManager.updateStoreInfo(with: Auth.auth().currentUser?.uid, by: .storeName(value: storeName),  .storeLocation(value: storeAddress), .phoneNumber(value: phoneNumber), .registerDate(value: Date.now), .reportingCount(value: 0), .storeImage(value: [""]), .isVerified(value: false),  .isSubmitted(value: true), .isBanned(value: false))
                                     
-//                                    haveStore =  !((storeNetworkManager.currentStoreUserInfo?.isSubmitted) != nil)
+                                    // 입점신청 뷰 닫기
                                     haveStore = false
                                 } else {
+                                    // 정보 하나라도 비어 있으면 경고창
                                     showingAlert = true
                                 }
                             }

@@ -8,15 +8,20 @@
 import SwiftUI
 
 struct WaitingView: View {
+    @EnvironmentObject var signUpViewModel: SignUpViewModel
     @Binding var isStoreApproved: Bool
+    @Binding var isLoggedin: Bool
+    
     var body: some View {
         Text("입점 승인 대기중입니다.")
         
         // TODO: 서버에서 잘 불러와지면 삭제될 버튼
         Button {
             isStoreApproved = false
+            signUpViewModel.requestUserSignOut()
+            isLoggedin = true
         } label: {
-            Text("창닫기")
+            Text("로그인 화면으로 돌아가기")
                 .foregroundColor(.white)
                 .frame(width: 430, height: 50)
                 .background(.blue)

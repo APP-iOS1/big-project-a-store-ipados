@@ -14,7 +14,7 @@ struct LoginView: View {
     @Binding var haveStore: Bool
     @Binding var isLoggedin: Bool
     @Binding var isStoreApproved: Bool
-    @StateObject var signUpViewModel: SignUpViewModel = SignUpViewModel()
+    @EnvironmentObject var signUpViewModel: SignUpViewModel
     @EnvironmentObject var storeNetworkManager: StoreNetworkManager
     
     var body: some View {
@@ -34,20 +34,15 @@ struct LoginView: View {
                         // isSubmitted, isLoggedin 기본값이 false
                         isLoggedin = !(await signUpViewModel.requestUserLogin(withEmail: userID, withPassword: userPassword))
                         
+                        // currentStoreUserInfo read
                         await storeNetworkManager.requestStoreInfo(with: Auth.auth().currentUser?.uid)
                         
-                        print(Auth.auth().currentUser?.uid)
-                        await print(storeNetworkManager.currentStoreUserInfo)
                         // 입점신청여부 가져와서 입점신청뷰로 넘길지 말지 지정
                         haveStore = !(storeNetworkManager.currentStoreUserInfo?.isSubmitted ?? true)
 
                         // 입점승인여부 가져와서 대기중뷰로 넘길지 말지 지정
                         // TODO: 백오피스에서 승인 업데이트해줘야함
                         isStoreApproved = !((storeNetworkManager.currentStoreUserInfo?.isVerified) ?? true)
-                        
-                        print(haveStore)
-                        print(isStoreApproved)
-                        print(storeNetworkManager.currentStoreUserInfo?.isVerified)
                     }
                 } label: {
                     Text("로그인")
