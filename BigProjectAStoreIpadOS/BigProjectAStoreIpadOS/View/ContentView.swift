@@ -10,7 +10,6 @@ import SwiftUI
 struct ContentView: View {
     @StateObject var navigationStateManager = NavigationStateManager()
     @StateObject var signUpViewModel: SignUpViewModel  = SignUpViewModel()
-    @StateObject var authViewModel: SignUpViewModel  = SignUpViewModel()
     @StateObject var storeNetworkManager: StoreNetworkManager = StoreNetworkManager()
     @StateObject var authViewModel = SignUpViewModel()
     
