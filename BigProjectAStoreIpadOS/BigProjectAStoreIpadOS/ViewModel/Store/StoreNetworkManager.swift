@@ -28,6 +28,9 @@ final class StoreNetworkManager: ObservableObject {
 	/// 스토어가 관리하는 모든 아이템을 보관하는 배열입니다.
 	@Published var currentStoreItemArray: [ItemInfo] = []
 	
+	/// 스토어가 관리하는 모든 주문정보 배열입니다.
+	@Published var currentStoreOrderInfoArray: [OrderInfo] = []
+	
 	let path = Firestore.firestore().collection("\(appCategory.rawValue)")
 	
 	// MARK: - Methods
@@ -273,7 +276,6 @@ final class StoreNetworkManager: ObservableObject {
 				"itemImage": item.itemImage,
 				"price": item.price,
 			], merge: true)
-			print("등록완료")
 			await updateItemOption(with: item.itemAllOption, path: storeItemPath)
 		} catch {
 			dump("\(error.localizedDescription)")
@@ -381,7 +383,59 @@ final class StoreNetworkManager: ObservableObject {
 			itemOptionDict.itemOptions.updateValue(myOption, forKey: key)
 		}
 		
-		return OrderedItemInfo(itemUid: itemUid, itemName: itemName, itemImage: itemImage, price: price, option: itemOptionDict)
+		return OrderedItemInfo(itemUid: itemUid, itemName: itemName, itemImage: itemImage, price: price, option: itemOptionDict, deliveryStatus: deliveryStatus)
+	}
+	
+	// MARK: 주문 정보 불러오기
+	public func requestOrderedItemInfo(with currentUserUid: String?, inItemInfo item: ItemInfo) async -> Void {
+		guard let currentUserUid else { return }
+		let orderedInfoPath = path.document(currentUserUid)
+			.collection("Items")
+			.document(item.itemUid)
+			.collection("OrderedInfo")
+			
+		var requestedOrderInfo: [OrderInfo] = []
+		do {
+			let snapshots = try await orderedInfoPath.getDocuments()
+			
+			for docs in snapshots.documents {
+				let requestedData = docs.data()
+				
+				/// orderinfos
+				let orderId: String = requestedData["orderId"] as? String ?? ""
+				let orderedUserInfo: String = requestedData["orderedUserInfo"] as? String ?? ""
+				let orderTime: String = requestedData["orderTime"] as? String ?? ""
+				let orderAddress: String = requestedData["orderAddress"] as? String ?? ""
+				let orderMessage: String? = requestedData["orderMessage"] as? String ?? ""
+				let payment: String = requestedData["payment"] as? String ?? ""
+				
+				let orderedItems = requestedData["orderedItems"] as? [String: Any] ?? [:]
+				
+				/// orderediteminfo
+				let itemUid: String = orderedItems["itemUid"] as? String ?? ""
+				let itemName: String = orderedItems["itemName"] as? String ?? ""
+				let itemImage: [String] = orderedItems["itemImage"] as? [String] ?? [""]
+				let price: Double = orderedItems["price"] as? Double ?? 0.0
+				let deliveryStatus: String = orderedItems["deliveryStatus"] as? String ?? ""
+				
+				
+				/// itemOptions
+				let orderedOptions = orderedItems["option"] as? [String: Any] ?? [:]
+				var itemOptions = ItemOptions(itemOptions: [:])
+				for (key, value) in orderedOptions {
+					itemOptions.itemOptions.updateValue(value as! [String], forKey: key)
+				}
+				
+				let orderedItemInfo = OrderedItemInfo(itemUid: itemUid, itemName: itemName, itemImage: itemImage, price: price, option: itemOptions, deliveryStatus: deliveryStatus)
+				
+				let orderInfo = OrderInfo(orderId: orderId, orderedUserInfo: orderedUserInfo, orderTime: orderTime, orderedItems: [orderedItemInfo], orderAddress: orderAddress, orderMessage: orderMessage ?? "", payment: payment)
+				
+				requestedOrderInfo.append(orderInfo)
+				self.currentStoreOrderInfoArray = requestedOrderInfo
+			}
+		} catch {
+			dump("\(#function) - DEBUG \(error.localizedDescription)")
+		}
 	}
 	
 	// MARK: - 주문된 아이템의 정보 생성 메소드
@@ -397,12 +451,12 @@ final class StoreNetworkManager: ObservableObject {
 		var orderedItemsArray: [OrderedItemInfo] = []
 		
 		for orderedItem in item {
-			let orderedItemsInfo = OrderedItemInfo(itemUid: orderedItem.itemUid, itemName: orderedItem.itemName, itemImage: orderedItem.itemImage, price: orderedItem.price, option: orderedItem.itemAllOption)
+			let orderedItemsInfo = OrderedItemInfo(itemUid: orderedItem.itemUid, itemName: orderedItem.itemName, itemImage: orderedItem.itemImage, price: orderedItem.price, option: orderedItem.itemAllOption, deliveryStatus: "배송준비중")
 			orderedItemsArray.append(orderedItemsInfo)
 		}
 		
 		// 주문 정보 생성
-		let newOrderInfo = OrderInfo(orderedUserInfo: currentUserUid, orderTime: Date.getKoreanNowTimeString(), orderedItems: orderedItemsArray, orderAddress: "배송주소")
+		let newOrderInfo = OrderInfo(orderId: UUID().uuidString, orderedUserInfo: currentUserUid, orderTime: Date.getKoreanNowTimeString(), orderedItems: orderedItemsArray, orderAddress: "배송주소", payment: "무통장입금")
 		
 		do {
 			for orderdItemInfo in orderedItemsArray {
@@ -410,6 +464,7 @@ final class StoreNetworkManager: ObservableObject {
 					.collection("Items").document(orderdItemInfo.itemUid) // 서로 다른 아이템 id에 하나의 주문 건 아이디만 넣어주기
 					.collection("OrderedInfo").document(newOrderInfo.orderId) // 주문 건 아이디는 유지
 				
+				// 안에다가 주문정보 채우기
 				try await path.setData([
 					:
 				])
