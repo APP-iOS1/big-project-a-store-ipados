@@ -6,7 +6,7 @@
 //
 
 //더 미 데 이 터 차 트
-
+import FirebaseAuth
 import Charts
 import SwiftUI
 
@@ -16,6 +16,25 @@ struct Posting: Identifiable,Hashable {
     let DayoftheWeek: String
     let count: Int
 }
+
+struct Posting1: Identifiable,Hashable,Comparable {
+    static func < (lhs: Posting1, rhs: Posting1) -> Bool {
+        return lhs.day < rhs.day
+    }
+    static func > (lhs: Posting1, rhs: Posting1) -> Bool {
+        return lhs.randomDay < rhs.randomDay
+    }
+    
+
+    
+    var id: String {day}
+    let day: String
+    let priceTotal: Double
+    var randomDay: String {
+        ["월","화","수","목","금","토","일"].randomElement()!
+    }
+}
+
 
 let postings: [Posting] = [
     Posting(day: "2022-12-01",DayoftheWeek: "월요일",count:30),
@@ -35,15 +54,25 @@ let postings: [Posting] = [
 ]
 
 struct ChartView: View {
-    @State private var weekSale = 2800000
-    @State private var monthSale = 112000000
-    
+    @State private var postings1: [Posting1] = []
+    @EnvironmentObject var storeNetworkManager: StoreNetworkManager
     func drawChart() -> some View {
         Chart {
-            ForEach(postings) { posting in
+            ForEach(self.postings1.sorted(by: <)) { posting in
                 BarMark(
                     x: .value("Name", posting.day),
-                    y: .value("Posting", posting.count)
+                    y: .value("Posting", posting.priceTotal)
+                )
+            }
+        }
+    }
+    
+    func drawChartDay() -> some View {
+        Chart {
+            ForEach(self.postings1.sorted(by: >)) { posting in
+                BarMark(
+                    x: .value("Name", posting.randomDay),
+                    y: .value("Posting", posting.priceTotal)
                 )
             }
         }
@@ -67,20 +96,28 @@ struct ChartView: View {
             HStack {
                 VStack {
                     Text("요일별 결제금액")
-                    drawChart().foregroundStyle(.red)
+                    drawChartDay().foregroundStyle(.red)
                 }
                 VStack {
                     Text("요일별 평균결제금액")
-                    drawChart()
+                    drawChartDay()
                 }
             }
             .frame(minWidth:100, maxWidth: .infinity, minHeight: 450, maxHeight: 450)
         }
         .padding(40)
         .modifier(CloseUpDetailModifier())
-        
-        
-        
+        .onAppear {
+            Task {await storeNetworkManager.requestOrderedItemInfo(with: Auth.auth().currentUser?.uid)
+                print(storeNetworkManager.currentStoreOrderInfoArray[0].orderTime)
+                print(storeNetworkManager.currentStoreOrderInfoArray[0].orderedItems[0].price)
+                for element in storeNetworkManager.currentStoreOrderInfoArray {
+                    for j in element.orderedItems {
+                        postings1.append(Posting1(day: element.orderTime, priceTotal: j.price))
+                    }
+                }
+            }
+        }
     }
 }
 
