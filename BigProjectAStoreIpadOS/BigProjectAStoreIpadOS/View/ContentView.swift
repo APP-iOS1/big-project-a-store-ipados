@@ -8,21 +8,36 @@
 import SwiftUI
 
 struct ContentView: View {
-    
     @StateObject var navigationStateManager = NavigationStateManager()
-    
     @State private var showSettings = false
-    
     @State private var menuId: MenuItem.ID?
-    @State private var subMenuId: SubMenuItem.ID?
     
+    @State var haveStore = false
+    @State var isLoggedin = true
+    @State var isStoreApproved = false
+
     @ViewBuilder
-    fileprivate func SubMenuDetails(for subMenuId: SubMenuItem.ID?) -> some View {
+    fileprivate func SubMenuDetails(for subMenuId: MenuItem.ID?) -> some View {
         VStack {
             if let subMenu = model.selectedSubMenuItem(selectedSubMenuId: subMenuId) {
                 subMenu.body
             } else {
-                Text("세부 메뉴를 선택해주세요")
+                if let mainMenu = model.menuItem(id: subMenuId) {
+                    switch mainMenu.name {
+                    case "상품 관리":
+                        ProductInventoryView()
+                    case "주문 관리":
+                        OrderHistoryView()
+                    case "스토어 관리":
+                        EditStoreView()
+                    case "매출현황":
+                        ChartDetailView()
+                    case "문의 및 리뷰 관리":
+                        InquiryView()
+                    default:
+                        ProductInventoryView()
+                    }
+                }
             }
         }
     }
@@ -30,39 +45,35 @@ struct ContentView: View {
     fileprivate var model = MenuModel()
     
     var body: some View {
-        NavigationSplitView(columnVisibility: $navigationStateManager.columnVisibility,
-                            sidebar: {
-            List(model.menuItems, selection: $menuId) { menu in
-                Text(menu.name)
-            }
-            .toolbar(content: {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    // .navigationBarTrailing
-                    Button {
-                        showSettings.toggle()
-                    } label: {
-                        Image(systemName: "gearshape")
-                    }
+        NavigationView {
+            Form {
+                OutlineGroup(self.model.menuItems, children: \.subMenuItem) { item in
+//                    NavigationLink {
+//                        SubMenuDetails(for: item.id)
+//                    } label: {
+//                        Text(item.name)
+//                    }
+                    Text(item.name)
+                        .overlay(NavigationLink(destination: SubMenuDetails(for: item.id), label: {
+                            Text("")
+                        }))
                 }
-            })
-            .sheet(isPresented: $showSettings, content: {
-                SettingsView()
-            })
-            .navigationTitle("멋사 전자")
+            }
+            .navigationTitle("ZZIRIT 스토어")
             
-        }, content: {
-            if let menu = model.menuItem(id: menuId) {
-                List(menu.subMenuItem, selection: $subMenuId) { subMenu in
-                    Text(subMenu.name)
-                }
-            } else {
-                Text("메뉴를 선택해주세요")
-            }
-        }, detail: {
-            SubMenuDetails(for: subMenuId)
-        })
+            ProductInventoryView()
+        }
         .environmentObject(navigationStateManager)
         .navigationSplitViewStyle(.balanced)
+        .fullScreenCover(isPresented: $isLoggedin) {
+            LoginView(haveStore: $haveStore, isLoggedin: $isLoggedin, isStoreApproved: $isStoreApproved)
+        }
+        .fullScreenCover(isPresented: $haveStore) {
+            OpenStoreView(haveStore: $haveStore)
+        }
+        .fullScreenCover(isPresented: $isStoreApproved) {
+            WaitingView(isStoreApproved: $isStoreApproved)
+        }
     }
 }
 

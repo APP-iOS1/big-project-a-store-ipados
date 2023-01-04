@@ -7,44 +7,50 @@
 
 import SwiftUI
 import PhotosUI
+import FirebaseAuth
 
 struct ProductModifyView: View {
     
-    @Binding var index: Int
+    @Binding var productId: String
     
+    @EnvironmentObject private var storeNetworkManager: StoreNetworkManager
     @Environment(\.editMode) private var editMode
     @Environment(\.dismiss) private var dismiss
     @State private var disableEdit = true
+    @State private var editAlert = false
+    
+    @State private var productIndex = 0
     //상품명
     @State private var productName: String = ""
+    //상품 카테고리
     @State private var productCategory: String = ""
-    //옵션(현재는 더미데이터)
-    @State private var productOption: [String:[String]] = ["램추가":["8GB_10000","16GB_20000"],"SSD추가":["256GB_10000","512GB_20000"]]
-    
+    //상품 가격
+    @State private var productPrice: String = ""
+    //옵션
+    @State private var productOption: [String:[String]] = [:]
     //텍스트필드1번 - 옵션을 입력받음
-    @State private var textFieldOption: String = ""
+    @State private var textFieldOptionName: String = ""
+    //텍스트필드 2번 - 옵션의 정보를 입력받음
     @State private var textFieldOptionDetails: String = ""
-    @State private var splitText = ""
-    //상품 설명
-    @State private var productDescription: String = ""
+    //판매자 등록화면에서 볼 수 있는 상품이미지
+    @State private var photoArray: [UIImage] = []
+    //Firebase에 올라가는 String형태의 이미지
+    @State private var photoString: [String] = []
     
     //Use PhotosUI
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImageData: Data? = nil
-    //상품이미지
-    @State private var photoArray: [UIImage] = []
-    
-    @State private var editAlert = false
-
     
     
-//    //Delete Option
-//    func optionDelete(at offsets: IndexSet){
-//        if let ndx = offsets.first {
-//            let item = productOption.sorted(by: >)[ndx]
-//            productOption.removeValue(forKey: item.key)
-//        }
-//    }
+    
+    
+    //    //Delete Option
+    //    func optionDelete(at offsets: IndexSet){
+    //        if let ndx = offsets.first {
+    //            let item = productOption.sorted(by: >)[ndx]
+    //            productOption.removeValue(forKey: item.key)
+    //        }
+    //    }
     
     //사진 입력받는 로직
     func photoLogic() -> some View {
@@ -71,13 +77,14 @@ struct ProductModifyView: View {
                 }
             }
     }
+    
     private func convertTextLogic() {
         let convertTextStep1 = textFieldOptionDetails.replacingOccurrences(of: " ", with: "_")
         let convertTextStep2 = convertTextStep1.components(separatedBy: ",")
-        if productOption.keys.contains(textFieldOption) {
-            productOption.updateValue(productOption[textFieldOption]! + convertTextStep2, forKey: textFieldOption)
+        if productOption.keys.contains(textFieldOptionName) {
+            productOption.updateValue(productOption[textFieldOptionName]! + convertTextStep2, forKey: textFieldOptionName)
         } else {
-            productOption[textFieldOption] = convertTextStep2
+            productOption[textFieldOptionName] = convertTextStep2
         }
         print(productOption)
     }
@@ -88,13 +95,18 @@ struct ProductModifyView: View {
                     //상품명
                     Section(header: Text("상품명").font(.title)) {
                         TextField("", text: $productName)
-                            .disabled(disableEdit)
                     }
                     //상품 카테고리
                     Section(header: Text("상품카테고리").font(.title)) {
                         TextField("", text: $productCategory)
-                            .disabled(disableEdit)
                     }
+                    
+                    //상품 가격
+                    Section(header: Text("가격").font(.title)) {
+                        TextField("상품 가격 입력", text: $productPrice)
+                    }
+                    
+                    
                     //상품 옵션
                     Section(header: Text("옵션").font(.title)) {
                         ForEach(Array(productOption.keys.enumerated()), id: \.element) { _, key in
@@ -106,102 +118,103 @@ struct ProductModifyView: View {
                         }
                         
                         HStack(spacing: 20) {
-                            TextField("[옵션명 작성]", text: $textFieldOption)
+                            TextField("[옵션명 작성]", text: $textFieldOptionName)
                                 .padding(.horizontal, 20)
                                 .frame(maxWidth: 250)
-                            TextField("[세부내용 작성작성] ex)8기가 10000원,16기가 2만원", text: $textFieldOptionDetails)
+                            TextField("예시: 8기가 10000원,16기가 2만원", text: $textFieldOptionDetails)
                                 .padding(.horizontal, 20)
                                 .frame(maxWidth: .infinity)
-                            Button("추가") { convertTextLogic() }
+                            Button("추가") {
+                                if !textFieldOptionDetails.isEmpty {
+                                    convertTextLogic()
+                                }
+                                
+                            }
                         }
                     }
                     //상품 이미지
                     Section(header: Text("상품이미지").font(.title)) {
                         ScrollView(.horizontal) {
                             HStack{
-                                ForEach(photoArray.indices,id:\.self) { index in
-                                    ZStack{
-                                        Image(uiImage: photoArray[index])
-                                            .resizable()
-                                            .frame(width: 200, height: 200)
-                                        Button {
-                                            photoArray.remove(at:index)
-                                        } label: {
-                                            Image(systemName: "minus.circle.fill")
-                                                .foregroundColor(.red)
-                                        }
-                                        .offset(x: 80 ,y:-80)
-                                    }
-                                    
+                                ForEach(photoArray,id:\.self) { photo in
+                                    Image(uiImage: photo)
+                                        .resizable()
+                                        .frame(width: 550, height: 550)
                                 }
-//                                .onDelete {}
                                 Spacer()
                                 photoLogic()
                             }
                         }
-                        
                     }
-                    //상품 설명
-                    Section(header: Text("상품설명").font(.title)) {
-                        TextEditor(text: $productDescription)
-                            .frame(height:200)
-                            .disabled(disableEdit)
-                    }
+                    .navigationTitle(Text("상품 수정"))
                 }
-            
-                .navigationTitle(Text("상품 수정"))
-
-            }
-            .toolbar{
-                
-                ToolbarItem() {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Text("Back")
-                    }
-
-                }
-                
-                ToolbarItem(id: "trailing") {
-                    Button {
-                        if !disableEdit {
-                            editAlert.toggle()
-                            disableEdit.toggle()
-                        }else{
-                            disableEdit.toggle()
+                .toolbar{
+                    ToolbarItem(id: "trailing") {
+                        Button {
+                            if !disableEdit {
+                                
+                                disableEdit.toggle()
+                            }else{
+                                editAlert.toggle()
+                                disableEdit.toggle()
+                            }
+                        } label: {
+                            Text("Done")
                         }
-                        
-
-                    } label: {
-                        Text(disableEdit ? "Edit" : "Done")
                     }
-                    
-
+                }
+                .onAppear{
+                    // 선택한 상품 찾아서 화면에 출력
+                    for index in storeNetworkManager.currentStoreItemArray.indices{
+                        if storeNetworkManager.currentStoreItemArray[index].itemUid == productId {
+                            productIndex = index
+                            productCategory = storeNetworkManager.currentStoreItemArray[index].itemCategory
+                            productName = storeNetworkManager.currentStoreItemArray[index].itemName
+                            productPrice = String(storeNetworkManager.currentStoreItemArray[index].price)
+                            productOption = storeNetworkManager.currentStoreItemArray[index].itemAllOption.itemOptions
+                            break
+                        }
+                    }
                 }
             }
-            .onAppear{
-                productName = sampleData[index].productName
-                productCategory = sampleData[index].productId
+            .alert("저장하시겠습니까?", isPresented: $editAlert){
+                Button("아니요"){
+                    dismiss()
+                }
+                Button ("네"){
+                    Task
+                    {
+                        // 변경사항 파이어베이스 반영.
+                        storeNetworkManager.currentStoreItemArray[productIndex].itemName = productName
+                        storeNetworkManager.currentStoreItemArray[productIndex].itemCategory = productCategory
+                        storeNetworkManager.currentStoreItemArray[productIndex].price =  Double(productPrice) ?? 0.0
+                        
+                        let item = ItemInfo(
+                            itemUid: storeNetworkManager.currentStoreItemArray[productIndex].itemUid,
+                            storeId: storeNetworkManager.currentStoreItemArray[productIndex].storeId,
+                            itemName: storeNetworkManager.currentStoreItemArray[productIndex].itemName,
+                            itemCategory: storeNetworkManager.currentStoreItemArray[productIndex].itemCategory,
+                            itemAllOption: ItemOptions(itemOptions: productOption),
+                            itemImage: ["test"],
+                            price: storeNetworkManager.currentStoreItemArray[productIndex].price)
+                        await storeNetworkManager.createNewItem(with: Auth.auth().currentUser?.uid, item: item)
+                        dismiss()
+                    }
+                }
+            } message:{
+                Text("기존에 있던 내용들이 수정됩니다.")
             }
-        }
-        .alert("저장하시겠습니까?", isPresented: $editAlert){
-            Button("아니요"){}
-            Button ("네"){}
-        } message:{
-            Text("기존에 있던 내용들이 수정됩니다.")
-        }
-        .modifier(CloseUpDetailModifier())
+            .modifier(CloseUpDetailModifier())
             
+        }
+        
+        //옵션텍스트 변환 함수
     }
-    
-    //옵션텍스트 변환 함수
-    
 }
 
 struct ProductModifyView_Previews: PreviewProvider {
     static var previews: some View {
-        ProductModifyView(index: .constant(0))
+        ProductModifyView(productId: .constant(""))
             .environmentObject(NavigationStateManager())
     }
 }

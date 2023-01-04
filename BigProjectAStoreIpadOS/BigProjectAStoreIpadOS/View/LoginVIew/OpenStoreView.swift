@@ -6,13 +6,18 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
+import FirebaseAuth
 
 struct OpenStoreView: View {
     @State var storeName = ""
     @State var storeAddress = ""
+    @State var phoneNumber = ""
+    @Binding var haveStore: Bool
+    @EnvironmentObject var storeNetworkManager: StoreNetworkManager
     
     var body: some View {
-        VStack() {
+        VStack {
             List {
                 Section {
                     HStack(alignment: .top) {
@@ -27,6 +32,13 @@ struct OpenStoreView: View {
                         TextField("주소를 입력해주세요", text: $storeAddress)
                             .modifier(contentFieldModifier())
                     }
+                    HStack(alignment: .top) {
+                        Text("연락처")
+                            .modifier(contentNameModifier())
+                        TextField("휴대폰 번호를 - 빼고 입력해주세요", text: $phoneNumber)
+                            .keyboardType(.numberPad)
+                            .modifier(contentFieldModifier())
+                    }
                 } header: {
                     Text("입점 신청")
                 }
@@ -34,7 +46,13 @@ struct OpenStoreView: View {
                 Section {
                     HStack {
                         Button {
-                            print("")
+                            Task{
+                                // TODO: CreateStoreInfo
+                                // TODO: User 정보(Email) read 해야함.
+                                await storeNetworkManager.createStoreInfo(with: StoreInfo(storeId: Auth.auth().currentUser?.uid ?? "", storeEmail: storeNetworkManager.currentStoreUserInfo?.storeEmail ?? "", registerDate: Date.getKoreanNowTimeString(), reportingCount: 0))
+                                await storeNetworkManager.updateStoreInfo(with: Auth.auth().currentUser?.uid, by: .isSubmitted(value: true))
+                            }
+                            haveStore = false
                         } label: {
                             Text("신청하기")
                         }.buttonStyle(PlainButtonStyle())
@@ -46,6 +64,8 @@ struct OpenStoreView: View {
             }
             
         }
+        .textInputAutocapitalization(.never)
+        .autocorrectionDisabled()
     }
 }
 

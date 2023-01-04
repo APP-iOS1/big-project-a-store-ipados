@@ -9,7 +9,10 @@ import SwiftUI
 
 struct DeliveryView: View {
     
-    @EnvironmentObject var navigationManager: NavigationStateManager
+    @State private var sortOrder = [KeyPathComparator(\DeliveryModel.shippingDate)]
+    @State private var searchText = ""
+    @State private var selected = Set<DeliveryModel.ID>()
+    
     
     #if os(iOS)
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
@@ -27,35 +30,84 @@ struct DeliveryView: View {
     
     var body: some View {
         NavigationStack {
-            ScrollView {
-                
+            VStack(alignment: .leading) {
                 DeliverySummaryView()
                 
                 Divider()
                 
-                navigationBarView
-                    .padding(.top, 50)
-                
-                switch tabSelection {
-                case 0:
-                    DeliveryAllView()
-                        .padding(.top, 10)
-                case 1:
-                    DeliveryReadyView()
-                        .padding(.top, 10)
-                case 2:
-                    DeliveryShippingView()
-                        .padding(.top, 10)
-                case 3:
-                    DeliveryCompleteView()
-                        .padding(.top, 10)
-                default:
-                    EmptyView()
+                Table(sampleDeliveryData, selection: $selected, sortOrder: $sortOrder) {
+                    TableColumn("배송 상태", value: \.orderState) { delivery in
+                        if delivery.orderState == "0" {
+                            
+                            Button {
+                                //delivery.orderState = "2"
+                            } label: {
+                                HStack {
+                                    Text("배송 준비")
+                                        .foregroundColor(.black)
+                                        .padding(5)
+                                        .overlay(Rectangle()
+                                            .stroke(Color.black, lineWidth:0.5))
+                                    
+                                    Spacer()
+                                }
+                            }
+                            .frame(minWidth: 100)
+                            
+                        } else if delivery.orderState == "2" {
+                            Button {
+                                //delivery.orderState = "1"
+                            } label: {
+                                HStack {
+                                    Text(" 배송 중 ")
+                                        .foregroundColor(.black)
+                                        .padding(5)
+                                        .overlay(Rectangle()
+                                            .stroke(Color.black, lineWidth:0.5))
+                                    
+                                    Spacer()
+                                }
+                            }
+                            .frame(minWidth: 100)
+                            
+                        } else {
+                            Text("배송 완료")
+                        }
+                    }
+                    TableColumn("발송 날짜", value: \.shippingDate)
+                    TableColumn("주문 번호", value: \.orderNumber)
+                    TableColumn("상품 번호", value: \.productNumber)
+                    TableColumn("상품 이름", value: \.productName)
+                    TableColumn("택배사", value: \.shipmentCompany)
+                    TableColumn("송장 번호", value: \.trackingNumber)
+                }
+                .onChange(of: sortOrder) {
+                    sampleDeliveryData.sort(using: $0)
                 }
                 
+//                navigationBarView
+//                    .padding(.top, 50)
+//
+//                switch tabSelection {
+//                case 0:
+//                    DeliveryAllView()
+//                        .padding(.top, 10)
+//                case 1:
+//                    DeliveryReadyView()
+//                        .padding(.top, 10)
+//                case 2:
+//                    DeliveryShippingView()
+//                        .padding(.top, 10)
+//                case 3:
+//                    DeliveryCompleteView()
+//                        .padding(.top, 10)
+//                default:
+//                    EmptyView()
+//                }
             }
-            .navigationTitle("배송 관리")
-            .modifier(CloseUpDetailModifier())
+            .searchable(text: $searchText, prompt: "검색")
+            
+            
         } // NavigationStack
     } // Body
     
@@ -109,6 +161,5 @@ struct DeliveryView: View {
 struct DeliveryView_Previews: PreviewProvider {
     static var previews: some View {
         DeliveryView()
-            .environmentObject(NavigationStateManager())
     }
 }

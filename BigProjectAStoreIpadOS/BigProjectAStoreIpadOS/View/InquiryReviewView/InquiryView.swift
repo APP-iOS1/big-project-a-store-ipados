@@ -8,97 +8,83 @@
 import SwiftUI
 
 struct InquiryView: View {
-    @State private var response: String = ""
-    @State private var date = Date()
-    @State private var isDealt:Bool = false
-    @State private var isShowingEditor: Bool = false
+    @StateObject var inquiryNetworkManager: InquiryNetworkManager = InquiryNetworkManager()
     
-    enum inquiryState: String, CaseIterable, Identifiable {
-        case inProgress, completed, all
-        var id: Self { self }
-    }
+    @State private var pickerSelection : Int = 0
+    //    @State private var sortOrder = [KeyPathComparator(\CustomerServiceInfo.serviceDate)]
+    @State var searchUserText : String = ""
+    @State private var selectedInquiry: CustomerServiceInfo.ID?
+    @State private var path: [CustomerServiceInfo] = []
     
-    @State private var selectedState: inquiryState = .inProgress
-
+    @State private var startDate = Date()
+    @State private var endDate = Date()
+    
+    
     
     var body: some View {
-        
-        NavigationStack {
-            VStack {
-                Form {
-                    Section(header: Text("문의 접수일")){
-                        VStack{
-                            DatePicker("부터", selection: $date, displayedComponents: [.date])
-                            DatePicker("까지", selection: $date, displayedComponents: [.date])
-                        }
-                    }
-                    
-                    Section(header: Text("문의 답변 여부")){
-                        List {
-                          Picker("답변 여부", selection: $selectedState) {
-                              Text("미답변").tag(inquiryState.inProgress)
-                              Text("답변완료").tag(inquiryState.completed)
-                              Text("전체").tag(inquiryState.all)
-                          }
-                        }
-                    }
-                    
-                    Section(header: Text("문의 내역")){
-                        DisclosureGroup(
-                            content: {
-                                Text("배송이 너무느려 언제와 답변 빨리 안하면 반품한다")
-                                Button {
-                                    isShowingEditor = true
-                                } label: {
-                                    Text("답변 작성")
-                                }
-
-                            },
-                            label: {
-                                Text("배송 언제 와요?")
-                            }
-                        )
-                        DisclosureGroup(
-                            content: {
-                                Text("배송이 너무느려 언제와 답변 빨리 안하면 반품한다")
-                            },
-                            label: {
-                                Text("언제오냐고")
-                            }
-                            
-                        )
-                        DisclosureGroup(
-                            content: {
-                                Text("배송이 너무느려 언제와 답변 빨리 안하면 반품한다")
-                            },
-                            label: {
-                                Text("언제")
-                            }
-                            
-                        )
-                    }
-                    Section(header: Text("답변 작성")) {
-                        if isShowingEditor == true {
-                            TextEditor(text: $response)
-                                .frame(height:200)
-                            
-                            Button {
-                                isShowingEditor = false
-                            } label: {
-                                Text("답변 등록")
-                            }
-                        }
-                    }
-                    
-                }
-            }.modifier(CloseUpDetailModifier())
+        TestView()
+//        NavigationStack {
+//            VStack {
+//                Section{
+//                    HStack{
+//                        Text("문의 기간")
+//                        Spacer()
+//                        HStack{
+//                            DatePicker  ("", selection: $startDate, displayedComponents: [.date])
+//                                .frame(width: 150)
+//                            Text("     ~")
+//                            DatePicker("", selection: $endDate, displayedComponents: [.date])
+//                                .frame(width: 150)
+//                        }
+//                        Spacer()
+//                    }
+//                }.padding()
+//
+//                Text("문의내역")
+////                Text("\(selectedInquiry)")
+////                Section{
+////                    Table(inquiryNetworkManager.customerService, selection: $selectedInquiry) {
+////                        TableColumn("주문 번호") //, value: \.orderId)
+////                        TableColumn("제품 코드") //, value: \.itemId)
+////                        TableColumn("제품 명") //, value: \.itemName)
+////                        TableColumn("질문자 ID") //, value: \.customerId)
+////                        //                        TableColumn("문의 접수 일", value: \.serviceDate)
+////                        TableColumn("답변 완료 여부")
+////                        //                        { inquiry in Image(systemName: inquiry.isAnswered ? "checkmark" : "xmark").foregroundColor(inquiry.isAnswered ? Color.green : Color.red)
+////                        //                                .navigationDestination(for: CustomerServiceInfo.self) {inquiry in
+////                        //                                    InquiryDetailView(inquiry: inquiry)
+////                        //                                }
+////                        //                        }
+////                    }
+////                    .onChange(of: selectedInquiry) { newElement in
+////                        if let newElement,
+////                           let inquiry = inquiryNetworkManager.customerService.first(where: { $0.id == newElement }) {
+////                            path.append(inquiry)
+////                        }
+////                    }
+////                    //                }.searchable(text: $searchUserText, prompt: "검색")
+////                    //                }
+////                    //                .onAppear {
+////                    //                    inquiryNetworkManager.requestCustomerServiceList()
+////                    //
+////                    //filter를 날짜로 한번하고 그 이후 필터 진행
+////                    //                let dateFilteredData = inquiryNetworkManager.customerService
+////                    //
+////                    //                if !searchUserText.isEmpty && pickerSelection == 0 {
+////                    //                    results = dateFilteredData.filter {
+////                    //                        $0.productName .contains(searchUserText)
+////                    //                    }
+////                    //                }
+////                    //                results = dateFilteredData
+////                    //                }
+//                } // VStack
+//            } // NavigationStack
         }
     }
-}
-
-struct InquiryView_Previews: PreviewProvider {
-    static var previews: some View {
-        InquiryView()
-            .environmentObject(NavigationStateManager())
+    
+    struct InquiryView_Previews: PreviewProvider {
+        static var previews: some View {
+            InquiryView()
+                .environmentObject(NavigationStateManager())
+        }
     }
-}
