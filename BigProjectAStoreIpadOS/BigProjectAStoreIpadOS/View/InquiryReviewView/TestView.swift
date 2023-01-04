@@ -7,11 +7,12 @@
 
 import SwiftUI
 
+
 struct TestView: View {
     @StateObject var inquiryNetworkManager: InquiryNetworkManager = InquiryNetworkManager()
     
     @State private var selectedInquiry: CustomerServiceInfo.ID?
-    @State private var sortOrder = [KeyPathComparator(\CustomerServiceInfo.isAnsweredInt)]
+//    @State private var sortOrder = [KeyPathComparator(\CustomerServiceInfo.orderId)]
     @State private var path: [CustomerServiceInfo] = []
     @State var searchUserText : String = ""
     
@@ -22,13 +23,17 @@ struct TestView: View {
                     .font(.title)
                     .bold()
                     .padding()
-                Table(inquiryNetworkManager.customerService, selection: $selectedInquiry) {
+                Table(inquiryNetworkManager.customerService, selection: $selectedInquiry, sortOrder: $sortOrder) {
                     TableColumn("주문 번호", value: \.orderId)
+                    TableColumn("상품명", value: \.itemName)
                     TableColumn("문의 제목", value: \.title)
-                    TableColumn("문의 내역", value: \.description)
+                    TableColumn("답변 완료 여부") { inquiry in
+                        Image(systemName: inquiry.isAnswered ? "checkmark" : "xmark")
+                            .foregroundColor(inquiry.isAnswered ? Color.green : Color.red)
+                    }
                 }
                 .navigationDestination(for: CustomerServiceInfo.self) { inquiry in
-                        InquiryDetailView(inquiry: inquiry)
+                    InquiryDetailView(inquiry: inquiry)
                 }
             } // VStack
             .searchable(text: $searchUserText, prompt: "검색")
@@ -43,10 +48,22 @@ struct TestView: View {
                     path.append(inquiry)
                 }
             }
+//            .onChange(of: sortOrder) {
+//                inquiryNetworkManager.customerService.sort(using: $0)
+//            }
             .onAppear{
                 Task{
                     await inquiryNetworkManager.requestCustomerServiceList()
                 }
+                //                filter를 날짜로 한번하고 그 이후 필터 진행
+                let dateFilteredData = inquiryNetworkManager.customerService
+                
+                if !searchUserText.isEmpty {
+                    results = dateFilteredData.filter {
+                        $0.itemName .contains(searchUserText)
+                    }
+                }
+                results = dateFilteredData
             }
         }
     }
@@ -57,3 +74,4 @@ struct TestView_Previews: PreviewProvider {
         TestView()
     }
 }
+

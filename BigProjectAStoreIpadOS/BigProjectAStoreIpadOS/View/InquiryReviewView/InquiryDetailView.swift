@@ -22,7 +22,6 @@ struct InquiryDetailView: View {
                 Text(" \(inquiry.customerId)")
             }
             .padding(.horizontal, 20)
-            .bold()
             .font(.title3)
             Divider()
             Text("\(inquiry.description)")
