@@ -96,46 +96,45 @@ final class StoreNetworkManager: ObservableObject {
 	/// 스토어 유저의 정보를 업데이트 합니다.
 	/// - Parameter with: Auth.auth().currentUser?.uid
 	/// - Parameter by: 어떤 데이터를 업데이트할지 열거형으로 정의되어 있는 value에 전달합니다.
-	public func updateStoreInfo(with currentStoreUserUid: String?,
-								by storeInfo: StoreInfoUpdateType...) async -> Void {
-		guard let currentStoreUserUid else { return }
-		print(#function)
-		let storePath = path.document(currentStoreUserUid)
-		do {
-			for updateInfo in storeInfo {
-				switch updateInfo {
-				case .storeId(let key, let value),
-						.storeName(let key, let value),
-						.storeEmail(let key, let value),
-						.storeLocation(let key, let value),
-						.phoneNumber(let key, let value):
-					try await storePath.updateData([
-						key: value
-					])
-				case .registerDate(let key, let value):
-					try await storePath.updateData([
-						key: value
-					])
-				case .reportingCount(let key, let value):
-					try await storePath.updateData([
-						key: value
-					])
-				case .storeImage(let key, let value):
-					try await storePath.updateData([
-						key: value
-					])
-				case .isVerified(let key, let value),
-						.isSubmitted(let key, let value),
-						.isBanned(let key, let value):
-					try await storePath.updateData([
-						key: value
-					])
-				}
-			}
-		} catch {
-			dump("\(#function) - DEBUG \(error.localizedDescription)")
-		}
-	}
+	public func updateStoreInfo(with currentStoreUserUid: String?, by storeInfo: StoreInfoUpdateType...) async -> Void {
+    guard let currentStoreUserUid else { return }
+    print(#function)
+    let storePath = path.document(currentStoreUserUid)
+    do {
+        for updateInfo in storeInfo {
+            switch updateInfo {
+            case .storeId(let key, let value),
+                    .storeName(let key, let value),
+                    .storeEmail(let key, let value),
+                    .storeLocation(let key, let value),
+                    .phoneNumber(let key, let value):
+                try await storePath.updateData([
+                    key: value
+                ])
+            case .registerDate(let key, let value):
+                try await storePath.updateData([
+                    key: value
+                ])
+            case .reportingCount(let key, let value):
+                try await storePath.updateData([
+                    key: value
+                ])
+            case .storeImage(let key, let value):
+                try await storePath.updateData([
+                    key: value
+                ])
+            case .isVerified(let key, let value),
+                    .isSubmitted(let key, let value),
+                    .isBanned(let key, let value):
+                try await storePath.updateData([
+                    key: value
+                ])
+            }
+        }
+    } catch {
+        dump("\(#function) - DEBUG \(error.localizedDescription)")
+    }
+}
 	
 	// MARK: - Create Store Info
 	public func createStoreInfo(with storeUser: StoreInfo) async -> Void {
