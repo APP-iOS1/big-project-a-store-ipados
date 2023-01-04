@@ -7,7 +7,10 @@
 
 import Foundation
 
-struct ReviewInfo: Codable {
+struct ReviewInfo: Codable, Identifiable {
+    var id: String {
+            self.itemId
+    }
 	var reviewPostId: String
 	var itemId: String
 	var storeId: String

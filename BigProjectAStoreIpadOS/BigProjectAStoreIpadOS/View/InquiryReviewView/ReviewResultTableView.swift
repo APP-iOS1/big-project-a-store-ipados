@@ -23,10 +23,10 @@ struct ReviewResultTableView: View {
     //    ]
     
     // 표에서 선택 지원
-    @State private var selectedOrder = Set<CustomerReview.ID>()
+    //@State private var selectedOrder = Set<CustomerReview.ID>()
     
     // 정렬 지원 - 일단은 리뷰 등록 순서대로 정렬
-    @State private var sortOrder = [KeyPathComparator(\CustomerReview.reviewCreatedDate)]
+    //@State private var sortOrder = [KeyPathComparator(\CustomerReview.reviewCreatedDate)]
     
     @Binding var searchResultCnt: Int
     
@@ -43,10 +43,22 @@ struct ReviewResultTableView: View {
             }
             .background(Color(hue: 1.0, saturation: 0.006, brightness: 0.912))
             .padding(.bottom, 20)
-            ForEach(storeNetworkManager.currentStoreItemArray, id: \.id) { arr in
-                Text("arr : \(arr.itemName)")
-                 
+//            ForEach(storeNetworkManager.eachItemReviews, id: \.itemId) { i in
+//                Text("i : \(i.postDescription)")
+//
+//            }
+            Table(storeNetworkManager.eachItemReviews) {
+                //상품명
+                //TableColumn("상품명", value: \.postDescription)
+                TableColumn("구매자 평점") { review in
+                    Text("\(review.rate)")
+                }
+                TableColumn("리뷰 내용", value: \.postDescription)
+                TableColumn("리뷰 등록일", value: \.postDate)
+                TableColumn("등록자", value: \.reviewerId)
+                
             }
+            
             
 //            Table(storeNetworkManager.currentStoreItemArray) {
 //                TableColumn("주문 번호", value: \.orderNumber)
@@ -75,9 +87,14 @@ struct ReviewResultTableView: View {
                 await storeNetworkManager.requestItemInfo(with: Auth.auth().currentUser?.uid)
                 //print("this is item \(item.self)") //못 가져옴
                 
-                let itemList: [String] = await storeNetworkManager.requestItemIdList(with: Auth.auth().currentUser?.uid)
+                let itemIDList: [String] = await storeNetworkManager.requestItemIdList(with: Auth.auth().currentUser?.uid)
                 
-                print("this is item list \(itemList)")
+                storeNetworkManager.eachItemReviews.removeAll()
+                
+                for itemID in itemIDList {
+                    await storeNetworkManager.requestItemReviews(with: Auth.auth().currentUser?.uid, fromItemId: itemID)
+                }
+                //print("this is item list \(itemList)") // item들의 ID가 나옴
                 //                try await storeNetworkManager.requestItemReviews(with: Auth.auth().currentUser?.uid, fromItemId: item.s)
             }
         }

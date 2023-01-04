@@ -321,6 +321,7 @@ final class StoreNetworkManager: ObservableObject {
 	public func requestItemReviews(with currentStoreUserUid: String?,
 								   fromItemId itemUid: String) async -> Void {
 		guard let currentStoreUserUid else { return }
+
 		let reviewPath = path.document("\(currentStoreUserUid)")
 			.collection("Item")
 			.document(itemUid)
@@ -329,6 +330,7 @@ final class StoreNetworkManager: ObservableObject {
 		do {
 			let snapshot = try await reviewPath.getDocuments()
 			for document in snapshot.documents {
+                
 				let requestedData = document.data()
 				
 				let reviewPostId = requestedData["reviewPostId"] as? String ?? ""
@@ -340,9 +342,9 @@ final class StoreNetworkManager: ObservableObject {
 				let rate = requestedData["rate"] as? Int ?? 0
 				
 				let orderedItems = requestedData["orderedItems"] as? [String: Any] ?? [:]
-				let orderedItem = await getOrderedItemData(with: orderedItems)
+				//let orderedItem = await getOrderedItemData(with: orderedItems)
 				
-				let review = ReviewInfo(reviewPostId: reviewPostId, itemId: itemId, storeId: storeId, reviewerId: reviewerId, postDescription: reviewPostDescription, postDate: postDate.formattedKoreanTime(), rate: rate, orderedItem: [orderedItem])
+				let review = ReviewInfo(reviewPostId: reviewPostId, itemId: itemId, storeId: storeId, reviewerId: reviewerId, postDescription: reviewPostDescription, postDate: postDate.formattedKoreanTime(), rate: rate, orderedItem: [])
 				
 				eachItemReviews.append(review)
 			}
@@ -359,9 +361,11 @@ final class StoreNetworkManager: ObservableObject {
 		let deliveryStatus = orderedItems["deliveryStatus"] as? String ?? ""
 		var itemName: String = ""
 		var itemImage: [String] = [""]
-		
+        let storeID = currentStoreUserInfo?.storeId
+        print("currentStoreUserInfo: \(currentStoreUserInfo)")
+        print("storeID; \(storeID)") //nil
 		do {
-			if let snapshot = try await path.document(currentStoreUserInfo!.storeId).collection("Item").document(itemUid).getDocument().data() {
+			if let snapshot = try await path.document(storeID!).collection("Item").document(itemUid).getDocument().data() {
 				itemName = snapshot["itemName"] as? String ?? ""
 				itemImage = snapshot["itemImage"] as? [String] ?? [""]
 			}
