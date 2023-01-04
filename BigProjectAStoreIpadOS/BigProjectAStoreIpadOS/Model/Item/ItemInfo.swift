@@ -32,7 +32,7 @@ struct ItemOptions: Codable {
 struct OrderInfo: Codable {
 	var orderId: String = UUID().uuidString
 	var orderedUserInfo: String
-	var orderTime: Double
+	var orderTime: String
 	var orderedItems: [OrderedItemInfo]
 	var orderAddress: String
 	var orderMessage: String?
