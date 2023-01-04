@@ -14,6 +14,17 @@ struct WaitingView: View {
     
     var body: some View {
         Text("입점 승인 대기중입니다.")
+            .font(.largeTitle)
+            .padding(.bottom, 30)
+        
+        Button {
+            isStoreApproved = false
+        } label: {
+            Text("~ 셀프 입점 승인 ~")
+                .foregroundColor(.white)
+                .frame(width: 430, height: 50)
+                .background(.pink)
+        }
         
         // TODO: 서버에서 잘 불러와지면 삭제될 버튼
         Button {
