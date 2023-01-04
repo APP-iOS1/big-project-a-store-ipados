@@ -386,52 +386,57 @@ final class StoreNetworkManager: ObservableObject {
 		return OrderedItemInfo(itemUid: itemUid, itemName: itemName, itemImage: itemImage, price: price, option: itemOptionDict, deliveryStatus: deliveryStatus)
 	}
 	
-	// MARK: 주문 정보 불러오기
-	public func requestOrderedItemInfo(with currentUserUid: String?, inItemInfo item: ItemInfo) async -> Void {
+	// MARK: - 스토어의 모든 아이템에 대한 주문 정보 불러오기
+	public func requestOrderedItemInfo(with currentUserUid: String?) async -> Void {
 		guard let currentUserUid else { return }
 		let orderedInfoPath = path.document(currentUserUid)
 			.collection("Items")
-			.document(item.itemUid)
-			.collection("OrderedInfo")
 			
 		var requestedOrderInfo: [OrderInfo] = []
+		
 		do {
-			let snapshots = try await orderedInfoPath.getDocuments()
-			
-			for docs in snapshots.documents {
-				let requestedData = docs.data()
+			if self.currentStoreItemArray.isEmpty { // id 어레이가 비어있으면 id 를 채웁니다.
+				await requestItemIdList(with: currentUserUid)
+			}
+			for itemId in self.currentStoreItemIdArray {
+				let requestedSnapshot = try await orderedInfoPath.document(itemId).collection("OrderedInfo").getDocuments()
 				
-				/// orderinfos
-				let orderId: String = requestedData["orderId"] as? String ?? ""
-				let orderedUserInfo: String = requestedData["orderedUserInfo"] as? String ?? ""
-				let orderTime: String = requestedData["orderTime"] as? String ?? ""
-				let orderAddress: String = requestedData["orderAddress"] as? String ?? ""
-				let orderMessage: String? = requestedData["orderMessage"] as? String ?? ""
-				let payment: String = requestedData["payment"] as? String ?? ""
-				
-				let orderedItems = requestedData["orderedItems"] as? [String: Any] ?? [:]
-				
-				/// orderediteminfo
-				let itemUid: String = orderedItems["itemUid"] as? String ?? ""
-				let itemName: String = orderedItems["itemName"] as? String ?? ""
-				let itemImage: [String] = orderedItems["itemImage"] as? [String] ?? [""]
-				let price: Double = orderedItems["price"] as? Double ?? 0.0
-				let deliveryStatus: String = orderedItems["deliveryStatus"] as? String ?? ""
-				
-				
-				/// itemOptions
-				let orderedOptions = orderedItems["option"] as? [String: Any] ?? [:]
-				var itemOptions = ItemOptions(itemOptions: [:])
-				for (key, value) in orderedOptions {
-					itemOptions.itemOptions.updateValue(value as! [String], forKey: key)
+				for docs in requestedSnapshot.documents {
+					let requestedData = docs.data()
+					
+					/// orderinfos
+					let orderId: String = requestedData["orderId"] as? String ?? ""
+					let orderedUserInfo: String = requestedData["orderedUserInfo"] as? String ?? ""
+					let orderTime: String = requestedData["orderTime"] as? String ?? ""
+					let orderAddress: String = requestedData["orderAddress"] as? String ?? ""
+					let orderMessage: String? = requestedData["orderMessage"] as? String ?? ""
+					let payment: String = requestedData["payment"] as? String ?? ""
+					
+					let orderedItems = requestedData["orderedItems"] as? [String: Any] ?? [:]
+					
+					/// orderediteminfo
+					let itemUid: String = orderedItems["itemUid"] as? String ?? ""
+					let itemName: String = orderedItems["itemName"] as? String ?? ""
+					let itemImage: [String] = orderedItems["itemImage"] as? [String] ?? [""]
+					let price: Double = orderedItems["price"] as? Double ?? 0.0
+					let deliveryStatus: String = orderedItems["deliveryStatus"] as? String ?? ""
+					
+					
+					/// itemOptions
+					let orderedOptions = orderedItems["option"] as? [String: Any] ?? [:]
+					var itemOptions = ItemOptions(itemOptions: [:])
+					
+					for (key, value) in orderedOptions {
+						itemOptions.itemOptions.updateValue(value as! [String], forKey: key)
+					}
+					
+					let orderedItemInfo = OrderedItemInfo(itemUid: itemUid, itemName: itemName, itemImage: itemImage, price: price, option: itemOptions, deliveryStatus: deliveryStatus)
+					
+					let orderInfo = OrderInfo(orderId: orderId, orderedUserInfo: orderedUserInfo, orderTime: orderTime, orderedItems: [orderedItemInfo], orderAddress: orderAddress, orderMessage: orderMessage ?? "", payment: payment)
+					
+					requestedOrderInfo.append(orderInfo)
+					self.currentStoreOrderInfoArray = requestedOrderInfo
 				}
-				
-				let orderedItemInfo = OrderedItemInfo(itemUid: itemUid, itemName: itemName, itemImage: itemImage, price: price, option: itemOptions, deliveryStatus: deliveryStatus)
-				
-				let orderInfo = OrderInfo(orderId: orderId, orderedUserInfo: orderedUserInfo, orderTime: orderTime, orderedItems: [orderedItemInfo], orderAddress: orderAddress, orderMessage: orderMessage ?? "", payment: payment)
-				
-				requestedOrderInfo.append(orderInfo)
-				self.currentStoreOrderInfoArray = requestedOrderInfo
 			}
 		} catch {
 			dump("\(#function) - DEBUG \(error.localizedDescription)")
