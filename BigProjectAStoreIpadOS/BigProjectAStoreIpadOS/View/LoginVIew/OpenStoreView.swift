@@ -72,6 +72,7 @@ struct OpenStoreView: View {
                                     showingAlert = true
                                 }
                             }
+
                         } label: {
                             Text("신청하기")
                         }.buttonStyle(.plain)
