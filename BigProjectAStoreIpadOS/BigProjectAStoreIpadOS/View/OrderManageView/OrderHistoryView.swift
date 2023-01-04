@@ -5,50 +5,66 @@
 //  Created by 추현호 on 2022/12/27.
 //
 
+import FirebaseAuth
 import SwiftUI
 
 
 struct OrderHistoryView: View {
     
+    @EnvironmentObject private var storeNetworkManager: StoreNetworkManager
     @State private var searchText: String = ""
-    @State private var customerOrders = [
-        CustomerOrder(orderNumber: "1dfsf", orderTime: "2022-12-27 13:36", orderProduct: "맥북 프로", orderOption: "스페이스 그레이_0", orderQuantity: 2, purchaseConfirmation: false),
-        CustomerOrder(orderNumber: "2sdef", orderTime: "2022-2-1 09:12", orderProduct: "아이패드", orderOption: "스페이스 그레이_0", orderQuantity: 3, purchaseConfirmation: true),
-        CustomerOrder(orderNumber: "3dfge", orderTime: "2023-01-03 12:00", orderProduct: "에어팟", orderOption: "흰색_0", orderQuantity: 1, purchaseConfirmation: false),
-        CustomerOrder(orderNumber: "4ddge", orderTime: "2020-01-01 22:00", orderProduct: "에어팟", orderOption: "흰색_0", orderQuantity: 6, purchaseConfirmation: true)
-    ]
     
     // 표에서 선택 지원
-    @State private var selectedOrder = Set<CustomerOrder.ID>()
+    @State private var selectedOrder = Set<OrderInfo.ID>()
     
     // 정렬 지원 - 일단은 주문 시간 순서대로 정렬
-    @State private var sortOrder = [KeyPathComparator(\CustomerOrder.orderTime)]
+    @State private var sortOrder = [KeyPathComparator(\OrderInfo.orderTime)]
     
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading) {
-                Table (customerOrders, selection: $selectedOrder, sortOrder: $sortOrder) {
-                    TableColumn("주문 번호", value: \.orderNumber)
+                Table (storeNetworkManager.currentStoreOrderInfoArray, selection: $selectedOrder, sortOrder: $sortOrder) {
+                    TableColumn("주문 번호", value: \.orderId)
                     TableColumn("주문 시간", value: \.orderTime)
-                    TableColumn("주문 상품", value: \.orderProduct)
-                    TableColumn("주문 옵션") { order in
-                        Text("\(order.orderOption)")
+                    TableColumn("주문 고객", value:\.orderedUserInfo)
+                    TableColumn("주문 상품"){ product in
+                        if !product.orderedItems.isEmpty{
+                            Text("\(product.orderedItems.first!.itemName) 외 \(product.orderedItems.count - 1)개")
+                        }else{
+                            Text("")
+                        }
                     }
-                    TableColumn("주문 수량") { order in
-                        Text("\(order.orderQuantity)")
+                    TableColumn("상세 보기"){ product in
+                        NavigationLink {
+                            OrderHistoryDetailView(orderInfo: product)
+                        } label: {
+                            Text("상세 보기")
+                                .foregroundColor(.black)
+                                .padding(5)
+                                .overlay(Rectangle().stroke(Color.black, lineWidth: 0.5))
+                        }
+
                         
                     }
-                    TableColumn("구매확인", value: \.purchaseConfirmationInt) { order in
-                        Text(order.purchaseConfirmation ? "Y": "N")
-                    }
+
+                }
+                .refreshable{
+                    await storeNetworkManager.requestOrderedItemInfo(with:Auth.auth().currentUser?.uid)
                 }
                 .padding(.vertical, 20)
                 .onChange(of: sortOrder) {
-                    customerOrders.sort(using: $0)
+                    storeNetworkManager.currentStoreOrderInfoArray.sort(using: $0)
                 }
             }//v
+//            .searchable(text: $searchText, prompt: "주문 번호 입력")
+            .onAppear{
+                Task{
+                  await storeNetworkManager.requestOrderedItemInfo(with:Auth.auth().currentUser?.uid)
+                }
+                
+            }
             .navigationTitle("주문 내역")
-            .searchable(text: $searchText, prompt: "검색")
+            
         }//navigationstack
         //.modifier(CloseUpDetailModifier())
         
@@ -60,60 +76,7 @@ struct OrderHistoryView: View {
 struct OrderHistory_Previews: PreviewProvider {
     static var previews: some View {
         OrderHistoryView()
-            //.environmentObject(NavigationStateManager())
+            .environmentObject(StoreNetworkManager())
     }
 }
-
-
-/*
- NavigationStack {
-     VStack {
-         HStack {
-             Text("목록 (총 2개)")
-                 .font(.title2)
-                 .padding(.leading, 20)
-             Spacer()
-         }
-         Divider()
-             .padding(.bottom, 10)
-         LazyVGrid(columns: columns) {
-             
-             ForEach(Array(orderHistoryHeader.enumerated()), id: \.offset ) { idx, headerItem in
-                 if idx == 5 {
-                     Picker(selection: $orderConfirmSelection, label: Text("구매확인")) {
-                         Text("구매확인 (전체)").tag(1)
-                         Text("구매확인 Y").tag(2)
-                         Text("구매확인 N").tag(3)
-                     }
-                 } else {
-                     Text("\(headerItem)")
-                 }
-             }
-             .font(.headline)
-             .padding(.bottom, 6)
-             
-             if orderConfirmSelection == 1 {
-                 ForEach(dummyDataTotal, id: \.self) { data in
-                     Text("\(data)")
-                 }
-             } else if orderConfirmSelection == 2 {
-                 ForEach(dummyDataYes, id: \.self) { data in
-                     Text("\(data)")
-                 }
-             } else {
-                 ForEach(dummyDataNo, id: \.self) { data in
-                     Text("\(data)")
-                 }
-             }
-             
-         }
-         Spacer()
-         
-     }//vstack
-     .padding(.top, 20)
-     .navigationTitle(Text("주문 내역"))
- }.modifier(CloseUpDetailModifier())
-
- */
-
 

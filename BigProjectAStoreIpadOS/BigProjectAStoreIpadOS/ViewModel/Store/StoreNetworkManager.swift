@@ -28,6 +28,9 @@ final class StoreNetworkManager: ObservableObject {
 	/// 스토어가 관리하는 모든 아이템을 보관하는 배열입니다.
 	@Published var currentStoreItemArray: [ItemInfo] = []
 	
+	/// 스토어가 관리하는 모든 주문정보 배열입니다.
+	@Published var currentStoreOrderInfoArray: [OrderInfo] = []
+	
 	let path = Firestore.firestore().collection("\(appCategory.rawValue)")
 	
 	// MARK: - Methods
@@ -137,6 +140,7 @@ final class StoreNetworkManager: ObservableObject {
 }
 	
 	// MARK: - Create Store Info
+	/// - Important: DEPRECATED
 	public func createStoreInfo(with storeUser: StoreInfo) async -> Void {
 		do {
 			try await path.document(storeUser.storeId).setData([
@@ -184,7 +188,7 @@ final class StoreNetworkManager: ObservableObject {
 		guard let currentStoreUserUid else { return [""] }
 		let itemPath = path
 			.document("\(currentStoreUserUid)")
-			.collection("Item")
+			.collection("Items")
 		
 		var idArray: [String] = []
 		do {
@@ -212,8 +216,9 @@ final class StoreNetworkManager: ObservableObject {
 		await requestItemIdList(with: currentStoreUserUid)
 		guard let currentStoreUserUid else { return }
 		let path = self.path
-			.document("\(currentStoreUserUid)")
-			.collection("Item")
+			.document(currentStoreUserUid)
+			.collection("Items")
+
 		do {
             self.currentStoreItemArray.removeAll()
 			for id in currentStoreItemIdArray {
@@ -257,7 +262,7 @@ final class StoreNetworkManager: ObservableObject {
 	public func createNewItem(with currentStoreUserUid: String?, item: ItemInfo) async -> Void {
 		guard let currentStoreUserUid else { return }
 		let storeItemPath = path.document("\(currentStoreUserUid)")
-			.collection("Item")
+			.collection("Items")
 			.document(item.itemUid)
 		
 		do {
@@ -270,7 +275,6 @@ final class StoreNetworkManager: ObservableObject {
 				"itemImage": item.itemImage,
 				"price": item.price,
 			], merge: true)
-			print("등록완료")
 			await updateItemOption(with: item.itemAllOption, path: storeItemPath)
 		} catch {
 			dump("\(error.localizedDescription)")
@@ -304,7 +308,7 @@ final class StoreNetworkManager: ObservableObject {
 		guard let currentStoreUserUid else { return }
 		do {
 			try await path.document("\(currentStoreUserUid)")
-				.collection("Item")
+				.collection("Items")
 				.document(item)
 				.delete()
 		} catch {
@@ -323,7 +327,7 @@ final class StoreNetworkManager: ObservableObject {
 		guard let currentStoreUserUid else { return }
 
 		let reviewPath = path.document("\(currentStoreUserUid)")
-			.collection("Item")
+			.collection("Items")
 			.document(itemUid)
 			.collection("Reviews")
 		
@@ -343,7 +347,6 @@ final class StoreNetworkManager: ObservableObject {
 				
 				let orderedItems = requestedData["orderedItems"] as? [String: Any] ?? [:]
 				//let orderedItem = await getOrderedItemData(with: orderedItems)
-				
                 //실험용 itemName 넣음
                 let review = ReviewInfo(reviewPostId: reviewPostId, itemId: itemId, storeId: storeId, reviewerId: reviewerId, postDescription: reviewPostDescription, postDate: postDate.formattedKoreanTime(), rate: rate, orderedItem: [], itemName: "")
 				
@@ -383,13 +386,128 @@ final class StoreNetworkManager: ObservableObject {
 			itemOptionDict.itemOptions.updateValue(myOption, forKey: key)
 		}
 		
-		return OrderedItemInfo(itemUid: itemUid, itemName: itemName, itemImage: itemImage, price: price, option: itemOptionDict)
+		return OrderedItemInfo(itemUid: itemUid, itemName: itemName, itemImage: itemImage, price: price, option: itemOptionDict, deliveryStatus: deliveryStatus)
+	}
+	
+	// MARK: - 스토어의 모든 아이템에 대한 주문 정보 불러오기
+    @MainActor
+	public func requestOrderedItemInfo(with currentUserUid: String?) async -> Void {
+		guard let currentUserUid else { return }
+		let orderedInfoPath = path.document(currentUserUid)
+			.collection("Items")
+			
+		var requestedOrderInfo: [OrderInfo] = []
+        var requestedOrderInfoId: [String] = []
+		do {
+			if self.currentStoreItemArray.isEmpty { // id 어레이가 비어있으면 id 를 채웁니다.
+				await requestItemIdList(with: currentUserUid)
+			}
+            else {
+                currentStoreItemArray.removeAll()
+            }
+			for itemId in self.currentStoreItemIdArray {
+				let requestedSnapshot = try await orderedInfoPath.document(itemId).collection("OrderedInfo").getDocuments()
+                
+				for docs in requestedSnapshot.documents {
+					let requestedData = docs.data()
+					/// orderinfos
+					let orderId: String = requestedData["orderId"] as? String ?? ""
+                    if !requestedOrderInfoId.contains(orderId){
+                        
+                        requestedOrderInfoId.append(orderId)
+                        let orderedUserInfo: String = requestedData["orderedUserInfo"] as? String ?? ""
+                        let orderTime: String = requestedData["orderTime"] as? String ?? ""
+                        let orderAddress: String = requestedData["orderAddress"] as? String ?? ""
+                        let orderMessage: String? = requestedData["orderMessage"] as? String ?? ""
+                        let payment: String = requestedData["payment"] as? String ?? ""
+                        
+                        let orderedItems = requestedData["orderedItems"] as? [String: Any] ?? [:]
+                        
+                        /// orderediteminfo
+                        let itemUid: String = orderedItems["itemUid"] as? String ?? ""
+                        let itemName: String = orderedItems["itemName"] as? String ?? ""
+                        let itemImage: [String] = orderedItems["itemImage"] as? [String] ?? [""]
+                        let price: Double = orderedItems["price"] as? Double ?? 0.0
+                        let deliveryStatus: String = orderedItems["deliveryStatus"] as? String ?? ""
+                        
+                        /// itemOptions
+                        let orderedOptions = orderedItems["option"] as? [String: Any] ?? [:]
+                        var itemOptions = ItemOptions(itemOptions: [:])
+                        
+                        for (key, value) in orderedOptions {
+                            itemOptions.itemOptions.updateValue(value as! [String], forKey: key)
+                        }
+                        
+                        let orderedItemInfo = OrderedItemInfo(itemUid: itemUid, itemName: itemName, itemImage: itemImage, price: price, option: itemOptions, deliveryStatus: deliveryStatus)
+                        
+                        let orderInfo = OrderInfo(orderId: orderId, orderedUserInfo: orderedUserInfo, orderTime: orderTime, orderedItems: [orderedItemInfo], orderAddress: orderAddress, orderMessage: orderMessage ?? "", payment: payment)
+                        requestedOrderInfo.append(orderInfo)
+                    }
+					self.currentStoreOrderInfoArray = requestedOrderInfo
+				}
+			}
+		} catch {
+			dump("\(#function) - DEBUG \(error.localizedDescription)")
+		}
 	}
 	
 	// MARK: - 주문된 아이템의 정보 생성 메소드
-	/// 구매한 유저의 id를 참조 경로로 삼고 가서 그 유저의 서브 콜렉션에도 저장해야 함
-	public func createOrderedItemInfo(with currentStoreUserUid: String?) async -> Void {
+	/// 각 아이템에 필요한 주문 정보를 생성합니다.
+	/// - Parameter with: 주문한 유저의 uid를 받아서 전달합니다.
+	/// - Parameter in: Auth.auth().currentUser.uid
+	/// - Parameter withItem: 주문한 아이템들을 ItemInfo 형태로 전달합니다.
+	public func createOrderedItemInfo(with currentUserUid: String?,
+									  in currentStoreUserUid: String?,
+									  withItem item: ItemInfo...) async -> Void {
+		guard let currentStoreUserUid, let currentUserUid else { return }
+
+		// 주문한 아이템의 정보를 담는 배열
+		var orderedItemsArray: [OrderedItemInfo] = []
+		
+		for orderedItem in item {
+			let orderedItemsInfo = OrderedItemInfo(itemUid: orderedItem.itemUid, itemName: orderedItem.itemName, itemImage: orderedItem.itemImage, price: orderedItem.price, option: orderedItem.itemAllOption, deliveryStatus: "배송준비중")
+			orderedItemsArray.append(orderedItemsInfo)
+		}
+		
+		// 주문 정보 생성
+		let newOrderInfo = OrderInfo(orderId: UUID().uuidString, orderedUserInfo: currentUserUid, orderTime: Date.getKoreanNowTimeString(), orderedItems: orderedItemsArray, orderAddress: "배송주소", payment: "무통장입금")
+		
+		do {
+			for orderedItemInfo in orderedItemsArray {
+				let path = path.document(currentStoreUserUid)
+					.collection("Items").document(orderedItemInfo.itemUid) // 서로 다른 아이템 id에 하나의 주문 건 아이디만 넣어주기
+					.collection("OrderedInfo").document(newOrderInfo.orderId) // 주문 건 아이디는 유지
+				
+				// 안에 주문정보 채우기
+				try await path.setData([
+					"orderId": newOrderInfo.orderId,
+					"orderedUserInfo": newOrderInfo.orderedUserInfo,
+					"orderTime": newOrderInfo.orderTime,
+					"orderedItems": [
+						"itemUid": orderedItemInfo.itemUid,
+						"itemName": orderedItemInfo.itemName,
+						"itemImage": orderedItemInfo.itemImage,
+						"price": orderedItemInfo.price,
+						"deliveryStatus": orderedItemInfo.deliveryStatus
+					],
+					"orderAddress": newOrderInfo.orderAddress,
+					"orderMessage": newOrderInfo.orderMessage ?? "메세지없음",
+					"payment": newOrderInfo.payment
+				], merge: true)
+				
+				for (key,value) in orderedItemInfo.option.itemOptions {
+					try await path.setData([
+						"orderedItems": [
+							"itemAllOptions": [
+								key: value
+							]
+						]
+					], merge: true)
+				}
+			}
+		} catch {
+			dump("\(#function) - DEBUG \(error.localizedDescription)")
+		}
 		
 	}
 }
-

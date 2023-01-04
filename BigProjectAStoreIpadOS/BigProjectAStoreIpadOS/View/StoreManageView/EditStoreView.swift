@@ -9,6 +9,7 @@
 import SwiftUI
 import Combine
 import PhotosUI
+import FirebaseAuth
 
 struct EditStoreView: View {
     // TODO: storeName, storeAddress Binding값으로 바꿔주기
@@ -20,11 +21,14 @@ struct EditStoreView: View {
     @State private var isNameClicked = true
     @State private var isAddressClicked = true
     
+    @EnvironmentObject var storeNetworkManager: StoreNetworkManager
+    
     var body: some View {
         
         List {
             Section {
                 HStack(alignment: .top) {
+                    // TODO: 프로필 사진 업로드
                     Text("프로필 사진")
                         .padding(.trailing, 50)
                     VStack {
@@ -66,7 +70,12 @@ struct EditStoreView: View {
                     }
                     
                     Button {
-                        isNameClicked.toggle()
+                        Task {
+                            if !isNameClicked {
+                                await storeNetworkManager.updateStoreInfo(with: Auth.auth().currentUser?.uid, by: .storeName(value: storeName))
+                            }
+                            isNameClicked.toggle()
+                        }
                     } label: {
                         Text("수정")
                     }
@@ -86,7 +95,12 @@ struct EditStoreView: View {
                     }
                     
                     Button {
-                        isAddressClicked.toggle()
+                        Task {
+                            if !isAddressClicked {
+                                await storeNetworkManager.updateStoreInfo(with: Auth.auth().currentUser?.uid, by: .storeLocation(value: storeAddress))
+                            }
+                            isAddressClicked.toggle()
+                        }
                     } label: {
                         Text("수정")
                     }
@@ -97,6 +111,13 @@ struct EditStoreView: View {
             }
             
         }.modifier(CloseUpDetailModifier())
+            .onAppear {
+                Task{
+                    await storeNetworkManager.requestStoreInfo(with: Auth.auth().currentUser?.uid)
+                    storeName = storeNetworkManager.currentStoreUserInfo?.storeName ?? ""
+                    storeAddress = storeNetworkManager.currentStoreUserInfo?.storeLocation ?? ""
+                }
+            }
     }
 }
 
