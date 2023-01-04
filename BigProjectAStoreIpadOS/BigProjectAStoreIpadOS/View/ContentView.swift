@@ -67,13 +67,13 @@ struct ContentView: View {
         .environmentObject(navigationStateManager)
         .navigationSplitViewStyle(.balanced)
         .fullScreenCover(isPresented: $isLoggedin) {
-            LoginView(haveStore: $haveStore, isLoggedin: $isLoggedin, isStoreApproved: $isStoreApproved)
+            LoginView(haveStore: $haveStore, isLoggedin: $isLoggedin, isStoreApproved: $isStoreApproved).environmentObject(signUpViewModel)
         }
         .fullScreenCover(isPresented: $haveStore) {
             OpenStoreView(haveStore: $haveStore)
         }
         .fullScreenCover(isPresented: $isStoreApproved) {
-            WaitingView(isStoreApproved: $isStoreApproved, isLoggedin: $isLoggedin)
+            WaitingView(isStoreApproved: $isStoreApproved, isLoggedin: $isLoggedin).environmentObject(signUpViewModel)
         }
     }
 }
