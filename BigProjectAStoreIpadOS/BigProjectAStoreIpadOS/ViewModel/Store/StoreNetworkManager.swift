@@ -344,7 +344,8 @@ final class StoreNetworkManager: ObservableObject {
 				let orderedItems = requestedData["orderedItems"] as? [String: Any] ?? [:]
 				//let orderedItem = await getOrderedItemData(with: orderedItems)
 				
-				let review = ReviewInfo(reviewPostId: reviewPostId, itemId: itemId, storeId: storeId, reviewerId: reviewerId, postDescription: reviewPostDescription, postDate: postDate.formattedKoreanTime(), rate: rate, orderedItem: [])
+                //실험용 itemName 넣음
+                let review = ReviewInfo(reviewPostId: reviewPostId, itemId: itemId, storeId: storeId, reviewerId: reviewerId, postDescription: reviewPostDescription, postDate: postDate.formattedKoreanTime(), rate: rate, orderedItem: [], itemName: "")
 				
 				eachItemReviews.append(review)
 			}

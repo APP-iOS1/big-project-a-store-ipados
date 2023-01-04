@@ -378,9 +378,9 @@ struct ReviewView: View {
                 //등록자
                 //리뷰 등록일
                 
-                if showTable {
-                    ReviewResultTableView(searchResultCnt: $searchResultCnt)
-                }
+            
+                ReviewResultTableView()
+                
                 Spacer()
             }
             .padding(30)

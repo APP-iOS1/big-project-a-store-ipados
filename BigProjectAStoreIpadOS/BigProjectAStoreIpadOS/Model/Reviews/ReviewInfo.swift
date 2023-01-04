@@ -19,5 +19,7 @@ struct ReviewInfo: Codable, Identifiable {
 	var postDate: String // 리뷰 등록일
 	var rate: Int //구매자 평점
 	var orderedItem: [OrderedItemInfo] // 등록자 구매한 물품
+    // 실험용
+    var itemName: String 
 }
 
