@@ -13,10 +13,11 @@ struct WaitingView: View {
     @Binding var isLoggedin: Bool
     
     var body: some View {
-        Text("입점 승인 대기중입니다.")
+        Text("입점 승인 대기중")
             .font(.largeTitle)
             .padding(.bottom, 30)
         
+        // 개발 편의상 만들어 둔 버튼
         Button {
             isStoreApproved = false
         } label: {

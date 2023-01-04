@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @StateObject var navigationStateManager = NavigationStateManager()
     @StateObject var signUpViewModel: SignUpViewModel  = SignUpViewModel()
+    @StateObject var storeNetworkManager: StoreNetworkManager = StoreNetworkManager()
     @State private var showSettings = false
     @State private var menuId: MenuItem.ID?
     
@@ -30,7 +31,7 @@ struct ContentView: View {
                     case "주문 관리":
                         OrderHistoryView()
                     case "스토어 관리":
-                        EditStoreView()
+                        EditStoreView().environmentObject(storeNetworkManager)
                     case "매출현황":
                         ChartDetailView()
                     case "문의 및 리뷰 관리":
