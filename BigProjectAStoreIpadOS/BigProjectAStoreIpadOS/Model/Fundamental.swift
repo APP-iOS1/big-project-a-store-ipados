@@ -10,6 +10,7 @@ import Foundation
 typealias SnapshotDataType = [String: Any]
 
 let appCategory: AppCategoryEnum = .store
+let csCategory: AppCategoryEnum = .cs
 var storeApproveState: StoreApproveState = .needSubmit
 
 // MARK: - 앱의 성격을 구별하는 카테고리 열거형
@@ -17,7 +18,7 @@ var storeApproveState: StoreApproveState = .needSubmit
 /// - 현재 앱에서는 판매자용 iPad 앱임을 나타내기 위해 전역 상수로 .store 가 할당되어 있습니다.
 /// - 해당 열거형의 원시값을 활용하여 Firebase의 콜렉션에 접근합니다.
 enum AppCategoryEnum: String, Codable {
-	case customer, store = "StoreInfo", backoffice
+	case customer, store = "StoreInfo", backoffice, cs = "CustomerServiceInfo"
 }
 
 // MARK: - 앱 전체에서 활용될 StoreInfo

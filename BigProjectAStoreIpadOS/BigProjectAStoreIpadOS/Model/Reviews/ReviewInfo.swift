@@ -22,4 +22,3 @@ struct ReviewInfo: Codable, Identifiable {
     // 실험용
     var itemName: String
 }
-

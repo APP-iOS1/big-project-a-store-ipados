@@ -22,6 +22,8 @@
 		369AF1D7295BDD4F00109F16 /* CloseStoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369AF1D6295BDD4F00109F16 /* CloseStoreView.swift */; };
 		369AF1DC295C232200109F16 /* ViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369AF1DB295C232200109F16 /* ViewModifier.swift */; };
 		369AF1DE2962C7DE00109F16 /* InquiryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369AF1DD2962C7DE00109F16 /* InquiryDetailView.swift */; };
+		369AF1E02965108400109F16 /* InquiryNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369AF1DF2965108400109F16 /* InquiryNetworkManager.swift */; };
+		369AF1E3296510C000109F16 /* InquiryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369AF1E2296510C000109F16 /* InquiryModel.swift */; };
 		36DD0A6C295AD8FE00FB9C77 /* ProductModifyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36DD0A6B295AD8FE00FB9C77 /* ProductModifyView.swift */; };
 		36E4149C295AC4C20033D634 /* EditStoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E4149B295AC4C20033D634 /* EditStoreView.swift */; };
 		36E4149E295AC4E50033D634 /* OrderHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E4149D295AC4E50033D634 /* OrderHistoryView.swift */; };
@@ -59,6 +61,7 @@
 		C55441EF295C0BD1006CF16C /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55441EE295C0BD1006CF16C /* LoginView.swift */; };
 		C55441F2295C0C29006CF16C /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55441F1295C0C29006CF16C /* SignUpView.swift */; };
 		C56A46392962A4E10065996D /* WaitingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56A46382962A4E10065996D /* WaitingView.swift */; };
+		CAEEB65D29653DA700097E28 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEEB65C29653DA700097E28 /* TestView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -77,6 +80,8 @@
 		369AF1D6295BDD4F00109F16 /* CloseStoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseStoreView.swift; sourceTree = "<group>"; };
 		369AF1DB295C232200109F16 /* ViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifier.swift; sourceTree = "<group>"; };
 		369AF1DD2962C7DE00109F16 /* InquiryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryDetailView.swift; sourceTree = "<group>"; };
+		369AF1DF2965108400109F16 /* InquiryNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryNetworkManager.swift; sourceTree = "<group>"; };
+		369AF1E2296510C000109F16 /* InquiryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryModel.swift; sourceTree = "<group>"; };
 		36DD0A6B295AD8FE00FB9C77 /* ProductModifyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductModifyView.swift; sourceTree = "<group>"; };
 		36E4149B295AC4C20033D634 /* EditStoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditStoreView.swift; sourceTree = "<group>"; };
 		36E4149D295AC4E50033D634 /* OrderHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderHistoryView.swift; sourceTree = "<group>"; };
@@ -107,6 +112,7 @@
 		C55441EE295C0BD1006CF16C /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		C55441F1295C0C29006CF16C /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		C56A46382962A4E10065996D /* WaitingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingView.swift; sourceTree = "<group>"; };
+		CAEEB65C29653DA700097E28 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +144,7 @@
 				706C471D295C1EF4003A5417 /* Item */,
 				34491462295BC91200F05A54 /* MenuModel.swift */,
 				34491479295C104000F05A54 /* DeliveryModel.swift */,
+				369AF1E12965109F00109F16 /* Inquiry */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -169,8 +176,17 @@
 				369AF1DD2962C7DE00109F16 /* InquiryDetailView.swift */,
 				8033638C295BE7B0009AF68F /* ReviewView.swift */,
 				80B23FE329629F8800F1C5A0 /* ReviewResultTableView.swift */,
+				CAEEB65C29653DA700097E28 /* TestView.swift */,
 			);
 			path = InquiryReviewView;
+			sourceTree = "<group>";
+		};
+		369AF1E12965109F00109F16 /* Inquiry */ = {
+			isa = PBXGroup;
+			children = (
+				369AF1E2296510C000109F16 /* InquiryModel.swift */,
+			);
+			path = Inquiry;
 			sourceTree = "<group>";
 		};
 		36E414A5295AC5670033D634 /* View */ = {
@@ -222,6 +238,7 @@
 			isa = PBXGroup;
 			children = (
 				706C4729295C357B003A5417 /* StoreNetworkManager.swift */,
+				369AF1DF2965108400109F16 /* InquiryNetworkManager.swift */,
 				70BB77DF29626BBF007AB929 /* UserAuthenticationModel.swift */,
 			);
 			path = Store;
@@ -422,6 +439,7 @@
 				3449146C295BCA0200F05A54 /* DeliverySummaryView.swift in Sources */,
 				36E414A4295AC53B0033D634 /* Product.swift in Sources */,
 				80B23FE22962998900F1C5A0 /* CustomerReview.swift in Sources */,
+				369AF1E3296510C000109F16 /* InquiryModel.swift in Sources */,
 				36E414A0295AC5010033D634 /* ProductRegisterView.swift in Sources */,
 				C55441F2295C0C29006CF16C /* SignUpView.swift in Sources */,
 				34491465295BC94600F05A54 /* SelectedMenu.swift in Sources */,
@@ -438,6 +456,8 @@
 				706C471F295C1EFC003A5417 /* ItemInfo.swift in Sources */,
 				16354BE0295BE19B003D1EC8 /* ChartDetailView.swift in Sources */,
 				80807C78295A92C20037E781 /* BigProjectAStoreIpadOSApp.swift in Sources */,
+				369AF1E02965108400109F16 /* InquiryNetworkManager.swift in Sources */,
+				CAEEB65D29653DA700097E28 /* TestView.swift in Sources */,
 				706C4728295C2A1A003A5417 /* Fundamental.swift in Sources */,
 				36E4149E295AC4E50033D634 /* OrderHistoryView.swift in Sources */,
 				36E414A2295AC5280033D634 /* ProductInventoryView.swift in Sources */,
