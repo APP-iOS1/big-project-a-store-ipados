@@ -39,9 +39,11 @@ struct LoginView: View {
                         // currentStoreUserInfo read
                         await storeNetworkManager.requestStoreInfo(with: Auth.auth().currentUser?.uid)
                         
+                        // 정지 계정은 경고 띄우고 앱 진입 금지
                         if storeNetworkManager.currentStoreUserInfo?.isBanned ?? false {
                             showingAlert = true
                         } else {
+                            // 로그인 뷰 닫기
                             isLoggedin = false
                             
                             // 입점신청여부 가져와서 입점신청뷰로 넘길지 말지 지정

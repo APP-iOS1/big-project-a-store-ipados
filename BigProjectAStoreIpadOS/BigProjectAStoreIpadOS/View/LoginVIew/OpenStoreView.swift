@@ -14,12 +14,24 @@ struct OpenStoreView: View {
     @State var storeAddress = ""
     @State var phoneNumber = ""
     @State private var showingAlert = false
+    @Binding var isLoggedin: Bool
     @Binding var haveStore: Bool
     @EnvironmentObject var storeNetworkManager: StoreNetworkManager
     
     var body: some View {
         VStack {
             List {
+                Section {
+                    VStack(alignment: .leading) {
+                        Button {
+                            isLoggedin = true
+                        } label: {
+                            Text("<   로그인 화면으로 돌아가기")
+                        }.buttonStyle(.plain)
+                            .foregroundColor(.accentColor)
+                    }
+                }
+                
                 Section {
                     HStack(alignment: .top) {
                         Text("스토어 이름")
@@ -60,11 +72,9 @@ struct OpenStoreView: View {
                                     showingAlert = true
                                 }
                             }
-                            
-                            print(haveStore)
                         } label: {
                             Text("신청하기")
-                        }.buttonStyle(PlainButtonStyle())
+                        }.buttonStyle(.plain)
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                             .foregroundColor(.accentColor)
                             .alert("주의", isPresented: $showingAlert) {
@@ -73,7 +83,8 @@ struct OpenStoreView: View {
                                 }
                     }
                 }
-            }.listRowBackground(Color.clear)
+            }
+//            .listRowBackground(Color.clear)
         }
         .textInputAutocapitalization(.never)
         .autocorrectionDisabled()
