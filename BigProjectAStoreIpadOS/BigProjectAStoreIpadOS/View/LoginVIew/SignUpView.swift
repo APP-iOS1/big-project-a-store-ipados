@@ -21,7 +21,7 @@ struct SignUpView: View {
     @State private var signupTest = false
     @Environment(\.dismiss) private var dismiss
     
-    @StateObject var signUpViewModel: SignUpViewModel = SignUpViewModel()
+    @EnvironmentObject var signUpViewModel: SignUpViewModel
     
     var body: some View {
         VStack() {

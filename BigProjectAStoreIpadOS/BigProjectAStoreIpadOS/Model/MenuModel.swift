@@ -49,6 +49,9 @@ struct MenuItem: Identifiable {
             
         case .reviewManagement:
             ReviewView()
+			
+		case .logout:
+			SettingsView()
         }
     }
     
@@ -75,7 +78,8 @@ struct MenuModel {
             MenuItem(name: "문의 및 리뷰 관리", subMenuItem: [
                 MenuItem(name: "문의 내역", selected: .questionManagement),
                 MenuItem(name: "리뷰 내역", selected: .reviewManagement)
-            ])
+            ]),
+			MenuItem(name: "로그아웃")
         ]
     }
     

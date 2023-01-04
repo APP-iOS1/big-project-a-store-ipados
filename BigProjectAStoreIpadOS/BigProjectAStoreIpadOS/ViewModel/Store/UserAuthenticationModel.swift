@@ -20,6 +20,7 @@ final class SignUpViewModel: ObservableObject {
 	@Published var errorMessage = ""
 	@Published var authenticationState: AuthenticationState = .unAuthenticated
 	@Published var currentUser: StoreInfo?
+	@Published var isLoggedin = true
 	
 	let database = Firestore.firestore()
 	let authentication = Auth.auth()
@@ -29,8 +30,6 @@ final class SignUpViewModel: ObservableObject {
 	/// Auth에 새로운 사용자를 생성합니다.
 	/// - Parameter email: 입력받은 사용자의 email
 	/// - Parameter password: 입력받은 사용자의 password
-	/// - Parameter nickname: 입력받은 사용자의 nickname
-	///
 	@MainActor
 	public func createUser(email: String, password: String) async -> Bool {
 		authenticationState = .authenticating
@@ -61,8 +60,8 @@ final class SignUpViewModel: ObservableObject {
 		database.collection("\(appCategory.rawValue)")
 			.document(uid)
 			.setData([
-				"id" : uid,
-				"userEmail" : email,
+				"storeId" : uid,
+				"storeEmail" : email,
 			])
 	}
 	
@@ -112,9 +111,11 @@ final class SignUpViewModel: ObservableObject {
 		do {
 			try await authentication.signIn(withEmail: email, password: password)
 			self.authenticationState = .authenticated
+			isLoggedin = false
 			return true
 		} catch {
 			dump("DEBUG : LOGIN FAILED \(error.localizedDescription)")
+			isLoggedin = true
 			return false
 		}
 	}
@@ -124,8 +125,10 @@ final class SignUpViewModel: ObservableObject {
 		do {
 			try authentication.signOut()
 			self.authenticationState = .unAuthenticated
+			isLoggedin = true
 		} catch {
 			dump("DEBUG : LOG OUT FAILED \(error.localizedDescription)")
+			isLoggedin = false
 		}
 	}
 }

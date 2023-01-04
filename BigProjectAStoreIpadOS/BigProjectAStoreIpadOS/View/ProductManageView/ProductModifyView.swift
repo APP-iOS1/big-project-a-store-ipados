@@ -204,7 +204,6 @@ struct ProductModifyView: View {
             } message:{
                 Text("기존에 있던 내용들이 수정됩니다.")
             }
-            .modifier(CloseUpDetailModifier())
             
         }
         

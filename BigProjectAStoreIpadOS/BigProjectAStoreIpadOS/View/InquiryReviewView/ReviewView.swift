@@ -39,7 +39,7 @@ struct ReviewView: View {
     @State private var reviewChannelSmartStore: Bool = false
     
     //리뷰조건- 구매자 평점
-    @State private var customerRateTotal: Bool = false
+    @State private var customerRateTotal: Bool = true
     @State private var customerRateOne: Bool = false
     @State private var customerRateTwo: Bool = false
     @State private var customerRateThree: Bool = false
@@ -54,7 +54,7 @@ struct ReviewView: View {
     // 검색 눌렀을 때 임시로 목록 나타날 수 있도록
     @State private var showTable: Bool = true
     
-
+    @EnvironmentObject var storeNetworkManager: StoreNetworkManager
     
     var body: some View {
         //ScrollView {
@@ -378,9 +378,9 @@ struct ReviewView: View {
                 //등록자
                 //리뷰 등록일
                 
-                if showTable {
-                    ReviewResultTableView(searchResultCnt: $searchResultCnt)
-                }
+            
+                ReviewResultTableView()
+                
                 Spacer()
             }
             .padding(30)

@@ -15,13 +15,10 @@
 		3449146A295BC9E300F05A54 /* DeliveryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34491469295BC9E300F05A54 /* DeliveryView.swift */; };
 		3449146C295BCA0200F05A54 /* DeliverySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3449146B295BCA0200F05A54 /* DeliverySummaryView.swift */; };
 		3449146E295BCCBA00F05A54 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3449146D295BCCBA00F05A54 /* SettingsView.swift */; };
-		34491470295BD8FC00F05A54 /* DeliveryReadyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3449146F295BD8FC00F05A54 /* DeliveryReadyView.swift */; };
-		34491476295BDD8000F05A54 /* DeliveryShippingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34491475295BDD8000F05A54 /* DeliveryShippingView.swift */; };
-		34491478295BDD9300F05A54 /* DeliveryCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34491477295BDD9300F05A54 /* DeliveryCompleteView.swift */; };
 		3449147A295C104000F05A54 /* DeliveryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34491479295C104000F05A54 /* DeliveryModel.swift */; };
-		3449147C295C390500F05A54 /* DeliveryAllView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3449147B295C390500F05A54 /* DeliveryAllView.swift */; };
 		36205EDE295ACCD30083F312 /* InquiryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36205EDD295ACCD30083F312 /* InquiryView.swift */; };
 		36205EE1295AD7090083F312 /* InquiryResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36205EE0295AD7090083F312 /* InquiryResponse.swift */; };
+		3653CED5296545700072DE4F /* OrderHistoryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3653CED4296545700072DE4F /* OrderHistoryDetailView.swift */; };
 		369AF1D7295BDD4F00109F16 /* CloseStoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369AF1D6295BDD4F00109F16 /* CloseStoreView.swift */; };
 		369AF1DC295C232200109F16 /* ViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369AF1DB295C232200109F16 /* ViewModifier.swift */; };
 		369AF1DE2962C7DE00109F16 /* InquiryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369AF1DD2962C7DE00109F16 /* InquiryDetailView.swift */; };
@@ -76,13 +73,10 @@
 		34491469295BC9E300F05A54 /* DeliveryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryView.swift; sourceTree = "<group>"; };
 		3449146B295BCA0200F05A54 /* DeliverySummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliverySummaryView.swift; sourceTree = "<group>"; };
 		3449146D295BCCBA00F05A54 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		3449146F295BD8FC00F05A54 /* DeliveryReadyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryReadyView.swift; sourceTree = "<group>"; };
-		34491475295BDD8000F05A54 /* DeliveryShippingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryShippingView.swift; sourceTree = "<group>"; };
-		34491477295BDD9300F05A54 /* DeliveryCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryCompleteView.swift; sourceTree = "<group>"; };
 		34491479295C104000F05A54 /* DeliveryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryModel.swift; sourceTree = "<group>"; };
-		3449147B295C390500F05A54 /* DeliveryAllView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryAllView.swift; sourceTree = "<group>"; };
 		36205EDD295ACCD30083F312 /* InquiryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryView.swift; sourceTree = "<group>"; };
 		36205EE0295AD7090083F312 /* InquiryResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryResponse.swift; sourceTree = "<group>"; };
+		3653CED4296545700072DE4F /* OrderHistoryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderHistoryDetailView.swift; sourceTree = "<group>"; };
 		369AF1D6295BDD4F00109F16 /* CloseStoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseStoreView.swift; sourceTree = "<group>"; };
 		369AF1DB295C232200109F16 /* ViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifier.swift; sourceTree = "<group>"; };
 		369AF1DD2962C7DE00109F16 /* InquiryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryDetailView.swift; sourceTree = "<group>"; };
@@ -171,10 +165,6 @@
 			children = (
 				34491469295BC9E300F05A54 /* DeliveryView.swift */,
 				3449146B295BCA0200F05A54 /* DeliverySummaryView.swift */,
-				3449147B295C390500F05A54 /* DeliveryAllView.swift */,
-				3449146F295BD8FC00F05A54 /* DeliveryReadyView.swift */,
-				34491475295BDD8000F05A54 /* DeliveryShippingView.swift */,
-				34491477295BDD9300F05A54 /* DeliveryCompleteView.swift */,
 			);
 			path = DeliveryView;
 			sourceTree = "<group>";
@@ -229,6 +219,7 @@
 			isa = PBXGroup;
 			children = (
 				36E4149D295AC4E50033D634 /* OrderHistoryView.swift */,
+				3653CED4296545700072DE4F /* OrderHistoryDetailView.swift */,
 				34491468295BC9CA00F05A54 /* DeliveryView */,
 			);
 			path = OrderManageView;
@@ -433,7 +424,7 @@
 				706C471C295C1D04003A5417 /* Timestamp+.swift in Sources */,
 				369AF1D7295BDD4F00109F16 /* CloseStoreView.swift in Sources */,
 				36205EDE295ACCD30083F312 /* InquiryView.swift in Sources */,
-				34491478295BDD9300F05A54 /* DeliveryCompleteView.swift in Sources */,
+				3653CED5296545700072DE4F /* OrderHistoryDetailView.swift in Sources */,
 				3449147A295C104000F05A54 /* DeliveryModel.swift in Sources */,
 				8033638D295BE7B0009AF68F /* ReviewView.swift in Sources */,
 				3449146E295BCCBA00F05A54 /* SettingsView.swift in Sources */,
@@ -443,12 +434,9 @@
 				3449146A295BC9E300F05A54 /* DeliveryView.swift in Sources */,
 				80B23FE429629F8800F1C5A0 /* ReviewResultTableView.swift in Sources */,
 				8033634C295ADA45009AF68F /* CustomerOrder.swift in Sources */,
-				3449147C295C390500F05A54 /* DeliveryAllView.swift in Sources */,
 				C55441EF295C0BD1006CF16C /* LoginView.swift in Sources */,
-				34491476295BDD8000F05A54 /* DeliveryShippingView.swift in Sources */,
 				369AF1DC295C232200109F16 /* ViewModifier.swift in Sources */,
 				3449146C295BCA0200F05A54 /* DeliverySummaryView.swift in Sources */,
-				34491470295BD8FC00F05A54 /* DeliveryReadyView.swift in Sources */,
 				36E414A4295AC53B0033D634 /* Product.swift in Sources */,
 				80B23FE22962998900F1C5A0 /* CustomerReview.swift in Sources */,
 				369AF1E3296510C000109F16 /* InquiryModel.swift in Sources */,
@@ -609,7 +597,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
@@ -645,7 +633,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
