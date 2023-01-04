@@ -68,12 +68,12 @@ final class StoreNetworkManager: ObservableObject {
 		let reportingCount: Int = requestedData["reportingCount"] as? Int ?? 0
 		let phoneNumber: String = requestedData["phoneNumber"] as? String ?? ""
 		let isVerified: Bool = requestedData["isVerified"] as? Bool ?? false
-		let isSubmited: Bool = requestedData["isSubmited"] as? Bool ?? false
+		let isSubmitted: Bool = requestedData["isSubmitted"] as? Bool ?? false
 		let isBanned: Bool = requestedData["isBanned"] as? Bool ?? false
 		
 		let storeImage: String = requestedData["storeImage"] as? String ?? ""
 		
-		let currentStoreUser = StoreInfo(storeId: storeId, storeName: storeName, storeEmail: storeEmail, storeLocation: storeLocation, registerDate: registerDate.formattedKoreanTime(), reportingCount: reportingCount, phoneNumber: phoneNumber, isVerified: isVerified, isBanned: isBanned)
+        let currentStoreUser = StoreInfo(storeId: storeId, storeEmail: storeEmail, registerDate: registerDate.formattedKoreanTime(), reportingCount: reportingCount,   phoneNumber: phoneNumber, storeLocation: storeLocation, storeName: storeName, isVerified: isVerified, isSubmitted: isSubmitted, isBanned: isBanned)
 		
 		return currentStoreUser
 	}
@@ -137,6 +137,48 @@ final class StoreNetworkManager: ObservableObject {
 		}
 	}
 	
+	// MARK: - Create Store Info
+	public func createStoreInfo(with storeUser: StoreInfo) async -> Void {
+		do {
+			try await path.document(storeUser.storeId).setData([
+				"storeId": storeUser.storeId,
+				"storeEmail": storeUser.storeEmail,
+				"registerDate": storeUser.registerDate,
+				"reportingCount": storeUser.reportingCount,
+				"isVerified": storeUser.isVerified,
+				"isSubmitted": storeUser.isSubmitted,
+				"isBanned": storeUser.isBanned
+//				"storeImage": storeUser.storeImage,
+//				"phoneNumber": storeUser.phoneNumber,
+//				"storeLocation": storeUser.storeLocation,
+//				"storeName": storeUser.storeName
+			], merge: true)
+			
+			try await path.document(storeUser.storeId).collection("Notification").document("알람").setData([
+				"init":""
+			], merge: true)
+			
+			try await
+			path.document(storeUser.storeId).collection("Sales").document("init")
+				.setData([
+					"init":""
+				], merge: true)
+			
+			try await path.document(storeUser.storeId).collection("Items").document("init").collection("Reviews").document("리뷰").setData([
+				"init":""
+			], merge: true)
+			
+			try await
+			path.document(storeUser.storeId).collection("Items").document("init").collection("OrderedInfo").document("주문정보").setData([
+				"init":""
+			], merge: true)
+			
+		} catch {
+			dump("\(#function) - DEBUG \(error.localizedDescription)")
+		}
+		
+	}
+	
 	// MARK: - Read Item Id
 	@MainActor @discardableResult
 	public func requestItemIdList(with currentStoreUserUid: String?) async -> [String] {
@@ -183,6 +225,7 @@ final class StoreNetworkManager: ObservableObject {
 				let storeId: String = requestedItemData["storeId"] as? String ?? ""
 				let itemName: String = requestedItemData["itemName"] as? String ?? ""
 				let itemCategory: String = requestedItemData["itemCategory"] as? String ?? ""
+
 				let itemImage: [String] = requestedItemData["itemImage"] as? [String] ?? [""]
 				let price: Double = requestedItemData["price"] as? Double ?? 0.0
 				
@@ -195,7 +238,9 @@ final class StoreNetworkManager: ObservableObject {
 					itemAllOptions.itemOptions.updateValue(options, forKey: key)
 				}
 				
+
 				let requestedItem = ItemInfo(itemUid: itemUid, storeId: storeId, itemName: itemName, itemCategory: itemCategory,  itemAllOption: itemAllOptions, itemImage: itemImage, price: price)
+
 				
 				self.currentStoreItemArray.append(requestedItem)
 			}
@@ -231,7 +276,6 @@ final class StoreNetworkManager: ObservableObject {
 		} catch {
 			dump("\(error.localizedDescription)")
 		}
-		
 		self.currentStoreItemIdArray.append(item.itemUid)
 	}
 	

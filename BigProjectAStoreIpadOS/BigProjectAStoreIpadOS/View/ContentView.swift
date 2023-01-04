@@ -12,9 +12,9 @@ struct ContentView: View {
     @State private var showSettings = false
     @State private var menuId: MenuItem.ID?
     
-    @State private var haveStore = false
-    @State private var isLoggedin = true
-    @State private var isStoreApproved = false
+    @State var haveStore = false
+    @State var isLoggedin = true
+    @State var isStoreApproved = false
 
     @ViewBuilder
     fileprivate func SubMenuDetails(for subMenuId: MenuItem.ID?) -> some View {
@@ -66,7 +66,7 @@ struct ContentView: View {
         .environmentObject(navigationStateManager)
         .navigationSplitViewStyle(.balanced)
         .fullScreenCover(isPresented: $isLoggedin) {
-            LoginView(haveStore: $haveStore, isLoggedin: $isLoggedin)
+            LoginView(haveStore: $haveStore, isLoggedin: $isLoggedin, isStoreApproved: $isStoreApproved)
         }
         .fullScreenCover(isPresented: $haveStore) {
             OpenStoreView(haveStore: $haveStore)

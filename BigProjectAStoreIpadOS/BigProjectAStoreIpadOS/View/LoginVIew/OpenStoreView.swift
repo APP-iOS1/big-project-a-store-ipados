@@ -6,13 +6,15 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
+import FirebaseAuth
 
 struct OpenStoreView: View {
     @State var storeName = ""
     @State var storeAddress = ""
     @State var phoneNumber = ""
     @Binding var haveStore: Bool
-    @StateObject var storeNetworkManager: StoreNetworkManager = StoreNetworkManager()
+    @EnvironmentObject var storeNetworkManager: StoreNetworkManager
     
     var body: some View {
         VStack {
@@ -44,8 +46,13 @@ struct OpenStoreView: View {
                 Section {
                     HStack {
                         Button {
-                            // FIXME: FireStore에서 입점신청 여부 가져오기
-                            haveStore = false
+                            Task{
+                                // TODO: CreateStoreInfo
+                                // TODO: User 정보(Email) read 해야함.
+                                await storeNetworkManager.createStoreInfo(with: StoreInfo(storeId: Auth.auth().currentUser?.uid ?? "", storeEmail: storeNetworkManager.currentStoreUserInfo?.storeEmail ?? "", registerDate: Date.getKoreanNowTimeString(), reportingCount: 0))
+                                await storeNetworkManager.updateStoreInfo(with: Auth.auth().currentUser?.uid, by: .isSubmitted(value: true))
+                            }
+                            haveStore = !((storeNetworkManager.currentStoreUserInfo?.isSubmitted) != nil)
                         } label: {
                             Text("신청하기")
                         }.buttonStyle(PlainButtonStyle())

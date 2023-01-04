@@ -103,8 +103,12 @@ struct InquiryView: View {
                         TableColumn("질문자 이름", value: \.questionerName)
                         TableColumn("문의 접수 일", value: \.dateOfReception)
                         TableColumn("답변 완료 여부") { inquiry in Image(systemName: inquiry.isAnswered ? "checkmark" : "xmark").foregroundColor(inquiry.isAnswered ? Color.green : Color.red)
+                                .navigationDestination(for: Inquiry.self) {inquiry in
+                                    InquiryDetailView(inquiry: inquiry)
+                                }
                         }
-                    }.onChange(of: selectedInquiry) { newElement in
+                    }
+                    .onChange(of: selectedInquiry) { newElement in
                         if let newElement,
                            let inquiry = inquiries.first(where: { $0.id == newElement }) {
                             path.append(inquiry)
@@ -112,8 +116,6 @@ struct InquiryView: View {
                     }
                 }.searchable(text: $searchUserText, prompt: "검색")
             }
-        }.navigationDestination(for: Inquiry.self) {inquiry in
-            InquiryDetailView(inquiry: inquiry)
         }
     }
 }
