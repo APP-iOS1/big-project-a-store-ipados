@@ -15,6 +15,6 @@ struct ReviewInfo: Codable {
 	var postDescription: String
 	var postDate: String
 	var rate: Int
-	var orderedItem: [OrderedItemInfo]
+	var orderedItem: OrderedItemInfo
 }
 

@@ -347,7 +347,7 @@ final class StoreNetworkManager: ObservableObject {
 				let orderedItems = requestedData["orderedItems"] as? [String: Any] ?? [:]
 				let orderedItem = await getOrderedItemData(with: orderedItems)
 				
-				let review = ReviewInfo(reviewPostId: reviewPostId, itemId: itemId, storeId: storeId, reviewerId: reviewerId, postDescription: reviewPostDescription, postDate: postDate.formattedKoreanTime(), rate: rate, orderedItem: [orderedItem])
+				let review = ReviewInfo(reviewPostId: reviewPostId, itemId: itemId, storeId: storeId, reviewerId: reviewerId, postDescription: reviewPostDescription, postDate: postDate.formattedKoreanTime(), rate: rate, orderedItem: orderedItem)
 				
 				eachItemReviews.append(review)
 			}
@@ -447,9 +447,10 @@ final class StoreNetworkManager: ObservableObject {
 	}
 	
 	// MARK: - 주문된 아이템의 정보 생성 메소드
-	/// 구매한 유저의 id를 참조 경로로 삼고 가서 그 유저의 서브 콜렉션에도 저장해야 함
-	/// 스토어의 모든 아이템 id를 가져온 다음,
-	/// 주문 건은 하나고, 그 안에 여러 아이템의 id를 다 갖고 있어야 함.
+	/// 각 아이템에 필요한 주문 정보를 생성합니다.
+	/// - Parameter with: 주문한 유저의 uid를 받아서 전달합니다.
+	/// - Parameter in: Auth.auth().currentUser.uid
+	/// - Parameter withItem: 주문한 아이템들을 ItemInfo 형태로 전달합니다.
 	public func createOrderedItemInfo(with currentUserUid: String?,
 									  in currentStoreUserUid: String?,
 									  withItem item: ItemInfo...) async -> Void {
@@ -467,15 +468,37 @@ final class StoreNetworkManager: ObservableObject {
 		let newOrderInfo = OrderInfo(orderId: UUID().uuidString, orderedUserInfo: currentUserUid, orderTime: Date.getKoreanNowTimeString(), orderedItems: orderedItemsArray, orderAddress: "배송주소", payment: "무통장입금")
 		
 		do {
-			for orderdItemInfo in orderedItemsArray {
+			for orderedItemInfo in orderedItemsArray {
 				let path = path.document(currentStoreUserUid)
-					.collection("Items").document(orderdItemInfo.itemUid) // 서로 다른 아이템 id에 하나의 주문 건 아이디만 넣어주기
+					.collection("Items").document(orderedItemInfo.itemUid) // 서로 다른 아이템 id에 하나의 주문 건 아이디만 넣어주기
 					.collection("OrderedInfo").document(newOrderInfo.orderId) // 주문 건 아이디는 유지
 				
-				// 안에다가 주문정보 채우기
+				// 안에 주문정보 채우기
 				try await path.setData([
-					:
-				])
+					"orderId": newOrderInfo.orderId,
+					"orderedUserInfo": newOrderInfo.orderedUserInfo,
+					"orderTime": newOrderInfo.orderTime,
+					"orderedItems": [
+						"itemUid": orderedItemInfo.itemUid,
+						"itemName": orderedItemInfo.itemName,
+						"itemImage": orderedItemInfo.itemImage,
+						"price": orderedItemInfo.price,
+						"deliveryStatus": orderedItemInfo.deliveryStatus
+					],
+					"orderAddress": newOrderInfo.orderAddress,
+					"orderMessage": newOrderInfo.orderMessage ?? "메세지없음",
+					"payment": newOrderInfo.payment
+				], merge: true)
+				
+				for (key,value) in orderedItemInfo.option.itemOptions {
+					try await path.setData([
+						"orderedItems": [
+							"itemAllOptions": [
+								key: value
+							]
+						]
+					], merge: true)
+				}
 			}
 		} catch {
 			dump("\(#function) - DEBUG \(error.localizedDescription)")

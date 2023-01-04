@@ -22,6 +22,10 @@ struct ModelTestView: View {
 //					"2" : ["테스트옵션2"],
 //					"3" : ["테스트옵션3"],
 //				]), itemImage: ["이미지1"], price: 125_000))
+				
+				await model.createOrderedItemInfo(with: "ENXC8Fy13iM4A7b3eud1Mo33dzk1", in: "123", withItem: ItemInfo(itemUid: UUID().uuidString, storeId: "123", itemName: "Test", itemCategory: "모니터", itemAllOption: ItemOptions(itemOptions: [
+					"색상":["빨강_1200"]
+				]), itemImage: ["이미지1"], price: 125000))
 			}
     }
 }
