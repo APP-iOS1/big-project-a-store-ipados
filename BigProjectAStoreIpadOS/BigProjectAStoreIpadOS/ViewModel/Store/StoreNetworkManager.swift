@@ -398,6 +398,9 @@ final class StoreNetworkManager: ObservableObject {
 			if self.currentStoreItemArray.isEmpty { // id 어레이가 비어있으면 id 를 채웁니다.
 				await requestItemIdList(with: currentUserUid)
 			}
+            else {
+                currentStoreItemArray.removeAll()
+            }
 			for itemId in self.currentStoreItemIdArray {
 				let requestedSnapshot = try await orderedInfoPath.document(itemId).collection("OrderedInfo").getDocuments()
 				
