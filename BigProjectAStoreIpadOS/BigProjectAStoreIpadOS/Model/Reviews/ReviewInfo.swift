@@ -11,10 +11,10 @@ struct ReviewInfo: Codable {
 	var reviewPostId: String
 	var itemId: String
 	var storeId: String
-	var reviewerId: String
-	var postDescription: String
-	var postDate: String
-	var rate: Int
-	var orderedItem: [OrderedItemInfo]
+	var reviewerId: String // 등록자 아이디
+	var postDescription: String // 리뷰 내용
+	var postDate: String // 리뷰 등록일
+	var rate: Int //구매자 평점
+	var orderedItem: [OrderedItemInfo] // 등록자 구매한 물품
 }
 

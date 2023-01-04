@@ -54,7 +54,7 @@ struct ReviewView: View {
     // 검색 눌렀을 때 임시로 목록 나타날 수 있도록
     @State private var showTable: Bool = true
     
-
+    @EnvironmentObject var storeNetworkManager: StoreNetworkManager
     
     var body: some View {
         //ScrollView {
