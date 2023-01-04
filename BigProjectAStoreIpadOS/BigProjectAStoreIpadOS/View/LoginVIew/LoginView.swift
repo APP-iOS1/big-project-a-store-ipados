@@ -11,10 +11,12 @@ import FirebaseAuth
 struct LoginView: View {
     @State private var userID = ""
     @State private var userPassword = ""
+    @State private var showingAlert = false
+    @State private var loginResult = false  // 더미 변수
     @Binding var haveStore: Bool
     @Binding var isLoggedin: Bool
     @Binding var isStoreApproved: Bool
-    @StateObject var signUpViewModel: SignUpViewModel = SignUpViewModel()
+    @EnvironmentObject var signUpViewModel: SignUpViewModel
     @EnvironmentObject var storeNetworkManager: StoreNetworkManager
     
     var body: some View {
@@ -32,13 +34,25 @@ struct LoginView: View {
                 Button {
                     Task {
                         // isSubmitted, isLoggedin 기본값이 false
-                        isLoggedin = !(await signUpViewModel.requestUserLogin(withEmail: userID, withPassword: userPassword))
-                        // 입점신청여부 가져와서 입점신청뷰로 넘길지 말지 지정
-                        haveStore = !((storeNetworkManager.currentStoreUserInfo?.isSubmitted) != nil)
+                        loginResult = await signUpViewModel.requestUserLogin(withEmail: userID, withPassword: userPassword)
                         
-                        // 입점승인여부 가져와서 대기중뷰로 넘길지 말지 지정
-                        // TODO: 백오피스에서 승인 업데이트해줘야함
-                        isStoreApproved = !((storeNetworkManager.currentStoreUserInfo?.isVerified) != nil)
+                        // currentStoreUserInfo read
+                        await storeNetworkManager.requestStoreInfo(with: Auth.auth().currentUser?.uid)
+                        
+                        // 정지 계정은 경고 띄우고 앱 진입 금지
+                        if storeNetworkManager.currentStoreUserInfo?.isBanned ?? false {
+                            showingAlert = true
+                        } else {
+                            // 로그인 뷰 닫기
+                            isLoggedin = false
+                            
+                            // 입점신청여부 가져와서 입점신청뷰로 넘길지 말지 지정
+                            haveStore = !(storeNetworkManager.currentStoreUserInfo?.isSubmitted ?? true)
+
+                            // 입점승인여부 가져와서 대기중뷰로 넘길지 말지 지정
+                            // TODO: 백오피스에서 승인 업데이트해줘야함
+                            isStoreApproved = !((storeNetworkManager.currentStoreUserInfo?.isVerified) ?? true)
+                        }
                     }
                 } label: {
                     Text("로그인")
@@ -46,6 +60,9 @@ struct LoginView: View {
                         .frame(width: 430, height: 50)
                         .background(.blue)
                         .padding(.bottom, 30)
+                } .alert("경고", isPresented: $showingAlert) {
+                    Button("Ok") { }
+                } message: { Text("신고로 인해 정지된 계정입니다")
                 }
                 
                 HStack {

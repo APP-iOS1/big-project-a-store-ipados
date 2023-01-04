@@ -18,4 +18,5 @@ enum selectedMenu: Equatable, Hashable {
     case salesGraph
     case questionManagement
     case reviewManagement
+	case logout
 }
