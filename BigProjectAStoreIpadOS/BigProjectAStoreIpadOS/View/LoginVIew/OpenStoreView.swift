@@ -55,7 +55,7 @@ struct OpenStoreView: View {
 								
 								await storeNetworkManager.updateStoreInfo(with: Auth.auth().currentUser?.uid, by: .isSubmitted(value: true), .registerDate(value: Date.now), .storeName(value: "새로만든스토어"))
                             }
-                            haveStore = !((storeNetworkManager.currentStoreUserInfo?.isSubmitted) != nil)
+                            haveStore = false
                         } label: {
                             Text("신청하기")
                         }.buttonStyle(PlainButtonStyle())

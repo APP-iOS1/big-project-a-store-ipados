@@ -29,7 +29,8 @@ struct ItemOptions: Codable {
 	var itemOptions: [String: [String]]
 }
 
-struct OrderInfo: Codable {
+struct OrderInfo: Codable, Identifiable {
+    var id: String{ orderId }
 	var orderId: String // 주문번호 == orderId
 	var orderedUserInfo: String
 	var orderTime: String
@@ -39,7 +40,10 @@ struct OrderInfo: Codable {
 	var payment: String
 }
 
-struct OrderedItemInfo: Codable {
+struct OrderedItemInfo: Codable, Identifiable {
+    var id: String {
+        itemUid
+    }
 	var itemUid: String
 	var itemName: String
 	var itemImage: [String]
