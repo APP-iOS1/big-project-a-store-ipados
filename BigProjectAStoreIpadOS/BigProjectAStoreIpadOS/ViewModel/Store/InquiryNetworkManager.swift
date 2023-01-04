@@ -21,8 +21,8 @@ final class InquiryNetworkManager : ObservableObject {
         func requestCustomerServiceList() async -> Void {
             do {
                 let documents = try await database.collection(csCategory.rawValue)
+                //                    .whereField("itemId", isEqualTo: itemId)
                     .getDocuments()
-//                    .whereField("itemId", isEqualTo: itemId)
                 self.customerService.removeAll()
                 for document in documents.documents {
                     let id = document.documentID

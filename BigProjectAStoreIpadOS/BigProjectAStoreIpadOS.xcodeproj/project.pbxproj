@@ -64,6 +64,7 @@
 		C55441EF295C0BD1006CF16C /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55441EE295C0BD1006CF16C /* LoginView.swift */; };
 		C55441F2295C0C29006CF16C /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55441F1295C0C29006CF16C /* SignUpView.swift */; };
 		C56A46392962A4E10065996D /* WaitingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56A46382962A4E10065996D /* WaitingView.swift */; };
+		CAEEB65D29653DA700097E28 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEEB65C29653DA700097E28 /* TestView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -117,6 +118,7 @@
 		C55441EE295C0BD1006CF16C /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		C55441F1295C0C29006CF16C /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		C56A46382962A4E10065996D /* WaitingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingView.swift; sourceTree = "<group>"; };
+		CAEEB65C29653DA700097E28 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -184,6 +186,7 @@
 				369AF1DD2962C7DE00109F16 /* InquiryDetailView.swift */,
 				8033638C295BE7B0009AF68F /* ReviewView.swift */,
 				80B23FE329629F8800F1C5A0 /* ReviewResultTableView.swift */,
+				CAEEB65C29653DA700097E28 /* TestView.swift */,
 			);
 			path = InquiryReviewView;
 			sourceTree = "<group>";
@@ -466,6 +469,7 @@
 				16354BE0295BE19B003D1EC8 /* ChartDetailView.swift in Sources */,
 				80807C78295A92C20037E781 /* BigProjectAStoreIpadOSApp.swift in Sources */,
 				369AF1E02965108400109F16 /* InquiryNetworkManager.swift in Sources */,
+				CAEEB65D29653DA700097E28 /* TestView.swift in Sources */,
 				706C4728295C2A1A003A5417 /* Fundamental.swift in Sources */,
 				36E4149E295AC4E50033D634 /* OrderHistoryView.swift in Sources */,
 				36E414A2295AC5280033D634 /* ProductInventoryView.swift in Sources */,

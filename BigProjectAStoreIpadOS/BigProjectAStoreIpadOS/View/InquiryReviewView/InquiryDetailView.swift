@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct InquiryDetailView: View {
-//    var inquiry : CustomerServiceInfo
+    var inquiry : CustomerServiceInfo
     
     var body: some View {
         VStack{

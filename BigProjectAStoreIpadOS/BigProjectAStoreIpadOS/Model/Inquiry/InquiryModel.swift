@@ -12,7 +12,7 @@ typealias ItemAllOption = [String:[String]]?
 
 // MARK: - 고객 서비스를 위한 모델
 /// 제품 문의 기능에서 사용하는 데이터 모델입니다.
-struct CustomerServiceInfo: Identifiable {
+struct CustomerServiceInfo: Identifiable, Hashable {
     var id: String
     var title: String           // 문의 제목
     var description: String     // 문의 내역
@@ -29,5 +29,9 @@ struct CustomerServiceInfo: Identifiable {
         get {
             serviceDate.formattedKoreanTime()
         }
+    }
+    
+    var isAnsweredInt: Int {
+        isAnswered ? 0 : 1
     }
 }
