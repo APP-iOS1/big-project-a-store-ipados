@@ -9,7 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject var navigationStateManager = NavigationStateManager()
-	@StateObject var authViewModel = SignUpViewModel()
+    @StateObject var signUpViewModel: SignUpViewModel  = SignUpViewModel()
+    @StateObject var storeNetworkManager: StoreNetworkManager = StoreNetworkManager()
     @State private var showSettings = false
     @State private var menuId: MenuItem.ID?
 	
@@ -29,7 +30,7 @@ struct ContentView: View {
                     case "주문 관리":
                         OrderHistoryView()
                     case "스토어 관리":
-                        EditStoreView()
+                        EditStoreView().environmentObject(storeNetworkManager)
                     case "매출현황":
                         ChartDetailView()
                     case "문의 및 리뷰 관리":
@@ -68,14 +69,14 @@ struct ContentView: View {
         .environmentObject(navigationStateManager)
 		.environmentObject(authViewModel)
         .navigationSplitViewStyle(.balanced)
-		.fullScreenCover(isPresented: $authViewModel.isLoggedin) {
-            LoginView(haveStore: $haveStore, isLoggedin: $authViewModel.isLoggedin, isStoreApproved: $isStoreApproved)
+        .fullScreenCover(isPresented: $isLoggedin) {
+            LoginView(haveStore: $haveStore, isLoggedin: $isLoggedin, isStoreApproved: $isStoreApproved).environmentObject(signUpViewModel)
         }
         .fullScreenCover(isPresented: $haveStore) {
-            OpenStoreView(haveStore: $haveStore)
+            OpenStoreView(isLoggedin: $isLoggedin, haveStore: $haveStore)
         }
         .fullScreenCover(isPresented: $isStoreApproved) {
-            WaitingView(isStoreApproved: $isStoreApproved)
+            WaitingView(isStoreApproved: $isStoreApproved, isLoggedin: $isLoggedin).environmentObject(signUpViewModel)
         }
     }
 }
