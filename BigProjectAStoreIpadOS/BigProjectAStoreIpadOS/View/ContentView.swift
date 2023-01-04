@@ -11,9 +11,12 @@ struct ContentView: View {
     @StateObject var navigationStateManager = NavigationStateManager()
     @StateObject var signUpViewModel: SignUpViewModel  = SignUpViewModel()
     @StateObject var storeNetworkManager: StoreNetworkManager = StoreNetworkManager()
+    @StateObject var authViewModel = SignUpViewModel()
+    
     @State private var showSettings = false
     @State private var menuId: MenuItem.ID?
 	
+    @State var isLoggedin = true
     @State var haveStore = false
     @State var isStoreApproved = false
 
@@ -67,7 +70,7 @@ struct ContentView: View {
 			ProductInventoryView()
         }
         .environmentObject(navigationStateManager)
-		.environmentObject(authViewModel)
+        .environmentObject(authViewModel)
         .navigationSplitViewStyle(.balanced)
         .fullScreenCover(isPresented: $isLoggedin) {
             LoginView(haveStore: $haveStore, isLoggedin: $isLoggedin, isStoreApproved: $isStoreApproved).environmentObject(signUpViewModel)
