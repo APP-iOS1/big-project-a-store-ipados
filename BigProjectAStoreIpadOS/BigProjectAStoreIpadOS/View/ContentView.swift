@@ -10,10 +10,12 @@ import SwiftUI
 struct ContentView: View {
     @StateObject var navigationStateManager = NavigationStateManager()
     @StateObject var signUpViewModel: SignUpViewModel  = SignUpViewModel()
+    @StateObject var authViewModel: SignUpViewModel  = SignUpViewModel()
     @StateObject var storeNetworkManager: StoreNetworkManager = StoreNetworkManager()
     @State private var showSettings = false
     @State private var menuId: MenuItem.ID?
 	
+    @State var isLoggedin = true
     @State var haveStore = false
     @State var isStoreApproved = false
 
