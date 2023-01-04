@@ -17,4 +17,3 @@ struct ReviewInfo: Codable {
 	var rate: Int
 	var orderedItem: [OrderedItemInfo]
 }
-

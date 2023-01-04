@@ -52,7 +52,7 @@ struct OpenStoreView: View {
                                 await storeNetworkManager.createStoreInfo(with: StoreInfo(storeId: Auth.auth().currentUser?.uid ?? "", storeEmail: storeNetworkManager.currentStoreUserInfo?.storeEmail ?? "", registerDate: Date.getKoreanNowTimeString(), reportingCount: 0))
                                 await storeNetworkManager.updateStoreInfo(with: Auth.auth().currentUser?.uid, by: .isSubmitted(value: true))
                             }
-                            haveStore = !((storeNetworkManager.currentStoreUserInfo?.isSubmitted) != nil)
+                            haveStore = false
                         } label: {
                             Text("신청하기")
                         }.buttonStyle(PlainButtonStyle())
