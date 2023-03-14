@@ -53,3 +53,6 @@
   - 디자인에 힘을 주고 싶습니다. 시간이 많이 부족하다보니 기능을 짜는 것만으로도 급급했던 것 같습니다.
 - <h4>이 프로젝트를 처음부터 다시 시작한다면 지금과 비교해서 무엇부터 다르게 하고 싶나요?</h4>
   - 판매자앱을 해보았으니 다른파트도 해보고 싶습니다.
+
+# Libraries
+- [Firebase](https://github.com/firebase/firebase-ios-sdk/blob/master/LICENSE)
